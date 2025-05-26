@@ -49,6 +49,7 @@ A modern web application for managing school administrative tasks, built with Re
 ### Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/school-management-system.git
-cd school-management-system
+
+- git commit -m "Description of what you did" 
+
+- git push origin feature/write-your-name
