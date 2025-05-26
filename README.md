@@ -46,9 +46,6 @@ A modern web application for managing school administrative tasks, built with Re
 - Node.js 16.x or higher
 - npm or yarn package manager
 
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/school-management-system.git
-cd school-management-system
+### how to push your changes 
+-  git commit -m "Description of what you did"
+-git push origin feature/write-your-name
