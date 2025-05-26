@@ -32,8 +32,8 @@ export default function Login() {
 
      
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#4F0129] to-[#10062B]">
-      <div className="w-[80%] h-[90vh] bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl flex overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#10062B] to-[#4F0129]">
+      <div className="w-[70%] h-[90vh] bg-white/5 backdrop-blur-lg rounded-2xl shadow-2xl flex overflow-hidden">
         {/* Left: Gradient, logo, and circles */}
         <div className="hidden lg:flex w-1/2 h-full items-center justify-center relative">
         <div 
@@ -44,8 +44,8 @@ export default function Login() {
           className="absolute w-[350px] h-[350px] rounded-full " />        
             <div 
           style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%,rgba(79, 1, 41, 0.1)0%)'}}
-          className="absolute w-[450px] h-[450px] rounded-full " />  
-           <div className="absolute z-10 flex flex-col items-center top-[200px] justify-center ">
+          className="absolute w-[450px] max-w-full h-[450px] rounded-full " />  
+           <div className="absolute z-10 flex flex-col items-center top-1/3 justify-center ">
                  <img src={logo} alt="Logo" className="object-contain w-[200px] h-[200px]" />
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function Login() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 border-gray-500 rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900"
+                    className="mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 border-gray-500 rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900 [&:-webkit-autofill]:!bg-transparent [&:-webkit-autofill]:!text-gray-700 [&:-webkit-autofill]:!shadow-none [&:-webkit-autofill]:!border-b-2 [&:-webkit-autofill]:!border-gray-500"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -88,7 +88,7 @@ export default function Login() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 border-gray-500 rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900"
+                      className="mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 border-gray-500 rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900 [&:-webkit-autofill]:!bg-transparent [&:-webkit-autofill]:!text-gray-700 [&:-webkit-autofill]:!shadow-none [&:-webkit-autofill]:!border-b-2 [&:-webkit-autofill]:!border-gray-500"
                       placeholder="Enter your password"
                     />
                     <button
@@ -130,7 +130,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-br from-[#4F0129] to-[#10062B] hover:opacity-90  focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-pink-900 disabled:opacity-90 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90  focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-pink-900 disabled:opacity-90 disabled:cursor-not-allowed"
               >
                 {isLoading ? <Loading/> : "Sign in"}
               </button>
