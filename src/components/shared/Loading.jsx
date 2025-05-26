@@ -1,11 +1,11 @@
 import React from 'react'
 import {ThreeDot} from "react-loading-indicators";
 
-const Loading = () => {
+const Loading = ({size='small' , color='#fff'}) => {
     return (
     <div>
           <span className="flex items-center justify-center w-full ">
-                  <ThreeDot size={'small'} color={'#fff'} />
+                  <ThreeDot size={size} color={color} />
           </span>
     </div>
     )

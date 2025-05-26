@@ -23,7 +23,7 @@ export default function Login() {
       const success = login(email, password);
       if (success) {
         const role = ["admin", "teacher", "student"].find(r => email.toLowerCase().includes(r));
-        // navigate(`/${role}`); must navigate from here no timing 
+        navigate(`/dashboard` );
       } else {
         setErrMsg('Invalid email or password.');
       }
