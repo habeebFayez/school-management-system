@@ -23,6 +23,24 @@ A modern web application for managing school administrative tasks, built with Re
 
 ## Getting Started
 
+1. Clone the repository:
+   ```
+   git clone https://github.com/habeebFayez/school-management-system.git
+   cd school-management-system
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Start the development server:
+   ```
+   npm run dev
+   ```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
 ### Prerequisites
 
 - Node.js 16.x or higher
