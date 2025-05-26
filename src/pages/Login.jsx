@@ -23,17 +23,13 @@ export default function Login() {
       const success = login(email, password);
       if (success) {
         const role = ["admin", "teacher", "student"].find(r => email.toLowerCase().includes(r));
-        navigate(`/${role}`);
+        // navigate(`/${role}`); must navigate from here no timing 
       } else {
         setErrMsg('Invalid email or password.');
       }
     }, 1000);
   };
 
-   
-    
-   
-  
      
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#4F0129] to-[#10062B]">
