@@ -13,14 +13,14 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
   const { user } = useAuth();
 
   const menuItems = [
-    { icon: Home, label: 'Home' },
-    { icon: Users, label: 'Students' },
-    { icon: Calendar, label: 'Schedule' },
-    { icon: FileText, label: 'Exams' },
-    { icon: ClipboardList, label: 'Assignments' },
-    { icon: Award, label: 'Grades' },
-    { icon: UserCheck, label: 'Attendance' },
-    { icon: Mail, label: 'Inbox' },
+    { icon: Home, label: 'Home', path: '/dashboard' },
+    { icon: Users, label: 'Students', path: '/teacher/students-list' },
+    { icon: Calendar, label: 'Schedule', path: '/teacher/schedule' },
+    { icon: FileText, label: 'Exams', path: '/teacher/exams' },
+    { icon: ClipboardList, label: 'Assignments', path: '/teacher/assignments' },
+    { icon: Award, label: 'Grades', path: '/teacher/grades' },
+    { icon: UserCheck, label: 'Attendance', path: '/teacher/attendance' },
+    { icon: Mail, label: 'Inbox', path: '/teacher/inbox' },
   ];
 
   const handleItemClick = (label) => {
@@ -30,8 +30,16 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
         setIsLoading(false);
         navigate('/');
       }, 1000);
+    } else if(label === 'Profile') {
+      setActiveItem(label);
+      navigate('/teacher/teacher-profile');
+    } else {
+      const menuItem = menuItems.find(item => item.label === label);
+      if (menuItem) {
+        setActiveItem(label);
+        navigate(menuItem.path);
+      }
     }
-    setActiveItem(label);
   };
 
   return (
