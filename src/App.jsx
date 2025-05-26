@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+
 import { AuthProvider } from './contexts/AuthContext';
 import { CourseProvider } from './contexts/CourseContext';
 import { NotificationProvider } from './contexts/NotificationContext';
@@ -14,7 +16,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
-               
+          <Route path="/Dashboard" element={<Dashboard />} />
+
+                
         </Routes>
       </BrowserRouter>
         </NotificationProvider>
