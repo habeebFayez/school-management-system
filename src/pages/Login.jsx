@@ -14,39 +14,47 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrMsg('');
-    setTimeout(() => {
-      setIsLoading(false);
+    
+    try {
+      console.log('Attempting login with:', { email, password });
       const success = login(email, password);
+      console.log('Login result:', success);
+      
       if (success) {
         const role = ["admin", "teacher", "student"].find(r => email.toLowerCase().includes(r));
-        navigate(`/dashboard` );
-      } else {
-        setErrMsg('Invalid email or password.');
+        navigate('/dashboard');
       }
-    }, 1000);
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrMsg('An error occurred during login.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-     
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#10062B] to-[#4F0129]">
       <div className="w-[70%] h-[90vh] bg-white/5 backdrop-blur-lg rounded-2xl shadow-2xl flex overflow-hidden">
         {/* Left: Gradient, logo, and circles */}
         <div className="hidden lg:flex w-1/2 h-full items-center justify-center relative">
-        <div 
-          style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.08) 100%,rgba(79, 1, 41, 0.1)0%)'}}
-          className="relative w-[250px] h-[250px] rounded-full " /> 
-        <div 
-          style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.06) 100%,rgba(79, 1, 41, 0.1)0%)'}}
-          className="absolute w-[350px] h-[350px] rounded-full " />        
-            <div 
-          style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%,rgba(79, 1, 41, 0.1)0%)'}}
-          className="absolute w-[450px] max-w-full h-[450px] rounded-full " />  
-           <div className="absolute z-10 flex flex-col items-center top-1/3 justify-center ">
-                 <img src={logo} alt="Logo" className="object-contain w-[200px] h-[200px]" />
+          <div 
+            style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.08) 100%,rgba(79, 1, 41, 0.1)0%)'}}
+            className="relative w-[250px] h-[250px] rounded-full" 
+          /> 
+          <div 
+            style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.06) 100%,rgba(79, 1, 41, 0.1)0%)'}}
+            className="absolute w-[350px] h-[350px] rounded-full" 
+          />        
+          <div 
+            style={{background: 'linear-gradient(180deg, rgba(16, 6, 43, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%,rgba(79, 1, 41, 0.1)0%)'}}
+            className="absolute w-[450px] max-w-full h-[450px] rounded-full" 
+          />  
+          <div className="absolute z-10 flex flex-col items-center top-1/3 justify-center">
+            <img src={logo} alt="Logo" className="object-contain w-[200px] h-[200px]" />
           </div>
         </div>
        
@@ -54,7 +62,7 @@ export default function Login() {
         <div className="w-full lg:w-1/2 h-full flex items-center justify-center p-8 bg-white">
           <div className="w-full max-w-md space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl font-bold ">Welcome Back</h2>
+              <h2 className="text-3xl font-bold">Welcome Back</h2>
               <p className="mt-2 text-gray-500">Please sign in to your account</p>
             </div>
 
@@ -117,8 +125,7 @@ export default function Login() {
                   </label>
                 </div>
                 <button type='button'
-                  // onClick={()=>}
-                  className='ml-2  text-sm text-blue-700 hover:text-pink-700'>
+                  className='ml-2 text-sm text-blue-700 hover:text-pink-700'>
                   Forgot Password?
                 </button>
               </div>
@@ -130,7 +137,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90  focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-pink-900 disabled:opacity-90 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-pink-900 disabled:opacity-90 disabled:cursor-not-allowed"
               >
                 {isLoading ? <Loading/> : "Sign in"}
               </button>

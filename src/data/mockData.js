@@ -4,7 +4,7 @@ export const users = [
   {
     id: 1,
     name: 'Fatma Kaya',
-    role: 'admin',
+    role: 'teacher',
     email: 'admin@titan.edu.tr',
     avatar: 'https://i.pravatar.cc/150?u=admin123'
   },
