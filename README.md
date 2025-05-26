@@ -46,6 +46,10 @@ A modern web application for managing school administrative tasks, built with Re
 - Node.js 16.x or higher
 - npm or yarn package manager
 
-### how to push your changes 
--  git commit -m "Description of what you did"
--git push origin feature/write-your-name
+### Installation
+
+1. Clone the repository:
+
+- git commit -m "Description of what you did" 
+
+- git push origin feature/write-your-name
