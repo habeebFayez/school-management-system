@@ -20,24 +20,25 @@ const TeacherLayout = ({ children ,currentPage }) => {
 
   return (
     <div className="flex min-h-screen">
+      
       <Sidebar 
         currentPage={currentPage} 
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
 
-      <div className="flex-1 bg-gray-100">
-        <div className="sticky top-0 ">
+      <div className="flex-1 bg-gray-100 ">
+        <div className="sticky top-0 z-10">
           <TopNavbar onMenuClick={() => setIsSidebarOpen(true)}/>
         </div>
 
-        <main className="bg-gray-100 p-5">
-          <h3 className="text-black font-semibold text-xl mb-4">{currentPage}</h3>
-             <div className='container flex-1 w-full h-full'> 
+        <main className="bg-gray-100 p-3  w-full h-full'">
+          {/* <h3 className="text-black font-semibold text-xl mb-4">{currentPage}</h3> */}
+             {/* <div className='container flex-1 w-full h-full'>  */}
             {/* Main content goes here Dont change container ... */}
             {children}
 
-            </div>
+            {/* </div> */}
         </main>
       </div>
     </div>
