@@ -83,7 +83,7 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
           </div>
           <span className="text-xl font-semibold">Titan Edu</span>
         </div>
-        
+      <div className=" sticky top-0 flex flex-col  ">
         <nav className="space-y-2">
           {menuItemsTeacher.map((item, index) => (
             <div key={index} className='flex w-full space-x-10 items-center justify-left'>
@@ -125,6 +125,7 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
             {isLoading ? <Loading/> : <span>Logout</span>}
           </div>
         </div>
+      </div>
       </div>
     </>
   );
