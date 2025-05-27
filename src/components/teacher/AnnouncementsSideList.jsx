@@ -13,6 +13,36 @@ const AnnouncementsSideList = () => {
       topic: 'Motion Lab Preparation',
       content: '',
       action: 'Details'
+    },
+    {
+      type: 'Physics',
+      topic: 'Motion Lab Preparation',
+      content: '',
+      action: 'Details'
+    },
+    {
+      type: 'Physics',
+      topic: 'Motion Lab Preparation',
+      content: '',
+      action: 'Details'
+    },
+    {
+      type: 'Physics',
+      topic: 'Motion Lab Preparation',
+      content: '',
+      action: 'Details'
+    },
+    {
+      type: 'Physics',
+      topic: 'Motion Lab Preparation',
+      content: '',
+      action: 'Details'
+    },
+    {
+      type: 'Physics',
+      topic: 'Motion Lab Preparation',
+      content: '',
+      action: 'Details'
     }
   ];
 
@@ -29,7 +59,7 @@ const AnnouncementsSideList = () => {
         </button>
       </div>
       
-      <div className="max-w-2xl mx-auto space-y-2">
+      <div className="max-w-2xl max-h-lvh overflow-hidden mx-auto space-y-2">
       {announcements.map((announcement, index) => (
         <div key={index} className="flex">
           <div className="bg-red-800 w-1.5 flex-shrink-0 rounded-l-lg"></div>
@@ -49,6 +79,11 @@ const AnnouncementsSideList = () => {
         </div>
       ))}
     </div>
+    <div className="mt-4 flex justify-center">
+          <button className="bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 ">
+            View All Announcement
+          </button>
+        </div>
     </div>
   );
 };
