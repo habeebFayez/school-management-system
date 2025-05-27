@@ -26,7 +26,7 @@ export default function Login() {
       
       if (success) {
         const role = ["admin", "teacher", "student"].find(r => email.toLowerCase().includes(r));
-        navigate('/dashboard');
+        navigate('/teacher/dashboard');
       }
     } catch (error) {
       console.error('Login error:', error);

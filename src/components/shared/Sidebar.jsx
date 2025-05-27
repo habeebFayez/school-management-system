@@ -10,10 +10,10 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
   const [activeItem, setActiveItem] = React.useState(currentPage);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
-  const menuItems = [
-    { icon: Home, label: 'Home', path: '/dashboard' },
+  const menuItemsTeacher = [
+    { icon: Home, label: 'Home', path: '/teacher/dashboard' },
     { icon: Users, label: 'Students', path: '/teacher/students-list' },
     { icon: Calendar, label: 'Schedule', path: '/teacher/schedule' },
     { icon: FileText, label: 'Exams', path: '/teacher/exams' },
@@ -22,19 +22,30 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
     { icon: UserCheck, label: 'Attendance', path: '/teacher/attendance' },
     { icon: Mail, label: 'Inbox', path: '/teacher/inbox' },
   ];
+  const menuItemsStudent = [
+    { icon: Home, label: 'Home', path: '/student/dashboard' },
+    { icon: Users, label: 'Students', path: '/student/students-list' },
+    { icon: Calendar, label: 'Schedule', path: '/student/schedule' },
+    { icon: FileText, label: 'Exams', path: '/student/exams' },
+    { icon: ClipboardList, label: 'Assignments', path: '/student/assignments' },
+    { icon: Award, label: 'Grades', path: '/student/grades' },
+    { icon: UserCheck, label: 'Attendance', path: '/student/attendance' },
+    { icon: Mail, label: 'Inbox', path: '/student/inbox' },
+  ];
 
   const handleItemClick = (label) => {
     if(label === 'Logout'){
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
+      logout();
         navigate('/');
       }, 1000);
     } else if(label === 'Profile') {
       setActiveItem(label);
       navigate('/teacher/teacher-profile');
     } else {
-      const menuItem = menuItems.find(item => item.label === label);
+      const menuItem = menuItemsTeacher.find(item => item.label === label);
       if (menuItem) {
         setActiveItem(label);
         navigate(menuItem.path);
@@ -64,7 +75,9 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
           <X size={24} className="text-white" />
         </button>
 
-        <div className="flex items-center justify-center mb-8">
+        <div 
+         onClick={() => handleItemClick('Home')}
+         className="flex items-center justify-center mb-8 cursor-pointer ">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center mr-3">
             <img src={logo} alt="Logo" className="object-contain w-[200px] h-[200px]" />
           </div>
@@ -72,7 +85,7 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
         </div>
         
         <nav className="space-y-2">
-          {menuItems.map((item, index) => (
+          {menuItemsTeacher.map((item, index) => (
             <div key={index} className='flex w-full space-x-10 items-center justify-left'>
               <div className={`relative h-12 w-2.5 ${activeItem === item.label ? 'bg-[#10062B]' : 'bg-[#e8e8eb00]'} rounded-e`} />
               <div

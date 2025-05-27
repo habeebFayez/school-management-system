@@ -1,12 +1,13 @@
 import React from 'react';
 import TeacherLayout from '../../components/layouts/TeacherLayout';
 
- const OnlineExam  = () => {
+
+export default function DashboardTeacher() {
+
   return (
-    <TeacherLayout currentPage={'Online Exam'}>
+    <TeacherLayout currentPage={'Dashboard'}>
       
       
     </TeacherLayout>
-  )
+  );
 }
-export default OnlineExam;

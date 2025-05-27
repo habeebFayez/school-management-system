@@ -47,7 +47,7 @@ const TopNavbar = ({ onMenuClick }) => {
             className="flex cursor-pointer transition-colors">
             <div className="text-right">
               <div className="text-sm font-medium">{user?.name || 'User'}</div>
-              <div className="text-xs text-gray-500">{(user?.role).toUpperCase() || 'Role'}</div>
+              <div className="text-xs text-gray-500">{((user?.role) || 'Role').toUpperCase()}</div>
             </div>
             <div className="w-10 ml-2 h-10 bg-orange-400 rounded-full">
               <img 
