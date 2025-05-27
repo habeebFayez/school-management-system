@@ -13,24 +13,13 @@ const StudentsInteractionChart = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white rounded-xl py-6 pl-0 pr-6">
+      <div className="flex items-center justify-between mb-6 px-6">
         <h3 className="text-lg font-semibold">Students Interaction</h3>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
-            <span className="text-sm">This Week</span>
-            <span className="font-bold">96%</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
-            <span className="text-sm">Last Week</span>
-            <span className="font-bold">86%</span>
-          </div>
-        </div>
+       
       </div>
       
-      <div className="h-48">
+      <div className="h-48 -ml-4">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} barCategoryGap="20%">
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -51,6 +40,18 @@ const StudentsInteractionChart = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      <div className="flex items-center space-x-4 w-full pl-6 py-7 justify-center">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+            <span className="text-sm">This Week</span>
+            <span className="font-bold">96%</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
+            <span className="text-sm">Last Week</span>
+            <span className="font-bold">86%</span>
+          </div>
+        </div>
     </div>
   );
 };

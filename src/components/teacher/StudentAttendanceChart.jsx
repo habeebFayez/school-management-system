@@ -18,16 +18,16 @@ const StudentAttendanceChart = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl p-6">
+    <div className="bg-white rounded-xl py-6 pl-0 pr-6">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold">Student Weekly Attendance</h3>
         <div className="flex items-center space-x-2">
-          <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+          <div className="w-2 h-2 bg-[#10062B] rounded-full"></div>
           <span className="text-sm text-gray-600">Highest Week</span>
-          <span className="text-lg font-bold">98%</span>
+          <span className="text-lg font-bold">07</span>
         </div>
       </div>
-      <div className="h-64">
+      <div className="h-64 ">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -35,18 +35,18 @@ const StudentAttendanceChart = () => {
               dataKey="week" 
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: '#6b7280' }}
+              tick={{ fontSize: 12, fill: '#10062B' }}
             />
             <YAxis 
               domain={[0, 100]}
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: '#6b7280' }}
+              tick={{ fontSize: 12, fill: '#10062B' }}
             />
             <Line 
               type="monotone" 
               dataKey="attendance" 
-              stroke="#7c3aed" 
+              stroke="#10062B" 
               strokeWidth={3}
               dot={{ fill: '#7c3aed', strokeWidth: 2, r: 4 }}
               fill="url(#colorGradient)"

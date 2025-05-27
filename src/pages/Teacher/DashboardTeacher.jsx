@@ -28,8 +28,8 @@ export default function DashboardTeacher() {
      <div className="flex justify-between gap-2 ">
       <div>
         {/* Status Cards */}
-     <div className="md:grid grid-cols-3 lg:grid-cols-4 sm:grid-cols-3 h-fit gap-2 mb-4">
-        <StatsCard
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 h-fit gap-2 mx-2 mb-2">   
+         <StatsCard
           title="Students"
           value="84"
           icon={<Users size={50} />}
@@ -55,23 +55,23 @@ export default function DashboardTeacher() {
         />
      </div>
         {/* Analytics Section */}
-        <div className="grid grid-cols-12 gap-2 mb-2">
+        <div className="grid grid-cols-12 gap-2 mb-2 ">
         {/* Student Weekly Attendance - Full Width */}
-        <div className="col-span-12">
+        <div className="col-span-12 bg-white rounded-xl">
           <StudentAttendanceChart />
         </div>
         
         {/* Calendar and Students Interaction */}
-        <div className="col-span-6">
-          <SchoolCalendar />
+        <div className="col-span-12 md:col-span-6 bg-white rounded-xl">
+        <SchoolCalendar />
         </div>
-        <div className="col-span-6">
-          <StudentsInteractionChart />
+        <div className="col-span-12 md:col-span-6 bg-white rounded-xl">
+        <StudentsInteractionChart />
         </div>
       
 
         {/* Table */}
-        <div className="col-span-8">
+        <div className="col-span-12 md:col-span-12 bg-white rounded-xl ">
         <Table data={examData} title={'Classes Exams Performance'} columns={columns}/>
         </div>
         
