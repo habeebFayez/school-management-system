@@ -1,23 +1,20 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef, useEffect,useState } from "react";
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from '../shared/Sidebar';
 import TopNavbar from '../shared/TopNavbar';
+import { useLocation } from "react-router-dom";
 
 const Layout = ({ children ,currentPage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const mainRef = useRef(null);
+  const location = useLocation();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
 
-  const handleLogout = () => {
-    // Add logout logic here
-    navigate('/');
-  };
-
+console.log("done :", location.pathname);    
+  }, [location.pathname]);
   return (
     <div className="flex min-h-screen">
       
@@ -32,7 +29,10 @@ const Layout = ({ children ,currentPage }) => {
           <TopNavbar onMenuClick={() => setIsSidebarOpen(true)}/>
         </div>
 
-        <main className="bg-gray-100 p-3  w-full h-full'">
+        <main 
+              ref={mainRef}
+              className="bg-gray-100 p-3 w-full h-full overflow-auto"
+              >
           {/* <h3 className="text-black font-semibold text-xl mb-4">{currentPage}</h3> */}
              {/* <div className='container flex-1 w-full h-full'>  */}
             {/* Main content goes here Dont change container ... */}
