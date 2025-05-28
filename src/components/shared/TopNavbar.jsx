@@ -3,7 +3,7 @@ import { Search, MessageCircleMore, Bell, Menu } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { DefultImage } from '../../constants/passOver.js';
 
-const TopNavbar = ({ onMenuClick }) => {
+const TopNavbar = ({ onMenuClick, search }) => {
   const { user } = useAuth();
 
   const handleItemClick = (label) => {
@@ -20,7 +20,7 @@ const TopNavbar = ({ onMenuClick }) => {
           >
             <Menu size={24} />
           </button>
-          <div className="flex-1">
+         {search&& <div className="flex-1">
             <div className="relative w-auto">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -29,7 +29,7 @@ const TopNavbar = ({ onMenuClick }) => {
                 className="w-full h-8 pl-10 pr-4 py-3 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-          </div>
+          </div>}
         </div>
         <div className="flex items-center space-x-4">
           <div  

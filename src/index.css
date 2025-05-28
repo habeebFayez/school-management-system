@@ -22,6 +22,28 @@ body {
   min-height: 100vh;
   background-color: #ffffff;
 }
+/* Style scrollbar globally */
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #676768 #FAF2F7; /* Firefox */
+}
+
+/* For Chrome, Safari and Edge */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f5f2fa;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #7c7c7c;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
 
 h1 {
   font-size: 3.2em;
