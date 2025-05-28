@@ -6,14 +6,14 @@ export const users = [
     name: 'Fatma Kaya',
     role: 'teacher',
     email: 'admin@titan.edu.tr',
-    avatar: 'https://i.pravatar.cc/150?u=admin123'
+    avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg'
   },
   {
     id: 2,
     name: 'Zehra Özkan',
     role: 'teacher',
     email: 'teacher@titan.edu.tr',
-    avatar: 'https://i.pravatar.cc/150?u=teacher123',
+    avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
     subjects: [1, 3, 5]
   },
   {
@@ -21,7 +21,7 @@ export const users = [
     name: 'Yusuf Arslan',
     role: 'student',
     email: 'student@titan.edu.tr',
-    avatar: 'https://i.pravatar.cc/150?u=student123',
+    avatar: 'https://cdn.pixabay.com/photo/2022/08/11/08/08/books-7378902_1280.jpg',
     grade: '10th',
     enrolledCourses: [1, 2, 3, 4, 5]
   }

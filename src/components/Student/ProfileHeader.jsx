@@ -17,8 +17,7 @@ const ProfileHeader = ({user}) => {
               <img 
                 src={user?.avatar || DefultImage}
                 alt="Deniz Yaldiz"
-                className="w-35 h-35 rounded-full border-4 border-white shadow-lg object-cover"
-              />
+                className="w-[140px] h-[140px] rounded-full border-4 border-white shadow-lg object-cover"              />
             </div>
           </div>
           
@@ -41,8 +40,7 @@ const ProfileHeader = ({user}) => {
               </p>
             </div>
         
-          <div className="flex items-center gap-4  px-4 py-1 text-gray-700">
-         {user?.role ==='teacher'?
+        
               <div className='cursor-pointer flex gap-4 ' >
           <div className=" flex justify-center items-center w-12 h-12 bg-gradient-to-br from-[#10062B] to-[#4F0129] rounded-full ">
               <Phone className=" w-6 h-6 text-white" />
@@ -53,17 +51,7 @@ const ProfileHeader = ({user}) => {
                 <p className="text-blue-900 text-lg font-bold hover:text-blue-700">+905070406000</p>
               </div>
               </div> 
-              :
-              <div className='cursor-pointer flex gap-4 ' >
-          <div className=" flex justify-center items-center w-12 h-12 bg-gradient-to-br from-[#10062B] to-[#4F0129] rounded-full ">
-          <MessageCircleMore className=" w-8 h-8 text-white"/>
-          </div>
-              <div>
-              <p className="text-sm text-gray-700">Contact</p>
-                <p className="text-blue-900 text-lg font-bold hover:text-blue-700">Send a Message</p>
-              </div>
-              </div>}
-            </div>
+          
 
             <div className="flex items-center gap-4  px-4 py-1 text-gray-700 cursor-pointer">
           <div className=" flex justify-center items-center w-12 h-12 bg-gradient-to-br from-[#10062B] to-[#4F0129] rounded-full ">
@@ -75,6 +63,16 @@ const ProfileHeader = ({user}) => {
                 <p className="text-blue-900 text-lg font-bold hover:text-blue-700">{user?.email || 'Email'}</p>
               </div>
             </div>
+        {  user?.role !=='student'&&
+          <div className='cursor-pointer flex gap-4 ' >
+          <div className=" flex justify-center items-center w-12 h-12 bg-gradient-to-br from-[#10062B] to-[#4F0129] rounded-full ">
+          <MessageCircleMore className=" w-8 h-8 text-white"/>
+          </div>
+              <div>
+              <p className="text-sm text-gray-700">Contact</p>
+                <p className="text-blue-900 text-lg font-bold hover:text-blue-700">Send a Message</p>
+              </div>
+              </div>}
     </div>
     
     </div>
