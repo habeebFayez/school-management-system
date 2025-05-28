@@ -8,15 +8,17 @@ import { EditAssignmentModal } from '../../components/shared/EditAssignmentModal
 import { SubmissionsModal } from '../../components/shared/SubmissionsModal';
 import { AssignmentDetailsModal } from '../../components/shared/AssignmentDetailsModal';
 import { assignments } from '../../data/assignmentsData';
+import { useModal } from '../../contexts/ModalProvider';
 
 const Assignments = () => {
+  const { showModal ,hideModal} = useModal();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('All');
   const [selectedClass, setSelectedClass] = useState('All');
   const [activeTab, setActiveTab] = useState('previous');
   
   // Modal states
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isSubmissionsModalOpen, setIsSubmissionsModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -59,14 +61,23 @@ const Assignments = () => {
   };
 
   return (
-    <Layout currentPage={'Assignments'}>
+    <Layout search={false} currentPage={'Assignments'}>
       <div className="bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Assignment's</h1>
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsCreateModalOpen(true)} className="text-white flex bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 px-4 py-2 rounded-lg">
+            <button 
+             onClick={() =>
+              showModal(
+                <CreateAssignmentModal
+                  isOpen={true}
+                  onClose={hideModal}
+                  />
+              )
+            }
+            className="text-white flex bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 px-4 py-2 rounded-lg">
               <Plus className="w-6 h-6 mr-2" />
               Create Assignment
             </button>
@@ -79,15 +90,18 @@ const Assignments = () => {
 
         {/* Search and Filters */}
         <div className="flex gap-10 mb-6 justify-end items-center">
-          {/* <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              placeholder="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div> */}
+        <div className="flex-1">
+            <div className="relative w-auto">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" size={20} />
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full  h-8 pl-10 pr-4 py-3 bg-gray-50 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
           {/* Select Class */}
           <div className='flex gap-4 h-fit items-center '>
           <label className=" text-md font-semibold">Classes :</label>
@@ -110,23 +124,23 @@ const Assignments = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-4 mb-8   ">
           <button
             onClick={() => setActiveTab('previous')}
-            className={`px-8 py-3 rounded-lg font-medium ${
+            className={`px-8 py-2 rounded-lg font-medium w-1/2 ${
               activeTab === 'previous'
                 ? 'bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
+                : 'bg-white text-gray-700 border border-gray-500 hover:bg-gray-100'
             }`}
           >
             Previous Assignment's
           </button>
           <button
             onClick={() => setActiveTab('upcoming')}
-            className={`px-8 py-3 rounded-lg font-medium ${
+            className={`px-8 py-2 rounded-lg font-medium w-1/2 ${
               activeTab === 'upcoming'
                 ? 'bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
+                : 'bg-white text-gray-700 border border-gray-500 hover:bg-gray-100'
             }`}
           >
             Upcoming Assignment's
@@ -134,7 +148,7 @@ const Assignments = () => {
         </div>
 
         {/* Assignments Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAssignments.map((assignment) => (
             <AssignmentCard
               key={assignment.id}
@@ -154,10 +168,8 @@ const Assignments = () => {
       </div>
 
       {/* Modals */}
-      <CreateAssignmentModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-      />
+     
+    
 
       <EditAssignmentModal
         isOpen={isEditModalOpen}

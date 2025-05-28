@@ -80,9 +80,9 @@ const WeeklySchedule = () => {
 
 const Schedule = () => {
   return (
-    <TeacherLayout currentPage={'Schedule'}>
+    <Layout currentPage={'Schedule'}>
       <WeeklySchedule />
-    </TeacherLayout>
+    </Layout>
   );
 };
 

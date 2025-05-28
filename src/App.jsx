@@ -23,12 +23,14 @@ import { CourseProvider } from './contexts/CourseContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import NotFound from './pages/NotFound';
 import React from 'react';
+import { ModalProvider } from './contexts/ModalProvider';
 
 
 
 function App() {
   return (
     <AuthProvider>
+          <ModalProvider>
       <CourseProvider>
         <NotificationProvider>
           <BrowserRouter>
@@ -145,6 +147,8 @@ function App() {
           </BrowserRouter>
         </NotificationProvider>
       </CourseProvider>
+      </ModalProvider>
+
     </AuthProvider>
   );
 }

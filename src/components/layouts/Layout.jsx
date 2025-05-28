@@ -4,7 +4,7 @@ import Sidebar from '../shared/Sidebar';
 import TopNavbar from '../shared/TopNavbar';
 import { useLocation } from "react-router-dom";
 
-const Layout = ({ children ,currentPage }) => {
+const Layout = ({ children ,currentPage, search=true }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useAuth();
   const mainRef = useRef(null);
@@ -26,7 +26,7 @@ console.log("done :", location.pathname);
 
       <div className="flex-1 bg-gray-100 ">
         <div className="sticky top-0 z-10">
-          <TopNavbar onMenuClick={() => setIsSidebarOpen(true)}/>
+          <TopNavbar search={search} onMenuClick={() => setIsSidebarOpen(true)}/>
         </div>
 
         <main 

@@ -32,47 +32,45 @@ export const CreateAssignmentModal = ({
   };
 
   return (
-    <dialog open={isOpen} onOpenChange={onClose}>
-      <div className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="max-w-full   max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-semibold text-center">Create Assignment</h2>
         <button
           onClick={onClose}
           className="absolute right-4 top-4"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+       
         </button>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
+        <form onSubmit={handleSubmit} className="space-y-10">
+        <div className="space-y-2">
+          <div className='w-full px-2'>
             <label className="block text-sm font-medium mb-2">Class</label>
-            <select value={formData.class} onChange={(e) => setFormData(prev => ({ ...prev, class: e.target.value }))}>
-              <option value="">AC125</option>
+            <select className='bg-gray-300 h-8 w-full rounded-md cursor-pointer px-2' value={formData.class} onChange={(e) => setFormData(prev => ({ ...prev, class: e.target.value }))}>
+              <option value="Select a Class ">Select a Class</option>
               {classes.map(cls => (
                 <option key={cls} value={cls}>{cls}</option>
               ))}
             </select>
           </div>
-
-          <div>
+          <div className='w-full px-2'>
             <label className="block text-sm font-medium mb-2">Course</label>
-            <select value={formData.course} onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}>
-              <option value="">Computer</option>
+            <select className='bg-gray-300 w-full h-8 rounded-md cursor-pointer px-2' 
+            value={formData.course}
+             onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}>
+              <option value="Select a Course">Select a Course</option>
               {courses.map(course => (
                 <option key={course} value={course}>{course}</option>
               ))}
             </select>
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 px-2">
             <div>
               <label className="block text-sm font-medium mb-2">Assignment Title</label>
               <input
                 placeholder="Assignment Title"
                 value={formData.title}
                 onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                className="bg-gray-200"
+                className='bg-gray-300 w-full h-8 rounded-md p-2 '    
               />
             </div>
             <div>
@@ -81,12 +79,11 @@ export const CreateAssignmentModal = ({
                 placeholder="Assignment Title"
                 value={formData.grade}
                 onChange={(e) => setFormData(prev => ({ ...prev, grade: e.target.value }))}
-                className="bg-gray-200"
-              />
+                className='bg-gray-300 w-full h-8 rounded-md p-2' 
+                              />
             </div>
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4  px-2">
             <div>
               <label className="block text-sm font-medium mb-2">Assignment Deadline</label>
               <input
@@ -94,8 +91,8 @@ export const CreateAssignmentModal = ({
                 placeholder="Date"
                 value={formData.date}
                 onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                className="bg-gray-200"
-              />
+                className='bg-gray-300  w-full h-8 rounded-md ' 
+                              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Assignment Deadline</label>
@@ -104,24 +101,22 @@ export const CreateAssignmentModal = ({
                 placeholder="Time"
                 value={formData.time}
                 onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}
-                className="bg-gray-200"
-              />
+                className='bg-gray-300 w-full h-8 rounded-md ' 
+                              />
             </div>
           </div>
-
-          <div>
+          <div className='w-full px-2'>
             <label className="block text-sm font-medium mb-2">Message</label>
             <textarea
               placeholder="Message"
               value={formData.message}
               onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-              className="bg-gray-200 min-h-[100px]"
+              className='bg-gray-300 w-full rounded-md min-h-[75] p-2 ' 
             />
           </div>
-
-          <div>
+          <div className='w-full px-2'>
             <label className="block text-sm font-medium mb-2">Assignment File</label>
-            <div className="bg-gray-200 p-6 rounded-lg border-2 border-dashed border-gray-300">
+            <div className="bg-gray-300 w-full p-4 rounded-lg border-2 border-dashed border-gray-400">
               <input
                 type="file"
                 onChange={handleFileUpload}
@@ -129,12 +124,9 @@ export const CreateAssignmentModal = ({
                 id="file-upload"
                 accept=".pdf,.doc,.docx"
               />
-              <label htmlFor="file-upload" className="cursor-pointer">
+              <label htmlFor="file-upload" className="cursor-pointer hover:opacity-90">
                 <div className="flex flex-col items-center justify-center">
-                  <div className="bg-gray-600 text-white px-6 py-3 rounded-lg flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l2-2m2 2l-2 2m-2-2l-2 2" />
-                    </svg>
+                  <div className="bg-gray-600 text-white px-6 py-2 text-sm rounded-lg flex items-center gap-2">
                     Upload File
                   </div>
                   {formData.file && (
@@ -144,15 +136,15 @@ export const CreateAssignmentModal = ({
               </label>
             </div>
           </div>
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-purple-900 hover:bg-purple-800 text-white py-3"
+            className="w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 rounded-lg text-white py-2 "
           >
             Submit
           </button>
         </form>
       </div>
-    </dialog>
   );
 };
