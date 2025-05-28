@@ -1,10 +1,17 @@
 import React from 'react';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Pencil } from 'lucide-react';
 
-const Table = ({ data, title, columns, isActions=true }) => {
+const Table = ({ data, title, columns, isActions=true, user }) => {
   return (
-    <div className="bg-white rounded-xl p-6  text-sm">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+    <div className="bg-white rounded-xl p-4  text-sm">
+      <div className='flex justify-between mb-4 items-center'>
+      <h3 className="  text-lg font-semibold ">{title} </h3>
+      {user?.role === 'teacher'&& !isActions &&
+      <div className='bg-gradient-to-br from-[#10062B] to-[#4F0129] flex justify-center items-center h-9 w-9 rounded-full hover:opacity-90 cursor-pointer' >
+      <Pencil size={19} color='white' />
+      </div>}
+      </div>
+
       
       <div className="overflow-x-auto">
         <table className="w-full">

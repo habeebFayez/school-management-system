@@ -1,14 +1,14 @@
 import React from 'react';
-import TeacherLayout from '../../components/layouts/TeacherLayout';
+import Layout from '../../components/layouts/Layout';
 
 const StudentsList = () => {
  
 
   return (
-    <TeacherLayout currentPage={'Students'}>
+    <Layout currentPage={'Students'}>
       
       
-    </TeacherLayout>
+    </Layout>
   );
 };
 

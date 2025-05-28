@@ -1,12 +1,12 @@
 import React from 'react';
-import { Home, Users, Calendar, FileText, ClipboardList, Award, UserCheck, Mail, User, LogOut, X } from 'lucide-react';
+import { Home, Users, LibraryBig,Megaphone, Calendar, FileText, ClipboardList, Award, UserCheck, Mail, User, LogOut, X } from 'lucide-react';
 import logo from '../../assets/image.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../components/shared/Loading';
 import { DefultImage } from '../../constants/passOver.js';
 
-const Sidebar = ({ currentPage, isOpen, onClose }) => {
+const Sidebar = ({ currentPage, isOpen, onClose, }) => {
   const [activeItem, setActiveItem] = React.useState(currentPage);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -24,12 +24,14 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
   ];
   const menuItemsStudent = [
     { icon: Home, label: 'Home', path: '/student/dashboard' },
-    { icon: Users, label: 'Students', path: '/student/students-list' },
+    { icon: LibraryBig, label: 'Courses', path: '/student/courses-list' },
     { icon: Calendar, label: 'Schedule', path: '/student/schedule' },
+    { icon: Users, label: 'Teachers', path: '/student/teachers-list' },
     { icon: FileText, label: 'Exams', path: '/student/exams' },
     { icon: ClipboardList, label: 'Assignments', path: '/student/assignments' },
     { icon: Award, label: 'Grades', path: '/student/grades' },
     { icon: UserCheck, label: 'Attendance', path: '/student/attendance' },
+    { icon: Megaphone , label: 'Announcements', path: '/student/announcements' },
     { icon: Mail, label: 'Inbox', path: '/student/inbox' },
   ];
 
@@ -43,9 +45,15 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
       }, 1000);
     } else if(label === 'Profile') {
       setActiveItem(label);
-      navigate('/teacher/teacher-profile');
+      user?.role==='teacher'?
+      navigate('/teacher/teacher-profile')
+      :
+      navigate('/student/student-profile');
     } else {
-      const menuItem = menuItemsTeacher.find(item => item.label === label);
+      const menuItem = user?.role==='teacher'?
+      menuItemsTeacher.find(item => item.label === label)
+      :   
+      menuItemsStudent.find(item => item.label === label);
       if (menuItem) {
         setActiveItem(label);
         navigate(menuItem.path);
@@ -85,7 +93,7 @@ const Sidebar = ({ currentPage, isOpen, onClose }) => {
         </div>
       <div className=" sticky top-0 flex flex-col  ">
         <nav className="space-y-2">
-          {menuItemsTeacher.map((item, index) => (
+          {(user?.role==='teacher'? menuItemsTeacher : menuItemsStudent).map((item, index) => (
             <div key={index} className='flex w-full space-x-10 items-center justify-left'>
               <div className={`relative h-12 w-2.5 ${activeItem === item.label ? 'bg-[#10062B]' : 'bg-[#e8e8eb00]'} rounded-e`} />
               <div

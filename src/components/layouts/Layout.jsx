@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from '../shared/Sidebar';
 import TopNavbar from '../shared/TopNavbar';
 
-const TeacherLayout = ({ children ,currentPage }) => {
+const Layout = ({ children ,currentPage }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -45,4 +45,4 @@ const TeacherLayout = ({ children ,currentPage }) => {
   );
 };
 
-export default TeacherLayout; 
+export default Layout; 

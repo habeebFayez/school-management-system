@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Pencil } from 'lucide-react';
 
 
 const AnnouncementCard = ({
@@ -9,20 +10,30 @@ const AnnouncementCard = ({
   fileSize,
   dateAdded,
   lastUpdate,
-  isUpdated
+  isUpdated,
+  user
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-900">
+    <div className=" bg-white rounded-xl shadow-lg p-4 border-l-4 border-red-900">
+   
       <div className="flex items-start justify-between ">
-        <div className="flex items-center">
+    
+        <div className="flex items-center gap-2">
           <span className="text-2xl mr-3">📢</span>
           <h3 className="text-md font-bold text-gray-800">{title}</h3>
-        </div>
-        {isUpdated && (
+          {isUpdated && (
           <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">
             Updated
           </span>
         )}
+        </div>
+        
+         {user?.role==='teacher'&&
+    <div className=' flex  justify-end items-end mb-2'>
+       <div className='bg-gradient-to-br from-[#10062B] to-[#4F0129] flex justify-center items-center h-9 w-9 rounded-full hover:opacity-90 cursor-pointer' >
+      <Pencil size={19} color='white' />
+      </div>
+      </div>}
       </div>
       
       <p className="text-gray-600 mb-4 text-sm leading-relaxed">{content}</p>
