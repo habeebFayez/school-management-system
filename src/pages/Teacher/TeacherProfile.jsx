@@ -1,13 +1,13 @@
 import React from 'react';
 import Layout from '../../components/layouts/Layout';
 import StatsCard from "../../components/shared/StatsCard";
-import ProfileHeader from "../../components/shared/ProfileHeader";
+import ProfileHeader from "../../components/teacher/ProfileHeader";
 import { useAuth } from '../../contexts/AuthContext';
 import Table from '../../components/shared/Table';
 import AnnouncementCard from "../../components/teacher/AnnouncementCard";
 
 
-import { Monitor, ListChecks, LibraryBig, ClipboardCheck } from 'lucide-react';
+import { Monitor, ListChecks, LibraryBig, ChartNoAxesCombined } from 'lucide-react';
 
  const TeacherProfile  = () => {
 const { user } = useAuth();
@@ -31,7 +31,7 @@ const { user } = useAuth();
     {
       value: '95%',
       title: 'Performance',
-      icon: <ClipboardCheck size={50} />,
+      icon: <ChartNoAxesCombined size={50} />,
     }
   ];
   const courses = [

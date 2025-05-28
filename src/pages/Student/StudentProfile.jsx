@@ -1,22 +1,22 @@
 import React from 'react';
 import Layout from '../../components/layouts/Layout';
 import StatsCard from "../../components/shared/StatsCard";
-import ProfileHeader from "../../components/shared/ProfileHeader";
+import ProfileHeader from "../../components/student/ProfileHeader";
 import { useAuth } from '../../contexts/AuthContext';
 import Table from '../../components/shared/Table';
 import AnnouncementCard from "../../components/teacher/AnnouncementCard";
 
 
-import { Monitor, ListChecks, LibraryBig, ClipboardCheck } from 'lucide-react';
+import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award } from 'lucide-react';
 
  const StudentProfile  = () => {
   const { user } = useAuth();
 
   const stats = [
     {
-      value: '120',
-      title: 'Students',
-      icon: <ListChecks  size={50} />,
+      value: '95%',
+      title: 'Grade Average Point',
+      icon: <Award size={50} />,
     },
     {
       value: '05',
@@ -24,36 +24,93 @@ import { Monitor, ListChecks, LibraryBig, ClipboardCheck } from 'lucide-react';
       icon: <LibraryBig size={50} />,
     },
     {
-      value: '500',
-      title: 'Total given Lessons',
+      value: '89%',
+      title: 'Attendance Average  ',
       icon: <Monitor size={50} />,
     },
     {
       value: '95%',
       title: 'Performance',
-      icon: <ClipboardCheck size={50} />,
+      icon: <ChartNoAxesCombined  size={50} />,
     }
   ];
   const courses = [
-    { no: '01', title: 'Course', type: 'Online', resources: 'Link' },
-    { no: '02', title: 'Course', type: 'F2F', resources: 'Link' },
-    { no: '03', title: 'Course', type: 'F2F', resources: 'Link' },
-    { no: '04', title: 'Course', type: 'Online', resources: 'Link' },
-    { no: '05', title: 'Course', type: 'Online', resources: 'Link' },
-    { no: '06', title: 'Course', type: 'Online', resources: 'Link' },
-    { no: '07', title: 'Course', type: 'Online', resources: 'Link' }
+    {
+      course: "Calculus",
+      attended: 85,
+      absence: 10,
+      approvedAbsence: 3,
+      teacher: {
+        name: 'Zehra Özkan',
+        avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
+      },
+      status: "Normal"
+    },
+    {
+      course: "Calculus",
+      attended: 85,
+      absence: 10,
+      approvedAbsence: 3,
+      teacher: {
+        name: 'Zehra Özkan',
+        avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
+      },      
+      status: "Normal"
+    },
+    {
+      course: "Calculus",
+      attended: 67,
+      absence: 28,
+      approvedAbsence: 0,
+      teacher: {
+        name: 'Zehra Özkan',
+        avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
+      },      
+      status: "Under Average"
+    },
+    {
+      course: "Calculus",
+      attended: 85,
+      absence: 10,
+      approvedAbsence: 3,
+      teacher: {
+        name: 'Zehra Özkan',
+        avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
+      },      
+      status: "Normal"
+    },
+    {
+      course: "Calculus",
+      attended: 85,
+      absence: 10,
+      approvedAbsence: 3,
+      teacher: {
+        name: 'Zehra Özkan',
+        avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
+      },
+      status: "Normal"
+    },
   ];
-  const coursesColumns = ['No', 'Title', 'Type', 'Resources'];
-  const schedule = [
-    { day: 'Mon', from: '11:00', to: '14:00' },
-    { day: 'Tue', from: '11:00', to: '14:00' },
-    { day: 'Wed', from: '11:00', to: '14:00' },
-    { day: 'Thu', from: '11:00', to: '14:00' },
-    { day: 'Fri', from: '11:00', to: '14:00' },
-    { day: 'Sat', from: 'NA', to: 'NA' },
-    { day: 'Sun', from: 'NA', to: 'NA' }
+  const coursesColumns = ['Course', 'Attended', 'Absence', 'Approved Absence', 'Teacher', 'Status'];
+  const parents = [
+    {
+      name: "Parent Name",
+      contactNumber: "+905070406000",
+      email: "email@example.com",
+      preferredContact: "Phone Call",
+      occupation: "Teacher",
+      status: "Active"
+    },
+    {
+      name: "Parent Name",
+      contactNumber: "+905070406000",
+      email: "email@example.com",
+      preferredContact: "Phone Call",
+      occupation: "NA",
+      status: "NA"
+    }
   ];
-  const scheduleColumns = ['Day', 'From', 'To'];
+  const parentsColumns = ['Name', 'Contact Number', 'Email', 'Preferred Contact By ', 'Occupation', 'Status'];
 
   return (
     <Layout currentPage={'StudentProfile'}>
@@ -74,13 +131,19 @@ import { Monitor, ListChecks, LibraryBig, ClipboardCheck } from 'lucide-react';
         </div>
       {/* Tables  */}
       <div className=" px-0">
-          {/* Courses Table */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 ">
-          <Table isActions={false} data={courses} title={'Classes Exams Performance'} columns={coursesColumns} user={user}/>
-        
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-2 ">
          {/*   Schedule Table  */}
-          <Table isActions={false}  data={schedule} title={'Free Time Schedule'} columns={scheduleColumns} user={user}/>
-      
+         <Table data={parents} title={'Parents'} columns={parentsColumns} user={user} 
+         actionChil={
+                    <div 
+                        className="w-7 h-7 cursor-pointer transition-colors bg-gradient-to-br from-[#10062B] to-[#4F0129] rounded-full flex items-center justify-center hover:opacity-80">
+                        <MessageCircleMore color='white' size={19}/>
+                     </div>
+                  }
+         />
+         {/* Courses Table */}
+         <Table data={courses} title={'Courses '} columns={coursesColumns} user={user}/>
+        
         </div>
         
         <div className="mt-4 space-y-2 ">
