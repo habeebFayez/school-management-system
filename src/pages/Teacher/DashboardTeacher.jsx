@@ -1,5 +1,5 @@
 import React from 'react';
-import TeacherLayout from '../../components/layouts/TeacherLayout';
+import Layout from '../../components/layouts/Layout';
 import StatsCard from "../../components/shared/StatsCard";
 import { Users, BookOpen, FileText, ClipboardCheck } from 'lucide-react';
 import FastActions from '../../components/shared/FastActions';
@@ -24,7 +24,7 @@ export default function DashboardTeacher() {
   const columns = ['Course', 'ID', 'Performance', 'Exam'];
 
   return (
-    <TeacherLayout currentPage={'Dashboard'}>
+    <Layout currentPage={'Dashboard'}>
      <div className="flex justify-between gap-2 ">
       <div>
         {/* Status Cards */}
@@ -86,6 +86,6 @@ export default function DashboardTeacher() {
           <AnnouncementsSideList />
         </div>
         </div>
-    </TeacherLayout>
+    </Layout>
   );
 }

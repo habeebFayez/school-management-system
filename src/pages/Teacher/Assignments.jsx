@@ -1,12 +1,12 @@
 import React from 'react'
-import TeacherLayout from '../../components/layouts/TeacherLayout';
+import Layout from '../../components/layouts/Layout';
 
 const Assignments = () => {
   return (
-    <TeacherLayout currentPage={'Assignments'}>
+    <Layout currentPage={'Assignments'}>
       
       
-    </TeacherLayout>
+    </Layout>
   )
 }
 

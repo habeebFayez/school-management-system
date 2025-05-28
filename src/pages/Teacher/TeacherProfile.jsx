@@ -1,5 +1,5 @@
 import React from 'react';
-import TeacherLayout from '../../components/layouts/TeacherLayout';
+import Layout from '../../components/layouts/Layout';
 import StatsCard from "../../components/shared/StatsCard";
 import ProfileHeader from "../../components/shared/ProfileHeader";
 import { useAuth } from '../../contexts/AuthContext';
@@ -56,7 +56,8 @@ const { user } = useAuth();
   const scheduleColumns = ['Day', 'From', 'To'];
 
   return (
-    <TeacherLayout currentPage={'UserProfile'}>
+    <Layout currentPage={'UserProfile'}>
+      <div className='px-12 ' >
       <ProfileHeader user={user}/>
       {/* Status Cards */}
       <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 h-fit gap-2 my-4">   
@@ -66,7 +67,7 @@ const { user } = useAuth();
           title={stat.title}
           value={stat.value}
           icon={stat.icon}
-          color="bg-gradient-to-br from-[#10062B] to-[#4F0129] h-32"
+          color="bg-gradient-to-br from-[#10062B] to-[#4F0129] min-h-32"
         />
         </div>
       ))}
@@ -75,14 +76,14 @@ const { user } = useAuth();
       <div className=" px-0">
           {/* Courses Table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 ">
-          <Table isActions={false} data={courses} title={'Classes Exams Performance'} columns={coursesColumns}/>
+          <Table isActions={false} data={courses} title={'Classes Exams Performance'} columns={coursesColumns} user={user}/>
         
          {/*   Schedule Table  */}
-          <Table isActions={false}  data={schedule} title={'Free Time Schedule'} columns={scheduleColumns}/>
+          <Table isActions={false}  data={schedule} title={'Free Time Schedule'} columns={scheduleColumns} user={user}/>
       
         </div>
         
-        <div className="mt-4 space-y-2">
+        <div className="mt-4 space-y-2 ">
 
           <AnnouncementCard 
             title="CO301 | Exam Hall List Updated"
@@ -92,6 +93,8 @@ const { user } = useAuth();
             dateAdded="2025-04-10"
             lastUpdate="2025-04-10 19:38:52"
             isUpdated={true}
+            user={user}
+
           />
           
           <AnnouncementCard 
@@ -100,17 +103,21 @@ const { user } = useAuth();
             dateAdded="2025-04-10"
             lastUpdate="2025-04-10"
             isUpdated={false}
+            user={user}
           />
-          </div>
+           {user?.role === 'teacher'&& 
           <div className="mt-2 flex justify-center">
           <button className=" w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 ">
             Send New Announcement
           </button>
-        </div>
+        </div>}
+          </div>
+         
         
         
       </div>
-    </TeacherLayout>
+      </div>
+    </Layout>
   )
 }
 export default TeacherProfile;

@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+
+// Teacher Pages ************************
 import DashboardTeacher from './pages/Teacher/DashboardTeacher';
 import StudentsList from './pages/Teacher/StudentsList';
 import Schedule from './pages/Teacher/Schedule ';
@@ -10,6 +12,10 @@ import Attendance from './pages/Teacher/Attendance';
 import Inbox from './pages/Teacher/Inbox';
 import TeacherProfile from './pages/Teacher/TeacherProfile';
 
+// Student Pages ************************
+import StudentProfile  from './pages/Student/StudentProfile';
+import DashboardStudent  from './pages/Student/DashboardStudent';
+
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicRoute } from './components/PublicRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -17,6 +23,8 @@ import { CourseProvider } from './contexts/CourseContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import NotFound from './pages/NotFound';
 import React from 'react';
+
+
 
 function App() {
   return (
@@ -103,6 +111,24 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TeacherProfile />
+                  </ProtectedRoute>
+                } 
+              />
+               {/* Student Routes */}
+               <Route 
+                path="/student/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <DashboardStudent />
+                  </ProtectedRoute>
+                } 
+              />
+              
+               <Route 
+                path="/student/student-profile" 
+                element={
+                  <ProtectedRoute>
+                    <StudentProfile />
                   </ProtectedRoute>
                 } 
               />

@@ -1,12 +1,12 @@
 import React from 'react';
-import TeacherLayout from '../../components/layouts/TeacherLayout';
+import Layout from '../../components/layouts/Layout';
 
  const Schedule  = () => {
   return (
-    <TeacherLayout currentPage={'Schedule'}>
+    <Layout currentPage={'Schedule'}>
       
       
-    </TeacherLayout>
+    </Layout>
   )
 }
 export default Schedule;

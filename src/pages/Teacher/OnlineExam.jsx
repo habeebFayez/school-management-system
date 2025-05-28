@@ -1,12 +1,12 @@
 import React from 'react';
-import TeacherLayout from '../../components/layouts/TeacherLayout';
+import Layout from '../../components/layouts/Layout';
 
  const OnlineExam  = () => {
   return (
-    <TeacherLayout currentPage={'Online Exam'}>
+    <Layout currentPage={'Online Exam'}>
       
       
-    </TeacherLayout>
+    </Layout>
   )
 }
 export default OnlineExam;
