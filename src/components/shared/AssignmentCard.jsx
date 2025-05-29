@@ -1,4 +1,8 @@
 import React from 'react';
+import { useModal } from '../../contexts/ModalProvider';
+import { SubmissionsModal } from '../../components/shared/SubmissionsModal';
+import { AssignmentDetailsModal } from '../../components/shared/AssignmentDetailsModal';
+import { submissions } from '../../data/assignmentsData';
 
 export const AssignmentCard = ({
   assignment,
@@ -6,6 +10,8 @@ export const AssignmentCard = ({
   onCheckSubmissions,
   onEdit
 }) => {
+  const { showModal ,hideModal} = useModal();
+
   return (
     <div className="card w-full min-h-64 bg-white shadow-md hover:shadow-lg transition-shadow">
       <div className="card-content p-4">
@@ -22,16 +28,31 @@ export const AssignmentCard = ({
           <div className="text-sm text-gray-600">
             Deadline: {assignment.deadline}  Time: {assignment.time}
           </div>
+          <div className="text-sm text-gray-600">
+            Grade: {assignment.grade}
+          </div>
           
           <div className="space-y-3">
             <button 
-              onClick={() => onCheckDetails(assignment)}
+              onClick={() => showModal(
+                <AssignmentDetailsModal
+                isOpen={true}
+                onClose={() => hideModal()}
+                assignment={assignment}
+              />
+              )}
               className="w-full text-sm h-10 rounded-lg bg-blue-600 hover:opacity-90 text-white"
             >
-              Check details
+             Edit
             </button>
             <button 
-              onClick={() => onCheckSubmissions(assignment)}
+              onClick={() => showModal( 
+              <SubmissionsModal
+                isOpen={true}
+                onClose={() => hideModal()}
+                submissions={submissions}
+                assignment={assignment}
+              />)}
               className="w-full h-10 text-sm rounded-lg bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 text-white"
             >
               Check Submissions
