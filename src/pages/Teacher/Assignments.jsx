@@ -4,9 +4,6 @@ import { Search, Plus, Filter } from 'lucide-react';
 
 import { AssignmentCard } from '../../components/shared/AssignmentCard';
 import { CreateAssignmentModal } from '../../components/shared/CreateAssignmentModal';
-import { EditAssignmentModal } from '../../components/shared/EditAssignmentModal';
-import { SubmissionsModal } from '../../components/shared/SubmissionsModal';
-import { AssignmentDetailsModal } from '../../components/shared/AssignmentDetailsModal';
 import { assignments } from '../../data/assignmentsData';
 import { useModal } from '../../contexts/ModalProvider';
 
@@ -65,7 +62,7 @@ const Assignments = () => {
       <div className="bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 ">
           <h1 className="text-3xl font-bold text-gray-900">Assignment's</h1>
           <div className="flex items-center gap-4">
             <button 
@@ -166,28 +163,12 @@ const Assignments = () => {
           </div>
         )}
       </div>
-
-      {/* Modals */}
-     
     
 
-      <EditAssignmentModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        assignment={selectedAssignment}
-      />
 
-      <SubmissionsModal
-        isOpen={isSubmissionsModalOpen}
-        onClose={() => setIsSubmissionsModalOpen(false)}
-        assignment={selectedAssignment}
-      />
+     
 
-      <AssignmentDetailsModal
-        isOpen={isDetailsModalOpen}
-        onClose={() => setIsDetailsModalOpen(false)}
-        assignment={selectedAssignment}
-      />
+     
     </div>
       
     </Layout>
