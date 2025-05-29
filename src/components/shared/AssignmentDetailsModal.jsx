@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { EditAssignmentModal } from '../../components/shared/EditAssignmentModal';
 
 export const AssignmentDetailsModal = ({ isOpen, onClose, assignment }) => {
   const [formData, setFormData] = useState({
@@ -38,7 +37,8 @@ export const AssignmentDetailsModal = ({ isOpen, onClose, assignment }) => {
         <div className="space-y-2">
           <div className='w-full px-2'>
             <label className="block text-sm font-medium mb-2">Class</label>
-            <select className='bg-gray-300 h-8 w-full rounded-md cursor-pointer px-2' value={formData.class} onChange={(e) => setFormData(prev => ({ ...prev, class: e.target.value }))}>
+            <select className='bg-gray-300 h-8 w-full rounded-md cursor-pointer px-2' 
+            value={formData.class} onChange={(e) => setFormData(prev => ({ ...prev, class: e.target.value }))}>
               <option value={formData.class}>{formData.class}</option>
               {classes.map(cls => (
                 <option key={cls} value={cls}>{cls}</option>
