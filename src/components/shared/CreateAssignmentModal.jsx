@@ -11,7 +11,7 @@ export const CreateAssignmentModal = ({
     grade: '',
     date: '',
     time: '',
-    message: '',
+    description: '',
     file: null 
   });
 
@@ -106,11 +106,11 @@ export const CreateAssignmentModal = ({
             </div>
           </div>
           <div className='w-full px-2'>
-            <label className="block text-sm font-medium mb-2">Message</label>
+            <label className="block text-sm font-medium mb-2">Description</label>
             <textarea
-              placeholder="Message"
-              value={formData.message}
-              onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               className='bg-gray-300 w-full rounded-md min-h-[75] p-2 ' 
             />
           </div>
