@@ -3,18 +3,19 @@
 export const users = [
   {
     id: 1,
-    name: 'Fatma Kaya',
+    name: 'Zack Kaya',
     role: 'teacher',
     email: 'admin@titan.edu.tr',
-    avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg'
+    status:'Active',
+    avatar: 'https://gsep.pepperdine.edu/blog/images/how-much-could-a-masters-degree-increase-your-teaching-salary.png',
   },
   {
     id: 2,
     name: 'Zehra Özkan',
     role: 'teacher',
+    status:'Onleave',
     email: 'teacher@titan.edu.tr',
     avatar: 'https://cdn.pixabay.com/photo/2023/12/15/17/13/woman-8451051_1280.jpg',
-    subjects: [1, 3, 5]
   },
   {
     id: 3,
@@ -23,7 +24,167 @@ export const users = [
     email: 'student@titan.edu.tr',
     avatar: 'https://cdn.pixabay.com/photo/2022/08/11/08/08/books-7378902_1280.jpg',
     grade: '10th',
-    enrolledCourses: [1, 2, 3, 4, 5]
+  },
+  {
+    id: 4,
+    name: 'Ayşe Demir',
+    status:'Onleave',
+    status:'Active',
+    role: 'teacher',
+    email: 'ayse.demir@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+  },
+  {
+    id: 5,
+    name: 'Mehmet Yılmaz',
+    status:'Active',
+    role: 'teacher',
+    email: 'mehmet.yilmaz@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/45.jpg',
+  },
+  {
+    id: 6,
+    name: 'Elif Kaya',
+    status:'Active',
+    role: 'teacher',
+    email: 'elif.kaya@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/46.jpg',
+  },
+  {
+    id: 7,
+    name: 'Ali Can',
+    status:'Active',
+    role: 'teacher',
+    email: 'ali.can@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/47.jpg',
+  },
+  {
+    id: 8,
+    name: 'Fatma Aksoy',
+    status:'Onleave',
+    role: 'teacher',
+    email: 'fatma.aksoy@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/48.jpg',
+  },
+  {
+    id: 9,
+    name: 'Deniz Yıldız',
+    status:'Active',
+    role: 'teacher',
+    email: 'deniz.yildiz@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/49.jpg',
+  },
+  {
+    id: 10,
+    name: 'Burcu Şahin',
+    status:'Onleave',
+    role: 'teacher',
+    email: 'burcu.sahin@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/50.jpg',
+  },
+  {
+    id: 11,
+    name: 'Murat Polat',
+    status:'Active',
+    role: 'teacher',
+    email: 'murat.polat@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/51.jpg',
+  },
+  {
+    id: 12,
+    name: 'Gül Özdemir',
+    status:'Active',
+    role: 'teacher',
+    email: 'gul.ozdemir@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/52.jpg',
+  },
+  {
+    id: 13,
+    name: 'Serkan Aydın',
+    status:'Active',
+    role: 'teacher',
+    email: 'serkan.aydin@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/53.jpg',
+  },
+  {
+    id: 14,
+    name: 'Ahmet Korkmaz',
+    role: 'student',
+    email: 'ahmet.korkmaz@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/54.jpg',
+    grade: '11th',
+  },
+  {
+    id: 15,
+    name: 'Selin Yılmaz',
+    role: 'student',
+    email: 'selin.yilmaz@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/55.jpg',
+    grade: '10th',
+  },
+  {
+    id: 16,
+    name: 'Emre Demir',
+    role: 'student',
+    email: 'emre.demir@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/56.jpg',
+    grade: '12th',
+  },
+  {
+    id: 17,
+    name: 'Zeynep Şahin',
+    role: 'student',
+    email: 'zeynep.sahin@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/57.jpg',
+    grade: '11th',
+  },
+  {
+    id: 18,
+    name: 'Kerem Polat',
+    role: 'student',
+    email: 'kerem.polat@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/58.jpg',
+    grade: '10th',
+  },
+  {
+    id: 19,
+    name: 'Derya Yıldız',
+    role: 'student',
+    email: 'derya.yildiz@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/59.jpg',
+    grade: '12th',
+  },
+  {
+    id: 20,
+    name: 'Baran Aydın',
+    role: 'student',
+    email: 'baran.aydin@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/60.jpg',
+    grade: '11th',
+  },
+  {
+    id: 21,
+    name: 'Ece Özdemir',
+    role: 'student',
+    email: 'ece.ozdemir@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/61.jpg',
+    grade: '10th',
+  },
+  {
+    id: 22,
+    name: 'Mert Can',
+    role: 'student',
+    email: 'mert.can@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/men/62.jpg',
+    grade: '12th',
+  },
+  {
+    id: 23,
+    name: 'Buse Aksoy',
+    role: 'student',
+    email: 'buse.aksoy@titan.edu.tr',
+    avatar: 'https://randomuser.me/api/portraits/women/63.jpg',
+    grade: '11th',
   }
 ];
 
@@ -32,56 +193,121 @@ export const courses = [
     id: 1,
     name: "Mathematics",
     code: "MATH101",
-    teacher: "Zehra Özkan",
+    teacher: users[0],
     grade: "B+",
     attendance: "95%",
     description: "Introduction to basic algebra and calculus concepts",
     credits: 4,
-    assignments: [1, 2]
+    assignments: [1, 2],
+    students: [ users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
   },
   {
     id: 2,
     name: "Physics",
     code: "PHYS101",
-    teacher: "Ali Yılmaz",
+    teacher: users[1],
     grade: "A-",
     attendance: "92%",
     description: "Fundamental physics principles and mechanics",
     credits: 4,
-    assignments: [3]
+    assignments: [3],
+    students: [users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
   },
   {
     id: 3,
     name: "Chemistry",
     code: "CHEM101",
-    teacher: "Zehra Özkan",
+    teacher: users[1],
     grade: "B",
     attendance: "88%",
     description: "Introduction to chemistry and laboratory practices",
     credits: 3,
-    assignments: [4]
+    assignments: [4],
+    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
   },
   {
     id: 4,
     name: "Turkish Literature",
     code: "LIT201",
-    teacher: "Mehmet Can",
+    teacher: users[0],
     grade: "A",
     attendance: "98%",
     description: "Overview of classical and modern Turkish literature",
     credits: 3,
-    assignments: [5]
+    assignments: [5],
+    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
   },
   {
     id: 5,
     name: "History",
     code: "HIST101",
-    teacher: "Zehra Özkan",
+    teacher: users[3],
     grade: "B+",
     attendance: "93%",
     description: "World history from ancient civilizations to modern times",
     credits: 3,
-    assignments: [6]
+    assignments: [6],
+    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19], users[20], users[21], users[22]]
+  },
+  {
+    id: 6,
+    name: "Biology",
+    code: "BIO101",
+    teacher: users[4],
+    grade: "A-",
+    attendance: "97%",
+    description: "Introduction to cell biology, genetics, and evolution.",
+    credits: 4,
+    assignments: [7, 8],
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+  },
+  {
+    id: 7,
+    name: "Computer Science",
+    code: "CS101",
+    teacher: users[5],
+    grade: "A",
+    attendance: "99%",
+    description: "Fundamentals of programming and algorithms.",
+    credits: 4,
+    assignments: [9, 10],
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+  },
+  {
+    id: 8,
+    name: "Art",
+    code: "ART101",
+    teacher: users[6],
+    grade: "B",
+    attendance: "90%",
+    description: "Exploration of visual arts and creative expression.",
+    credits: 2,
+    assignments: [11],
+    students: [ users[13], users[18], users[19], users[20], users[21], users[22]]
+  },
+  {
+    id: 9,
+    name: "Physical Education",
+    code: "PE101",
+    teacher: users[6],
+    grade: "A",
+    attendance: "100%",
+    description: "Physical fitness, sports, and healthy living.",
+    credits: 1,
+    assignments: [12],
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+  },
+  {
+    id: 10,
+    name: "Philosophy",
+    code: "PHIL101",
+    teacher: users[7],
+    grade: "B+",
+    attendance: "92%",
+    description: "Introduction to philosophical thinking and major philosophers.",
+    credits: 3,
+    assignments: [13],
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
   }
 ];
 
@@ -292,15 +518,90 @@ export const schedules = {
   ]
 };
 
-export const grades = {
-  student: [
-    { courseId: 1, assignments: 92, midterm: 88, final: 90, overall: "B+" },
-    { courseId: 2, assignments: 95, midterm: 94, final: null, overall: "A-" },
-    { courseId: 3, assignments: 87, midterm: 82, final: null, overall: "B" },
-    { courseId: 4, assignments: 98, midterm: 96, final: null, overall: "A" },
-    { courseId: 5, assignments: 90, midterm: 92, final: null, overall: "B+" }
-  ]
-};
+
+export const mockGrades = [
+  {
+    id: '1',
+    course: 'Calculus',
+    first: 80,
+    second: 60,
+    assignment: 100,
+    final: null,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '2',
+    course: 'Physics',
+    first: 80,
+    second: 60,
+    assignment: 80,
+    final: null,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '3',
+    course: 'Chemistry',
+    first: 25,
+    second: 40,
+    assignment: 55,
+    final: null,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '4',
+    course: 'Biology',
+    first: 80,
+    second: 60,
+    assignment: 88,
+    final: null,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '5',
+    course: 'English',
+    first: 90,
+    assignment: '0',
+    second: 60,
+    final: null,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '6',
+    course: 'History',
+    first: 85,
+    second: 75,
+    assignment: 100,
+    final: null,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '7',
+    course: 'Geography',
+    first: 70,
+    second: 80,
+    final: null,
+    assignment: 100,
+    average: null,
+    status: 'NA'
+  },
+  {
+    id: '8',
+    course: 'Computer Science',
+    first: 95,
+    second: 90,
+    assignment: 100,
+    final: null,
+    average: null,
+    status: 'NA'
+  }
+];
+
 
 export const dashboardStats = {
   admin: {

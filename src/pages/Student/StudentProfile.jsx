@@ -4,10 +4,11 @@ import StatsCard from "../../components/shared/StatsCard";
 import ProfileHeader from "../../components/student/ProfileHeader";
 import { useAuth } from '../../contexts/AuthContext';
 import Table from '../../components/shared/Table';
-import AnnouncementCard from "../../components/teacher/AnnouncementCard";
+import AverageDisplay from "../../components/shared/AverageDisplay"
+import {mockGrades} from '../../data/mockData';
 
 
-import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award } from 'lucide-react';
+import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award, Eye } from 'lucide-react';
 
  const StudentProfile  = () => {
   const { user } = useAuth();
@@ -111,6 +112,24 @@ import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award } fro
     }
   ];
   const parentsColumns = ['Name', 'Contact Number', 'Email', 'Preferred Contact By ', 'Occupation', 'Status'];
+  const columns = ['Course', '1st', '2nd','Assignments' ,'Final', 'Average', 'Status'];
+  
+  const transformedData = mockGrades.map(grade => ({
+    Course: grade.course,
+    '1st': grade.first ? <AverageDisplay value={grade.first} size="md" /> : <AverageDisplay value={null} size="md" />,
+    '2nd': grade.second ? <AverageDisplay value={grade.second} size="md" /> : <AverageDisplay value={null} size="md" />,
+    'Assignments': grade.assignment ? <AverageDisplay value={grade.assignment} size="md" /> : <AverageDisplay value={null} size="md" />,
+    Final: grade.final ? <AverageDisplay value={grade.final} size="md" /> : <AverageDisplay value={null} size="md" />,
+    Average: grade.average ? <AverageDisplay value={grade.average} size="md" /> : <AverageDisplay value={null} size="md" />,
+    Status: grade.status
+  }));
+  const actionComponent = (
+    <button className="p-2 hover:bg-gray-100 -ml-4 rounded-full transition-colors">
+      <div className="bg-gradient-to-br from-[#10062B] to-[#4F0129] flex justify-center items-center h-8 w-8 rounded-full hover:opacity-90">
+        <Eye size={16} color="white" />
+      </div>
+    </button>
+  );
 
   return (
     <Layout currentPage={'StudentProfile'}>
@@ -145,35 +164,14 @@ import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award } fro
          <Table data={courses} title={'Courses '} columns={coursesColumns} user={user}/>
         
         </div>
-        
-        <div className="mt-4 space-y-2 ">
-
-          <AnnouncementCard 
-            title="CO301 | Exam Hall List Updated"
-            content="Dear Students, The attached list contains information about the exam hall where you will take the exam. Each student must take the exam in the hall specified in the list. Do not forget to bring your pencils (not pen) and erasers along with your student ID cards when you come to the exam."
-            fileName="CO301-Midterm Exam Hall Information1.pdf"
-            fileSize="169.5 KB"
-            dateAdded="2025-04-10"
-            lastUpdate="2025-04-10 19:38:52"
-            isUpdated={true}
-            user={user}
-
-          />
-          
-          <AnnouncementCard 
-            title="CO301 | Exam Hall List"
-            content="Dear Students, The attached list contains information about the exam hall where you will take the exam. Each student must take the exam in the hall specified in the list. Do not forget to bring your pencils (not pen) and erasers along with your student ID cards when you come to the exam."
-            dateAdded="2025-04-10"
-            lastUpdate="2025-04-10"
-            isUpdated={false}
-            user={user}
-          />
-           {user?.role === 'teacher'&& 
-          <div className="mt-2 flex justify-center">
-          <button className=" w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 ">
-            Send New Announcement
-          </button>
-        </div>}
+         {/* Grades Table */}
+        <div className="mt-2 space-y-2  ">
+      <Table 
+          data={transformedData}
+          title="Grades"
+          columns={columns}
+          user={{ role: 'student' }}
+        />
           </div>
          
         

@@ -7,7 +7,7 @@ import StudentsList from './pages/Teacher/StudentsList';
 import Schedule from './pages/Teacher/Schedule ';
 import Exams from './pages/Teacher/Exams';
 import Assignments from './pages/Teacher/Assignments';
-import Grades from './pages/Teacher/Grades';
+import GradesTeacher from './pages/Teacher/Grades';
 import Attendance from './pages/Teacher/Attendance';
 import Inbox from './pages/Teacher/Inbox';
 import TeacherProfile from './pages/Teacher/TeacherProfile';
@@ -16,6 +16,11 @@ import StudentListPage from "./pages/Teacher/StudentListPage";
 // Student Pages ************************
 import StudentProfile  from './pages/Student/StudentProfile';
 import DashboardStudent  from './pages/Student/DashboardStudent';
+import GradesStudent from './pages/Student/Grades';
+import SubjectsList from './pages/Student/SubjectsList ';
+import TeachersList from './pages/Student/TeachersList ';
+import SubjectFullData from './pages/Student/SubjectFullData';
+
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicRoute } from './components/PublicRoute';
@@ -89,7 +94,7 @@ function App() {
                 path="/teacher/grades" 
                 element={
                   <ProtectedRoute>
-                    <Grades />
+                    <GradesTeacher />
                   </ProtectedRoute>
                 } 
               />
@@ -127,7 +132,7 @@ function App() {
                 } 
               />
               
-               <Route 
+              <Route 
                 path="/student/student-profile" 
                 element={
                   <ProtectedRoute>
@@ -135,6 +140,42 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
+               <Route 
+              path="/student/grades" 
+              element={
+                <ProtectedRoute>
+                  <GradesStudent />
+                </ProtectedRoute>
+              } 
+            />
+
+             <Route 
+              path="/student/courses-list" 
+              element={
+                <ProtectedRoute>
+                  <SubjectsList />
+                </ProtectedRoute>
+              } 
+            />
+              <Route 
+              path="/student/courses/*" 
+              element={
+                <ProtectedRoute>
+                  <SubjectFullData />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+             path="/student/teachers-list" 
+             element={
+               <ProtectedRoute>
+                 <TeachersList />
+               </ProtectedRoute>
+             } 
+           />
+
+
               {/* Protected 404 route */}
               <Route 
                 path="*" 

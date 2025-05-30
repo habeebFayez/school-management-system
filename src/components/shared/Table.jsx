@@ -1,9 +1,36 @@
-
 import React from 'react';
 import { MoreHorizontal, Pencil } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 
 const Table = ({ data, title, columns, isActions = true, user, actionChil=false }) => {
+  const navigate = useNavigate();
+
+  const handleRowClick = (row,index) => {
+  
+     
+    if (title === 'Courses') {
+      navigate(`/student/courses/${index}`, { state: { cours: {
+        name: row.Course,
+        code: row.Code ,
+        grade: row.Grade ,
+       credits: row.Credits ,
+       teacher :row.teacher.name,
+      } } });
+    }
+  };
+
+  const handleMoreClick = (e, row,index) => {
+    e.stopPropagation(); 
+    if (title === 'Courses') {
+      navigate(`/student/courses/${index}`, { state: { cours: {
+        name: row.Course,
+        code: row.Code ,
+        grade: row.Grade ,
+       credits: row.Credits ,
+       teacher :row.teacher.name,
+         } } });    }
+  };
+
   const renderCell = (cell) => {
     // Check if cell is an object with image and name properties
     if (typeof cell === 'object' && cell !== null && 'name' in cell) {
@@ -63,22 +90,32 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
           </thead>
           <tbody>
             {data.map((row, index) => (
-              <tr key={index} className={`border-b border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white '}`}>
+              <tr 
+                onClick={() => handleRowClick(row,index)}
+                key={index} 
+                className={`border-b border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
+              >
                 {Object.values(row).map((cell, cellIndex) => (
-                  <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700 ">
+                  <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700">
                     {renderCell(cell)}
                   </td>
                 ))}
                 {isActions && !actionChil && 
                   <td className="py-2 px-8">
                     <button className="p-1 hover:bg-gray-100 rounded">
-                      <MoreHorizontal size={16} className="text-gray-400" />
+                      <MoreHorizontal 
+                        onClick={(e) => handleMoreClick(e, row,index)}
+                        size={16} 
+                        className="text-gray-400 cursor-pointer hover:text-gray-600" 
+                      />
                     </button>
                   </td>
                 }
-                {actionChil&& <td className="py-2 px-8">
+                {actionChil && 
+                  <td className="py-2 px-8">
                     {actionChil}
-                  </td>}
+                  </td>
+                }
               </tr>
             ))}
           </tbody>
