@@ -1,3 +1,7 @@
+// Assignments.jsx
+// This page allows teachers to view, create, edit, and manage assignments for their classes.
+// It includes filtering, searching, and tabbing for previous/upcoming assignments, and uses modals for details and submissions.
+
 import Layout from '../../components/layouts/Layout';
 import React, { useState } from 'react';
 import { Search, Plus, Filter } from 'lucide-react';
@@ -10,22 +14,23 @@ import { useModal } from '../../contexts/ModalProvider';
 const Assignments = () => {
   const { showModal ,hideModal} = useModal();
 
+  // State for search/filter controls
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('All');
   const [selectedClass, setSelectedClass] = useState('All');
   const [activeTab, setActiveTab] = useState('previous');
   
-  // Modal states
+  // Modal states for editing, viewing submissions, and details
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isSubmissionsModalOpen, setIsSubmissionsModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
 
-  // Get unique courses and classes
+  // Get unique courses and classes for filter dropdowns
   const courses = [ ...Array.from(new Set(assignments.map(a => a.courseName)))];
   const classes = [ ...Array.from(new Set(assignments.map(a => a.classId)))];
 
-  // Filter assignments
+  // Filter assignments based on search, course, class, and tab (previous/upcoming)
   const filteredAssignments = assignments.filter(assignment => {
     const matchesSearch = assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          assignment.courseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -42,6 +47,7 @@ const Assignments = () => {
            (activeTab === 'previous' ? isPrevious : isUpcoming);
   });
 
+  // Handlers for opening modals with the selected assignment
   const handleCheckDetails = (assignment) => {
     setSelectedAssignment(assignment);
     setIsDetailsModalOpen(true);
@@ -59,12 +65,13 @@ const Assignments = () => {
 
   return (
     <Layout search={false} currentPage={'Assignments'}>
-      <div className="bg-gray-50 p-6">
+      <div className="bg-gray-50 p-6 text-sm">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header with page title and create button */}
         <div className="flex items-center justify-between mb-6 ">
           <h1 className="text-3xl font-bold text-gray-900">Assignment's</h1>
           <div className="flex items-center gap-4">
+            {/* Open the create assignment modal using the global modal context */}
             <button 
              onClick={() =>
               showModal(
@@ -85,7 +92,7 @@ const Assignments = () => {
           </div>
         </div>
 
-        {/* Search and Filters */}
+        {/* Search and Filters Section */}
         <div className="flex gap-10 mb-6 justify-end items-center">
         <div className="flex-1">
             <div className="relative w-auto">
@@ -99,7 +106,7 @@ const Assignments = () => {
               />
             </div>
           </div>
-          {/* Select Class */}
+          {/* Select Class Dropdown */}
           <div className='flex gap-4 h-fit items-center '>
           <label className=" text-md font-semibold">Classes :</label>
           <select className='bg-gray-300 h-8 rounded-md cursor-pointer' value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
@@ -109,6 +116,7 @@ const Assignments = () => {
             ))}
           </select>
           </div>
+          {/* Select Course Dropdown */}
           <div className='flex gap-4 h-fit items-center '>
           <label className=" text-md font-semibold">Courses :</label>
           <select  className='bg-gray-300 h-8 rounded-md cursor-pointer' value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
@@ -120,7 +128,7 @@ const Assignments = () => {
         </div>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs for Previous and Upcoming Assignments */}
         <div className="flex gap-4 mb-8   ">
           <button
             onClick={() => setActiveTab('previous')}
@@ -157,6 +165,7 @@ const Assignments = () => {
           ))}
         </div>
 
+        {/* Message if no assignments match the filters */}
         {filteredAssignments.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">No assignments found matching your criteria.</p>
@@ -165,8 +174,7 @@ const Assignments = () => {
       </div>
     
 
-
-     
+    
 
      
     </div>

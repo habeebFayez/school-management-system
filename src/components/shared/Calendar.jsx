@@ -15,7 +15,6 @@ const Calendar = ({
     
       components={{
         DayButton: (props) => {
-            // You can use props.selected, props.today, etc. to style conditionally
             const isSelected = props.selected;
             const isToday = props.today;
             return (

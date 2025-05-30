@@ -10,7 +10,7 @@ export const SendMessageModal = ({
 }) => {
   const [selectedCourse, setSelectedCourse] = useState(replyTo?.courseId || 'all');
   const [subject, setSubject] = useState(replyTo?.subject ? `Re: ${replyTo?.subject}` : '');
-  const [message, setMessage] = useState(replyTo?.content||'');
+  const [message, setMessage] = useState('');
   const [file, setFile] = useState (null);
 
   const selectedCourseData = mockCourses.find(course => course.id === selectedCourse);
