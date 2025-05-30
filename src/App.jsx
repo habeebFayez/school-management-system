@@ -11,6 +11,7 @@ import Grades from './pages/Teacher/Grades';
 import Attendance from './pages/Teacher/Attendance';
 import Inbox from './pages/Teacher/Inbox';
 import TeacherProfile from './pages/Teacher/TeacherProfile';
+import StudentListPage from "./pages/Teacher/StudentListPage";
 
 // Student Pages ************************
 import StudentProfile  from './pages/Student/StudentProfile';
@@ -56,7 +57,7 @@ function App() {
                 path="/teacher/students-list" 
                 element={
                   <ProtectedRoute>
-                    <StudentsList />
+                    <StudentListPage />
                   </ProtectedRoute>
                 } 
               />
