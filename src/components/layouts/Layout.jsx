@@ -31,7 +31,7 @@ console.log("done :", location.pathname);
 
         <main 
               ref={mainRef}
-              className="bg-gray-100 p-3 w-full h-full overflow-auto"
+              className="bg-gray-100 p-3 w-full h-fit overflow-auto"
               >
           {/* <h3 className="text-black font-semibold text-xl mb-4">{currentPage}</h3> */}
              {/* <div className='container flex-1 w-full h-full'>  */}
