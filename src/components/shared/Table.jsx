@@ -16,6 +16,8 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
        credits: row.Credits ,
        teacher :row.teacher.name,
       } } });
+    }else  if (title === "All Students") {
+      navigate(`/student/student-profile/${index}`, { state: { student: row.info.fullStudentData } });
     }
   };
 
@@ -28,7 +30,10 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
         grade: row.Grade ,
        credits: row.Credits ,
        teacher :row.teacher.name,
-         } } });    }
+         } } });   
+     }else  if (title === "All Students") {
+          navigate(`/student/student-profile/${index}`, { state: { student: row.info.fullStudentData } });
+        }
   };
 
   const renderCell = (cell) => {

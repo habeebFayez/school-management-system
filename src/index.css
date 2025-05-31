@@ -25,7 +25,7 @@ body {
 /* Style scrollbar globally */
 * {
   scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #676768 #FAF2F7; /* Firefox */
+  scrollbar-color: #ffffff #b7b7b7; /* Firefox */
 }
 
 /* For Chrome, Safari and Edge */
@@ -44,6 +44,7 @@ body {
   border: 2px solid transparent;
   background-clip: content-box;
 }
+
 
 h1 {
   font-size: 3.2em;
