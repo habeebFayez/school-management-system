@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layouts/Layout';
 import { format, startOfWeek, addDays, isToday } from 'date-fns';
+import ScheduleCard from '../../components/shared/ScheduleCard';
 
 const times = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM'];
 
-const today = format(new Date(), 'MMMM yyyy');
+const today = format(new Date(), 'EEEE dd MMMM yyyy');
 const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); 
+
 const days = Array.from({ length: 5 }).map((_, i) => {
   const date = addDays(weekStart, i);
   return {
@@ -14,6 +16,7 @@ const days = Array.from({ length: 5 }).map((_, i) => {
     isToday: isToday(date)
   };
 });
+
 
 const scheduleData = {
   '08:00 AM': [
@@ -62,10 +65,7 @@ const scheduleData = {
 
 const Schedule = () => {
   const [view, setView] = useState('Week');
-
-  const todayDate = new Date();
-  let todayDayIndex = todayDate.getDay() - 1;
-  if (todayDayIndex < 0 || todayDayIndex > 4) todayDayIndex = 0;
+  let todayDayIndex =today;
 
   return (
     <Layout currentPage={'Schedule'}>
@@ -124,15 +124,15 @@ const Schedule = () => {
             ))}
           </div>
         ) : (
-          
           <div className="grid grid-cols-[100px_1fr] border rounded overflow-hidden">
             <div className="bg-white"></div>
             <div className="p-2 text-center font-semibold bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white">
-              {days[todayDayIndex].label}
+              {todayDayIndex}
             </div>
 
-            {times.map((time) => {
-            
+            {(todayDayIndex.slice(0,3).toLocaleLowerCase()!=='sat' && todayDayIndex.slice(0,3).toLocaleLowerCase()!=='sun') 
+            ?
+            (times.map((time) => {
               const slot = scheduleData[time]?.find((s) => s.day === todayDayIndex);
               const defaultHeight = 130;
 
@@ -154,7 +154,16 @@ const Schedule = () => {
                   )}
                 </React.Fragment>
               );
-            })}
+            }
+            ))
+          :(
+            <>
+            <div className="border-t p-2 font-semibold"></div>
+            <div className="border-t p-2 text-xl h-screen bg-red-200 text-gray-600 flex flex-col justify-center items-center font-semibold">
+              <span>Weekend</span>
+            </div>
+          </>
+          )}
           </div>
         )}
       </div>
@@ -164,30 +173,7 @@ const Schedule = () => {
   );
 };
 
-const ScheduleCard = ({ slot, time }) => {
-  return (
-    <div className={`w-full rounded-md p-2 h-full text-white flex flex-col gap-5 justify-between ${slot.type === 'Exam' ? 'bg-[#4F0129] hover:bg-[#4f0129ef]' : 'bg-[#10062B] hover:bg-[#10062bef]'}`}>
-      <div>
-        <div className="font-bold text-xs">{slot.type}</div>
-        <div className="text-xs">{slot.time || `${time} - ${addHour(time)}`}</div>
-        <div className="text-sm font-semibold">{slot.subject}</div>
-      </div>
-      <div className="flex justify-between text-xs">
-        <span className="text-green-400">{slot.mode}</span>
-        {slot.details && <button className="bg-white text-black font-semibold py-1 w-2/6 hover:bg-gray-200 rounded">Details</button>}
-        {slot.join && <button className="bg-white text-black font-semibold py-1 w-2/6 hover:bg-gray-200 rounded">Join</button>}
-      </div>
-    </div>
-  );
-};
 
-const addHour = (time) => {
-  const [h, m] = time.split(' ')[0].split(':').map(Number);
-  let isPM = time.includes('PM');
-  let newHour = h + 1;
-  if (newHour === 12) isPM = !isPM;
-  if (newHour > 12) newHour -= 12;
-  return `${String(newHour).padStart(2, '0')}:${m.toString().padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`;
-};
+
 
 export default Schedule;
