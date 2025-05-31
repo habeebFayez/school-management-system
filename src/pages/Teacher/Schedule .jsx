@@ -69,13 +69,14 @@ const Schedule = () => {
 
   return (
     <Layout currentPage={'Schedule'}>
+        <div className="bg-gray-50 w-full text-sm">
+        <div className="flex flex-col max-w-7xl  ">
       <h2 style={{
         fontWeight: 'bold',
         fontSize: '1.5rem',
         color: '#2c3e50',
         backgroundColor:'white',
-        paddingTop:10,
-        paddingLeft:10,
+        padding:15,
       }}>
         Schedule
       </h2>
@@ -156,6 +157,8 @@ const Schedule = () => {
             })}
           </div>
         )}
+      </div>
+      </div>
       </div>
     </Layout>
   );

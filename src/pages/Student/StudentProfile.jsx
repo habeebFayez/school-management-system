@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../../components/layouts/Layout';
 import StatsCard from "../../components/shared/StatsCard";
 import ProfileHeader from "../../components/student/ProfileHeader";
@@ -7,12 +7,15 @@ import Table from '../../components/shared/Table';
 import AverageDisplay from "../../components/shared/AverageDisplay"
 import {mockGrades} from '../../data/mockData';
 
+import { useLocation } from 'react-router-dom';
 
 import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award, Eye } from 'lucide-react';
 
  const StudentProfile  = () => {
-  const { user } = useAuth();
-
+  const location = useLocation();
+  const { user: authUser } = useAuth();
+  const user = location.state?.student || authUser;
+ 
   const stats = [
     {
       value: '95%',
@@ -35,6 +38,7 @@ import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award, Eye 
       icon: <ChartNoAxesCombined  size={50} />,
     }
   ];
+  
   const courses = [
     {
       course: "Calculus",
@@ -133,7 +137,7 @@ import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award, Eye 
 
   return (
     <Layout currentPage={'StudentProfile'}>
-      <div className='px-12 ' >
+      <div className='w-full px-12 ' >
       <ProfileHeader user={user}/>
       {/* Status Cards */}
       <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 h-fit gap-2 my-4">   

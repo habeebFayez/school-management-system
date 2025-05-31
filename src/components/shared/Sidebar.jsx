@@ -46,9 +46,9 @@ const Sidebar = ({ currentPage, isOpen, onClose, }) => {
     } else if(label === 'Profile') {
       setActiveItem(label);
       user?.role==='teacher'?
-      navigate('/teacher/teacher-profile')
+      navigate(`/teacher/teacher-profile/${user.name}`)
       :
-      navigate('/student/student-profile');
+      navigate(`/student/student-profile/${user.name}`);
     } else {
       const menuItem = user?.role==='teacher'?
       menuItemsTeacher.find(item => item.label === label)

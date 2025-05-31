@@ -24,14 +24,14 @@ console.log("done :", location.pathname);
         onClose={() => setIsSidebarOpen(false)}
       />
 
-      <div className="flex-1 bg-gray-100 ">
+      <div className="flex-1  bg-gray-100 ">
         <div className="sticky top-0 z-10">
           <TopNavbar search={search} onMenuClick={() => setIsSidebarOpen(true)}/>
         </div>
 
         <main 
               ref={mainRef}
-              className="bg-gray-100 p-3 w-full h-fit overflow-auto"
+              className="flex flex-col  bg-gray-100 p-2 items-center  w-full h-fit overflow-y-auto"
               >
           {/* <h3 className="text-black font-semibold text-xl mb-4">{currentPage}</h3> */}
              {/* <div className='container flex-1 w-full h-full'>  */}

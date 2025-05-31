@@ -115,7 +115,7 @@ function App() {
                 } 
               />
                <Route 
-                path="/teacher/teacher-profile" 
+                path="/teacher/teacher-profile/*" 
                 element={
                   <ProtectedRoute>
                     <TeacherProfile />
@@ -133,7 +133,7 @@ function App() {
               />
               
               <Route 
-                path="/student/student-profile" 
+                path="/student/student-profile/*" 
                 element={
                   <ProtectedRoute>
                     <StudentProfile />

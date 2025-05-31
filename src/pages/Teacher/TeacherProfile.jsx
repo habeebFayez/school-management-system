@@ -8,9 +8,12 @@ import AnnouncementCard from "../../components/teacher/AnnouncementCard";
 
 
 import { Monitor, ListChecks, LibraryBig, ChartNoAxesCombined } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
  const TeacherProfile  = () => {
-const { user } = useAuth();
+const location = useLocation();
+const { user: authUser } = useAuth();
+const user = location.state?.teacher || authUser;
 
   const stats = [
     {
@@ -57,7 +60,7 @@ const { user } = useAuth();
 
   return (
     <Layout currentPage={'UserProfile'}>
-      <div className='px-12 ' >
+      <div className='px-12 w-full ' >
       <ProfileHeader user={user}/>
       {/* Status Cards */}
       <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 h-fit gap-2 my-4">   
