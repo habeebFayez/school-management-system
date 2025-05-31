@@ -5,7 +5,7 @@ import { format, startOfWeek, addDays, isToday } from 'date-fns';
 const times = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM'];
 
 const today = format(new Date(), 'MMMM yyyy');
-const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday start
+const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); 
 const days = Array.from({ length: 5 }).map((_, i) => {
   const date = addDays(weekStart, i);
   return {
@@ -123,7 +123,7 @@ const Schedule = () => {
             ))}
           </div>
         ) : (
-          // Day view with lunch break inserted between 11AM and 1PM
+          
           <div className="grid grid-cols-[100px_1fr] border rounded overflow-hidden">
             <div className="bg-white"></div>
             <div className="p-2 text-center font-semibold bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white">
@@ -131,7 +131,7 @@ const Schedule = () => {
             </div>
 
             {times.map((time) => {
-              // Skip rendering 12:00 PM slot since no lectures, lunch instead inserted manually
+            
               const slot = scheduleData[time]?.find((s) => s.day === todayDayIndex);
               const defaultHeight = 130;
 
@@ -142,7 +142,6 @@ const Schedule = () => {
                     {slot ? <ScheduleCard slot={slot} time={time} /> : null}
                   </div>
 
-                  {/* Insert lunch break after 11:00 AM */}
                   {time === '11:00 AM' && (
                     <>
                       <div className="border-t p-2 text-sm font-semibold"></div>
