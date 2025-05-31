@@ -199,7 +199,8 @@ export const courses = [
     description: "Introduction to basic algebra and calculus concepts",
     credits: 4,
     assignments: [1, 2],
-    students: [ users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
+    students: [ users[13], users[14], users[15], users[16], users[17], users[18], users[19]],
+    classes: ["3A", "3B", "3C", "4A", "4B", "4C", "5A", "5B", "6A", "6B"]
   },
   {
     id: 2,
@@ -211,7 +212,8 @@ export const courses = [
     description: "Fundamental physics principles and mechanics",
     credits: 4,
     assignments: [3],
-    students: [users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
+    students: [users[13], users[14], users[15], users[16], users[17], users[18], users[19]],
+    classes: ["3A", "3B", "4A", "4B", "5A", "5B", "6A"]
   },
   {
     id: 3,
@@ -223,7 +225,8 @@ export const courses = [
     description: "Introduction to chemistry and laboratory practices",
     credits: 3,
     assignments: [4],
-    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
+    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19]],
+    classes: ["3A", "3B", "3C", "4A", "4B", "5A"]
   },
   {
     id: 4,
@@ -235,7 +238,8 @@ export const courses = [
     description: "Overview of classical and modern Turkish literature",
     credits: 3,
     assignments: [5],
-    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19]]
+    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19]],
+    classes: ["3A", "3B", "4A", "4B", "5A", "5B", "6A", "6B"]
   },
   {
     id: 5,
@@ -247,7 +251,8 @@ export const courses = [
     description: "World history from ancient civilizations to modern times",
     credits: 3,
     assignments: [6],
-    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19], users[20], users[21], users[22]]
+    students: [users[2], users[13], users[14], users[15], users[16], users[17], users[18], users[19], users[20], users[21], users[22]],
+    classes: ["3A", "3B", "3C", "4A", "4B", "5A", "5B", "6A", "6B", "7A"]
   },
   {
     id: 6,
@@ -259,7 +264,8 @@ export const courses = [
     description: "Introduction to cell biology, genetics, and evolution.",
     credits: 4,
     assignments: [7, 8],
-    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]],
+    classes: ["3A", "3B", "4A", "4B", "5A", "5B"]
   },
   {
     id: 7,
@@ -271,7 +277,8 @@ export const courses = [
     description: "Fundamentals of programming and algorithms.",
     credits: 4,
     assignments: [9, 10],
-    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]],
+    classes: ["3A", "3B", "3C", "4A", "4B", "5A", "5B", "6A"]
   },
   {
     id: 8,
@@ -283,7 +290,8 @@ export const courses = [
     description: "Exploration of visual arts and creative expression.",
     credits: 2,
     assignments: [11],
-    students: [ users[13], users[18], users[19], users[20], users[21], users[22]]
+    students: [ users[13], users[18], users[19], users[20], users[21], users[22]],
+    classes: ["3A", "3B", "4A", "4B", "5A"]
   },
   {
     id: 9,
@@ -295,7 +303,8 @@ export const courses = [
     description: "Physical fitness, sports, and healthy living.",
     credits: 1,
     assignments: [12],
-    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]],
+    classes: ["3A", "3B", "3C", "4A", "4B", "5A", "5B"]
   },
   {
     id: 10,
@@ -307,7 +316,8 @@ export const courses = [
     description: "Introduction to philosophical thinking and major philosophers.",
     credits: 3,
     assignments: [13],
-    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]]
+    students: [users[2], users[13], users[18], users[19], users[20], users[21], users[22]],
+    classes: ["3A", "3B", "4A", "4B", "5A", "5B", "6A", "6B", "7A"]
   }
 ];
 

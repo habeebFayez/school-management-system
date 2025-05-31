@@ -51,7 +51,7 @@ const Inbox = () => {
 
   return (
     <Layout search={false} currentPage={'Inbox'}>
-       <div className="min-h-screen bg-gray-50 p-6 text-sm">
+       <div className="min-h-screen  w-full bg-gray-50 p-6 text-sm">
       <div className="max-w-6xl mx-auto">        
         {/* Tab Navigation */}
         <div className="grid grid-cols-4 gap-4 mb-6 sticky ">

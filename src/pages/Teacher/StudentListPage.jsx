@@ -3,31 +3,32 @@ import Layout from '../../components/layouts/Layout';
 import Table from '../../components/shared/Table';
 import { Eye, Trash2, Plus, List, Grid, Filter } from 'lucide-react';
 import Loading from '../../components/shared/Loading';
+import {courses,users} from '../../data/mockData';
 
-const mockStudents = Array.from({ length: 10 }).map((_, i) => ({
+const mockStudents = users.filter(user=>user.role==='student')
+.sort((a, b) => a.name.localeCompare(b.name))
+.map(student => ({
   info: {
-    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-    name: 'Name Surname',
-    description: `${i % 2 === 0 ? '3A' : '4B'}`,
+    avatar: student.avatar,
+    name: student.name,
+    description: student.grade, 
+    fullStudentData:student,
   },
   studentId: 'S123456',
-  grade: i % 2 === 0 ? 3 : 4,
+  grade: student.grade,
   parentPhone: '0 501 808 60 60',
-  address: 'Turkey - Istanbul - Uskudar 123',
+  address: 'Turkey - Istanbul 123',
+ 
 }));
 
-const subjects = [
-  { label: 'Physics', classes: ['3A', '3B'] },
-  { label: 'Chemistry', classes: ['3C'] },
-  { label: 'Math', classes: ['4A', '4B'] },
-];
+const subjects =courses.map(course =>({label: course.name, classes: course.classes}));
 
 const StudentListPage = () => {
   const [selectedSubject, setSelectedSubject] = useState(0);
   const [selectedClass, setSelectedClass] = useState(subjects[0].classes[0]);
   const [search, setSearch] = useState('');
-  const [viewModal, setViewModal] = useState(null);
-  const [deleteModal, setDeleteModal] = useState(null);
+  const [viewModal, setViewModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -41,26 +42,29 @@ const StudentListPage = () => {
 
   const filteredStudents = mockStudents.filter(s =>
     s.info.name.toLowerCase().includes(search.toLowerCase())
+    ||
+    s.studentId.toLowerCase().includes(search.toLowerCase())
   );
 
   const paginatedStudents = filteredStudents.slice((page - 1) * 8, page * 8);
 
   return (
     <Layout currentPage={'Students'}>
-      <div className="flex flex-col gap-6">
+         <div className="bg-gray-50 w-full p-6 text-sm">
+      <div className="flex flex-col gap-2 max-w-7xl  ">
         {/* Subject Tabs */}
-        <div className="flex gap-4 mt-2">
-          {subjects.map((subj, idx) => (
+        <div className="flex gap-2 overflow-x-auto  max-w-full ">
+        {subjects.map((subj, idx) => (
             <button
-              key={subj.label}
-              className={`px-8 py-2 rounded-t-lg text-lg font-semibold border ${selectedSubject === idx ? 'bg-gradient-to-r from-[#10062B] to-[#4F0129] text-white' : 'bg-white text-gray-800 border-gray-300'}`}
-              onClick={() => {
-                setSelectedSubject(idx);
-                setSelectedClass(subjects[idx].classes[0]);
-              }}
-            >
-              {subj.label}
-            </button>
+            key={subj.label}
+            className={`px-2 w-fit py-2 rounded-md text-sm font-semibold border ${selectedSubject === idx ? 'bg-gradient-to-r from-[#10062B] to-[#4F0129] text-white' : 'bg-white text-gray-800 border-gray-300'}`}
+            onClick={() => {
+              setSelectedSubject(idx);
+              setSelectedClass(subjects[idx].classes[0]);
+            }}
+          >
+            {(subj.label).slice(0,12)} 
+          </button>
           ))}
         </div>
         {/* Class Tabs */}
@@ -90,10 +94,11 @@ const StudentListPage = () => {
             </span>
           </div>
           <div className="flex gap-2">
-            <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-200"><List size={20}/></button>
-            <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-200"><Grid size={20}/></button>
-            <button className="p-2 rounded-full border border-gray-300 hover:bg-gray-200"><Filter size={20}/></button>
-            <button className="p-2 rounded-full bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white"><Plus size={20}/></button>
+           
+            <button onClick={()=>setViewModal(true)}
+             className="p-2 flex  rounded-md bg-green-600 text-white hover:bg-green-700">
+              <Plus size={20}/> Add New Student 
+              </button>
           </div>
         </div>
         {/* Table */}
@@ -105,10 +110,7 @@ const StudentListPage = () => {
           actionChil={null}
           user={{ role: 'teacher' }}
         />
-        {/* Actions for each row */}
-        <div className="hidden">
-          {/* This is handled in Table's renderCell or actionChil if needed */}
-        </div>
+     
         {/* Pagination */}
         <div className="flex justify-between items-center mt-4">
           <button
@@ -137,39 +139,8 @@ const StudentListPage = () => {
             Next
           </button>
         </div>
-        {/* View Modal */}
-        {viewModal && (
-          <dialog open className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-            <div className="bg-white rounded-xl p-8 min-w-[400px] relative">
-              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700" onClick={() => setViewModal(null)}>&times;</button>
-              <h2 className="text-xl font-bold mb-4">Student Details</h2>
-              <div className="flex flex-col gap-2">
-                <div><b>Name:</b> {viewModal.info.name}</div>
-                <div><b>Class:</b> {viewModal.info.description}</div>
-                <div><b>Student ID:</b> {viewModal.studentId}</div>
-                <div><b>Grade:</b> {viewModal.grade}</div>
-                <div><b>Parent Phone:</b> {viewModal.parentPhone}</div>
-                <div><b>Address:</b> {viewModal.address}</div>
-              </div>
-            </div>
-          </dialog>
-        )}
-        {/* Delete Modal */}
-        {deleteModal && (
-          <dialog open className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-            <div className="bg-white rounded-xl p-8 min-w-[400px] relative">
-              <button className="absolute top-2 right-2 text-gray-400 hover:text-gray-700" onClick={() => setDeleteModal(null)}>&times;</button>
-              <h2 className="text-xl font-bold mb-4">Delete Student</h2>
-              <p>Are you sure you want to delete <b>{deleteModal.info.name}</b>?</p>
-              <div className="flex gap-4 mt-6">
-                <button className="px-6 py-2 rounded bg-gray-200" onClick={() => setDeleteModal(null)}>Cancel</button>
-                <button className="px-6 py-2 rounded bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white" onClick={() => { setDeleteModal(null); }}>Delete</button>
-              </div>
-            </div>
-          </dialog>
-        )}
-        {/* Loading */}
-        {loading && <Loading />}
+       
+      </div>
       </div>
     </Layout>
   );
