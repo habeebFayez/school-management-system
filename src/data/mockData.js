@@ -381,30 +381,204 @@ export const assignments = [
 export const exams = [
   {
     id: 1,
-    courseId: 1,
+    course: courses[0],
     title: "Midterm Exam",
-    date: "2023-11-30",
+    date: "2025-05-10",
+    time: "09:00",
     duration: "90 minutes",
     topics: "Chapters 1-5",
     location: "Room 201"
   },
   {
     id: 2,
-    courseId: 2,
+    course: courses[1],
     title: "Final Exam",
-    date: "2024-01-15",
+    date: "2025-07-01",
+    time: "13:00",
     duration: "120 minutes",
     topics: "Comprehensive",
     location: "Main Hall"
   },
   {
     id: 3,
-    courseId: 3,
+    course: courses[2],
     title: "Lab Practical",
-    date: "2023-12-08",
+    date: "2025-04-15",
+    time: "11:00",
     duration: "60 minutes",
     topics: "Lab techniques and safety",
     location: "Chemistry Lab"
+  },
+  {
+    id: 4,
+    course: courses[3],
+    title: "Essay Exam",
+    date: "2025-03-20",
+    time: "10:30",
+    duration: "90 minutes",
+    topics: "Modern Turkish Literature",
+    location: "Room 105"
+  },
+  {
+    id: 5,
+    course: courses[4],
+    title: "History Quiz",
+    date: "2025-06-05",
+    time: "08:30",
+    duration: "45 minutes",
+    topics: "World War II",
+    location: "Room 110"
+  },
+  {
+    id: 6,
+    course: courses[5],
+    title: "Biology Final",
+    date: "2025-05-25",
+    time: "14:00",
+    duration: "120 minutes",
+    topics: "Genetics and Evolution",
+    location: "Biology Lab"
+  },
+  {
+    id: 7,
+    course: courses[6],
+    title: "Programming Project Exam",
+    date: "2025-04-01",
+    time: "16:00",
+    duration: "90 minutes",
+    topics: "Algorithms and Data Structures",
+    location: "Computer Lab"
+  },
+  {
+    id: 8,
+    course: courses[7],
+    title: "Art Portfolio Review",
+    date: "2025-03-10",
+    time: "12:00",
+    duration: "60 minutes",
+    topics: "Visual Arts Techniques",
+    location: "Art Studio"
+  },
+  {
+    id: 9,
+    course: courses[8],
+    title: "PE Fitness Test",
+    date: "2025-06-20",
+    time: "10:00",
+    duration: "30 minutes",
+    topics: "Physical Fitness Assessment",
+    location: "Gymnasium"
+  },
+  {
+    id: 10,
+    course: courses[9],
+    title: "Philosophy Oral Exam",
+    date: "2025-05-15",
+    time: "15:00",
+    duration: "60 minutes",
+    topics: "Major Philosophers",
+    location: "Room 210"
+  },
+  // Exams in 2025
+  {
+    id: 11,
+    course: courses[0],
+    title: "Spring Midterm",
+    date: "2025-03-12",
+    time: "10:00",
+    duration: "90 minutes",
+    topics: "Algebra and Calculus",
+    location: "Room 202"
+  },
+  {
+    id: 12,
+    course: courses[1],
+    title: "Physics Lab Final",
+    date: "2025-05-18",
+    time: "13:30",
+    duration: "120 minutes",
+    topics: "Electricity and Magnetism",
+    location: "Physics Lab"
+  },
+  {
+    id: 13,
+    course: courses[2],
+    title: "Chemistry Final",
+    date: "2025-06-22",
+    time: "09:30",
+    duration: "120 minutes",
+    topics: "Organic Chemistry",
+    location: "Chemistry Lab"
+  },
+  {
+    id: 14,
+    course: courses[3],
+    title: "Literature Final Essay",
+    date: "2025-04-10",
+    time: "11:00",
+    duration: "90 minutes",
+    topics: "Modern and Classical Literature",
+    location: "Room 106"
+  },
+  {
+    id: 15,
+    course: courses[4],
+    title: "History Final Exam",
+    date: "2025-07-01",
+    time: "08:00",
+    duration: "120 minutes",
+    topics: "20th Century History",
+    location: "Room 111"
+  },
+  {
+    id: 16,
+    course: courses[5],
+    title: "Biology Spring Quiz",
+    date: "2025-03-28",
+    time: "14:30",
+    duration: "45 minutes",
+    topics: "Cell Biology",
+    location: "Biology Lab"
+  },
+  {
+    id: 17,
+    course: courses[6],
+    title: "CS Algorithms Exam",
+    date: "2025-05-05",
+    time: "16:30",
+    duration: "90 minutes",
+    topics: "Sorting and Searching Algorithms",
+    location: "Computer Lab"
+  },
+  {
+    id: 18,
+    course: courses[7],
+    title: "Art History Exam",
+    date: "2025-04-15",
+    time: "12:30",
+    duration: "60 minutes",
+    topics: "Renaissance to Modern Art",
+    location: "Art Studio"
+  },
+  {
+    id: 19,
+    course: courses[8],
+    title: "PE Endurance Test",
+    date: "2025-06-10",
+    time: "10:30",
+    duration: "30 minutes",
+    topics: "Endurance and Strength",
+    location: "Gymnasium"
+  },
+  {
+    id: 20,
+    course: courses[9],
+    title: "Philosophy Ethics Exam",
+    date: "2025-05-20",
+    time: "15:30",
+    duration: "60 minutes",
+    topics: "Ethics and Moral Philosophy",
+    location: "Room 211"
   }
 ];
 

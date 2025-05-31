@@ -1,7 +1,7 @@
 import React from 'react';
 import { useModal } from '../../contexts/ModalProvider';
-import { SubmissionsModal } from '../../components/shared/SubmissionsModal';
-import { AssignmentDetailsModal } from '../../components/shared/AssignmentDetailsModal';
+import { SubmissionsModal } from './SubmissionsModal';
+import { AssignmentDetailsModal } from './AssignmentDetailsModal';
 import { submissions } from '../../data/assignmentsData';
 
 export const AssignmentCard = ({
