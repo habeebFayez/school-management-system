@@ -21,12 +21,26 @@ export const ExamCard = ({ exam, isPrevious,onCheckDetails, onEdit }) => {
             Duration: {exam.duration}
           </div>
           <div className="text-sm text-gray-600">
-            Location: {exam.location}
+            Location:   
+            { exam.isOnline ?
+            <span className="bg-green-100 text-green-700 ml-2 px-2 py-1 rounded-full text-sm font-medium">
+             {exam.location}
+            </span>
+            :
+            <span className="  ml-2 px-2 py-1 text-black  rounded-full text-sm font-medium">
+             {exam.location}
+            </span>
+            }
           </div>
           <div className="text-sm text-gray-600">
             Topics: {exam.topics}
           </div>
-
+          <div className="text-sm text-gray-600">
+            Number of Questions: {exam.number_of_questions}
+          </div>
+          <div className="text-sm text-gray-600">
+           Total Points: {exam.Total_Points}
+          </div>
           {(onCheckDetails || onEdit) && (
             <div className="space-y-3">
              

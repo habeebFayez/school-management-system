@@ -5,13 +5,14 @@ import ExamCard from '../../components/shared/ExamCard';
 import { exams as initialExams, courses } from '../../data/mockData';
 import { useModal } from '../../contexts/ModalProvider';
 import { CreateExamModal } from '../../components/teacher/CreateExamModal';
+import { ExamGradesTable } from '../../components/shared/ExamGradesTable';
+
 
 const Exams = () => {
   const { showModal, hideModal } = useModal();
 
   // Exams state
   const [exams, setExams] = useState(initialExams);
-  const [modalOpen, setModalOpen] = useState(false);
   const [editingExam, setEditingExam] = useState(null);
 
   // State for search/filter controls
@@ -49,7 +50,7 @@ const Exams = () => {
 
   // Handler for details (optional, can be expanded)
   const handleCheckDetails = (exam) => {
-    alert(`Exam: ${exam.title}\nCourse: ${exam.course?.name}`);
+    showModal(<ExamGradesTable exam={exam} onClose={hideModal} />)
   };
 
   // Create exam handler
@@ -73,12 +74,13 @@ const Exams = () => {
           : e
       )
     );
+    
   };
 
   // Open modal for create
   const openCreateModal = () => {
    showModal( <CreateExamModal
-    isOpen={modalOpen}
+    isOpen={true}
     onClose={ hideModal}
     initialExam={null}
     isPrevious={activeTab === 'previous'}
@@ -89,7 +91,7 @@ const Exams = () => {
   // Open modal for edit
   const openEditModal = (exam) => {
    showModal( <CreateExamModal
-    isOpen={modalOpen}
+    isOpen={true}
     onClose={ hideModal}
     initialExam={exam}
     isPrevious={activeTab === 'previous'}
