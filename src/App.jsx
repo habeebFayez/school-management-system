@@ -9,6 +9,7 @@ import Exams from './pages/Teacher/Exams';
 import Assignments from './pages/Teacher/Assignments';
 import GradesTeacher from './pages/Teacher/Grades';
 import Attendance from './pages/Teacher/Attendance';
+import AttendanceDaily from './pages/Teacher/attendanceDaily';
 import Inbox from './pages/Teacher/Inbox';
 import TeacherProfile from './pages/Teacher/TeacherProfile';
 import StudentListPage from "./pages/Teacher/StudentListPage";
@@ -82,6 +83,8 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
+      
+
               <Route 
                 path="/teacher/assignments" 
                 element={
@@ -98,14 +101,10 @@ function App() {
                   </ProtectedRoute>
                 } 
               />
-              <Route 
-                path="/teacher/attendance" 
-                element={
-                  <ProtectedRoute>
-                    <Attendance />
-                  </ProtectedRoute>
-                } 
-              />
+              <Route path="/teacher/attendance" element={<Attendance />} />
+              <Route path="/teacher/attendance-daily" element={<AttendanceDaily />} />
+
+
               <Route 
                 path="/teacher/inbox" 
                 element={
