@@ -3,13 +3,16 @@ import Layout from '../../components/layouts/Layout'
 import { courses, attendanceRecords } from '../../data/mockData';
 import { Search, Plus, Filter } from 'lucide-react';
 import { AttendanceTable } from '../../components/teacher/AttendanceTable';
+import { useModal } from '../../contexts/ModalProvider';
+import { CreateNewAttendanceList } from '../../components/teacher/CreateNewAttendanceList';
 
 const AttendanceDaily = () => {
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 4, 11))
+    const { showModal, hideModal } = useModal();
+
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 4, 22))
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState("All") // State for course filter
   const [selectedClass, setSelectedClass] = useState("All") // State for class filter
-  const [showCreateModal, setShowCreateModal] = useState(false); // State for create modal visibility
 
   const formatDate = (date) => date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
 
@@ -26,10 +29,6 @@ const AttendanceDaily = () => {
     // Limit navigation to the range of dates available in mockData
     if (newDate <= new Date(2025, 6, 31)) setCurrentDate(newDate)
   }
-
-  // Functions to open and close the create modal
-  const openCreateModal = () => setShowCreateModal(true);
-  const closeCreateModal = () => setShowCreateModal(false);
 
   const formattedCurrentDate = currentDate.toISOString().split('T')[0];
 
@@ -54,12 +53,29 @@ const AttendanceDaily = () => {
     )
   )];
 
+  // Handler function for saving a new attendance list (placeholder)
+  const handleSaveNewAttendance = (newAttendanceData) => {
+    console.log("New Attendance Data to Save:", newAttendanceData);
+    // Here you would typically send this data to your backend or update mockData
+    hideModal(); // Close the modal after saving/processing
+  };
+
+  const openCreateModal = () => showModal( 
+ <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+ <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">       {/* Use the new CreateNewAttendanceList component */}
+       <CreateNewAttendanceList
+         selectedDate={formattedCurrentDate}
+         selectedCourse={selectedCourse}
+         selectedClass={selectedClass}
+         onSave={handleSaveNewAttendance} // Pass the save handler
+         onCancel={hideModal} // Pass the cancel handler
+       />
+       </div>
+       </div>
+    );
 
   return (
-    <Layout currentPage={'AttendanceDaily'}>
       <div className="min-h-screen bg-white w-full px-6 py-6">
-        <h1 className="text-2xl font-bold text-black mb-6">Attendance</h1>
-
         {/* Create Button */}
         <div className="flex justify-end mb-4">
           <button
@@ -160,26 +176,7 @@ const AttendanceDaily = () => {
             />
           </div>
         )}
-
-        {/* Create Attendance Modal */}
-        {showCreateModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-xl max-w-3xl w-full mx-4">
-              <h2 className="text-xl font-semibold text-center mb-4">Take Attendance for {formatDate(currentDate)}</h2>
-              <AttendanceTable
-                selectedDate={formattedCurrentDate}
-                searchTerm="" // No search term for creation
-                selectedCourse={selectedCourse} // Use selected course for filtering students to display
-                selectedClass={selectedClass}   // Use selected class for filtering students to display
-                isCreating={true} // Indicate creation mode
-                onClose={closeCreateModal}
-              />
-            </div>
-          </div>
-        )}
-
       </div>
-    </Layout>
   )
 }
 

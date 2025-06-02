@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { attendanceRecords } from "../../data/mockData"
 
-export const AttendanceTable = ({ onClose, selectedDate, searchTerm, selectedCourse, selectedClass }) => {
+export const AttendanceTable = ({ onClose, selectedDate, searchTerm,isCreating, selectedCourse, selectedClass }) => {
   const [editMode, setEditMode] = useState(false)
   // Use state to hold a copy of the attendance records for editing
   const [editableRecords, setEditableRecords] = useState(structuredClone(attendanceRecords));
