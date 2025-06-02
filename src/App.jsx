@@ -30,6 +30,7 @@ import { NotificationProvider } from './contexts/NotificationContext';
 import NotFound from './pages/NotFound';
 import React from 'react';
 import { ModalProvider } from './contexts/ModalProvider';
+import AttendanceDaily from './pages/Teacher/AttendanceDaily';
 
 
 
@@ -103,6 +104,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Attendance />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/teacher/attendance-daily" 
+                element={
+                  <ProtectedRoute>
+                    <AttendanceDaily />
                   </ProtectedRoute>
                 } 
               />

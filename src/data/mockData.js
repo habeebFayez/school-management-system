@@ -479,7 +479,6 @@ const generateMockGrades = (exam, allCourses) => {
     } else {
       feedback = "Student did not attend the exam.";
     }
-console.log('score :',);
 
     grades.push({
       studentId: student.id,
@@ -750,7 +749,7 @@ export const exams = [
   },
   {
     id: 15,
-    course: courses[4],
+    course: courses[0],
     title: "History Final Exam",
     date: "2025-07-01",
     time: "08:00",
@@ -786,7 +785,7 @@ export const exams = [
   },
   {
     id: 17,
-    course: courses[6],
+    course: courses[0],
     title: "Computer Science Algorithms Exam",
     date: "2025-05-05",
     time: "16:30",
@@ -1085,3 +1084,94 @@ export const dashboardStats = {
     attendanceRate: "95%"
   }
 };
+
+// Helper function to generate random attendance status
+const getRandomAttendanceStatus = () => {
+  const statuses = ['attended', 'absent'];
+  return statuses[Math.floor(Math.random() * statuses.length)];
+};
+
+// Helper function to generate random justification file name
+const generateJustificationFileName = (studentName, date) => {
+  const formattedDate = date.replace(/-/g, '');
+  return `justification_${studentName.toLowerCase().replace(/\s+/g, '_')}_${formattedDate}.pdf`;
+};
+
+// Generate attendance records for a specific date
+const generateAttendanceForDate = (date) => {
+  return courses.map(course => {
+    // Group students by their class
+    const studentsByClass = course.students.reduce((acc, student) => {
+      const studentClass = student.class;
+      if (!acc[studentClass]) {
+        acc[studentClass] = [];
+      }
+      acc[studentClass].push(student);
+      return acc;
+    }, {});
+
+    // Create attendance records for each class
+    const classAttendance = Object.entries(studentsByClass).map(([className, students]) => {
+      const studentAttendance = students.map(student => {
+        const status = getRandomAttendanceStatus();
+        return {
+          studentId: student.id,
+          studentName: student.name,
+          avatar : student.avatar,
+          status: status,
+          justification: status === 'absent' ? generateJustificationFileName(student.name, date) : null,
+          date: date
+        };
+      });
+
+      return {
+        className: className,
+        students: studentAttendance
+      };
+    });
+
+    return {
+      courseId: course.id,
+      courseName: course.name,
+      courseCode: course.code,
+      date: date,
+      classes: classAttendance
+    };
+  });
+};
+
+// Generate attendance records for a range of dates
+export const attendanceRecords = [
+  // Last week's records
+  ...generateAttendanceForDate('2025-05-11'),
+  ...generateAttendanceForDate('2025-05-12'),
+  ...generateAttendanceForDate('2025-05-13'),
+  ...generateAttendanceForDate('2025-05-14'),
+  ...generateAttendanceForDate('2025-05-15'),
+  ...generateAttendanceForDate('2025-05-16'),
+  ...generateAttendanceForDate('2025-05-17'),
+  // Current week's records
+  ...generateAttendanceForDate('2025-05-18'),
+  ...generateAttendanceForDate('2025-05-19'),
+  ...generateAttendanceForDate('2025-05-20'),
+  ...generateAttendanceForDate('2025-05-21'),
+  ...generateAttendanceForDate('2025-05-22'),
+  ...generateAttendanceForDate('2025-05-23'),
+  ...generateAttendanceForDate('2025-05-24'),
+  // Next week's records
+  ...generateAttendanceForDate('2025-05-25'),
+  ...generateAttendanceForDate('2025-05-26'),
+  ...generateAttendanceForDate('2025-05-27'),
+  ...generateAttendanceForDate('2025-05-28'),
+  ...generateAttendanceForDate('2025-05-29'),
+  ...generateAttendanceForDate('2025-05-30'),
+  ...generateAttendanceForDate('2025-05-31'),
+
+  ...generateAttendanceForDate('2025-06-01'),
+  ...generateAttendanceForDate('2025-06-02'),
+  ...generateAttendanceForDate('2025-06-03'),
+  ...generateAttendanceForDate('2025-06-04'),
+  ...generateAttendanceForDate('2025-06-05'),
+  ...generateAttendanceForDate('2025-06-06'),
+  ...generateAttendanceForDate('2025-06-07'),
+];
