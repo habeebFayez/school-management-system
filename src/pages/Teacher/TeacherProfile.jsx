@@ -79,10 +79,10 @@ const user = location.state?.teacher || authUser;
       <div className=" px-0">
           {/* Courses Table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 ">
-          <Table isActions={false} data={courses} title={'Classes Exams Performance'} columns={coursesColumns} user={user}/>
+          <Table isActions={false} data={courses} title={'Classes Exams Performance'} columns={coursesColumns} user={authUser}/>
         
          {/*   Schedule Table  */}
-          <Table isActions={false}  data={schedule} title={'Free Time Schedule'} columns={scheduleColumns} user={user}/>
+          <Table isActions={false}  data={schedule} title={'Free Time Schedule'} columns={scheduleColumns} user={authUser}/>
       
         </div>
         
@@ -96,7 +96,7 @@ const user = location.state?.teacher || authUser;
             dateAdded="2025-04-10"
             lastUpdate="2025-04-10 19:38:52"
             isUpdated={true}
-            user={user}
+            user={authUser}
 
           />
           
@@ -106,9 +106,9 @@ const user = location.state?.teacher || authUser;
             dateAdded="2025-04-10"
             lastUpdate="2025-04-10"
             isUpdated={false}
-            user={user}
+            user={authUser}
           />
-           {user?.role === 'teacher'&& 
+           {authUser?.role === 'teacher'&& 
           <div className="mt-2 flex justify-center">
           <button className=" w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 ">
             Send New Announcement

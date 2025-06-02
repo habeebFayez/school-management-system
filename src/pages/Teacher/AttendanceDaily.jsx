@@ -75,7 +75,7 @@ const AttendanceDaily = () => {
     );
 
   return (
-      <div className="min-h-screen bg-white w-full px-6 py-6">
+      <div className="min-h-screen bg-white w-full py-6">
         {/* Create Button */}
         <div className="flex justify-end mb-4">
           <button
