@@ -1,0 +1,186 @@
+import React, { useState } from 'react'
+import Layout from '../../components/layouts/Layout'
+import { courses, attendanceRecords } from '../../data/mockData';
+import { Search, Plus, Filter } from 'lucide-react';
+import { AttendanceTable } from '../../components/teacher/AttendanceTable';
+
+const AttendanceDaily = () => {
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 4, 11))
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState("All") // State for course filter
+  const [selectedClass, setSelectedClass] = useState("All") // State for class filter
+  const [showCreateModal, setShowCreateModal] = useState(false); // State for create modal visibility
+
+  const formatDate = (date) => date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+
+  const goToPreviousDay = () => {
+    const newDate = new Date(currentDate)
+    newDate.setDate(newDate.getDate() - 1)
+    // Limit navigation to the range of dates available in mockData
+    if (newDate >= new Date(2025, 4, 11)) setCurrentDate(newDate)
+  }
+
+  const goToNextDay = () => {
+    const newDate = new Date(currentDate)
+    newDate.setDate(newDate.getDate() + 1)
+    // Limit navigation to the range of dates available in mockData
+    if (newDate <= new Date(2025, 6, 31)) setCurrentDate(newDate)
+  }
+
+  // Functions to open and close the create modal
+  const openCreateModal = () => setShowCreateModal(true);
+  const closeCreateModal = () => setShowCreateModal(false);
+
+  const formattedCurrentDate = currentDate.toISOString().split('T')[0];
+
+  // Check if the current date is a weekend (Saturday or Sunday)
+  const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6;
+
+  // Filter attendance records for the selected date
+  const dateRecords = attendanceRecords.filter(record => record.date === formattedCurrentDate);
+
+  // Get unique courses from the date records
+  const availableCourses = ["All", ...new Set(dateRecords.map(record => record.courseName))];
+
+  // Get the selected course record(s) for class filtering
+  const selectedCourseRecords = selectedCourse === "All" 
+    ? dateRecords 
+    : dateRecords.filter(record => record.courseName === selectedCourse);
+
+  // Get unique classes from the selected course record(s)
+  const availableClasses = ["All", ...new Set(
+    selectedCourseRecords.flatMap(record => 
+      record.classes.map(cls => cls.className)
+    )
+  )];
+
+
+  return (
+    <Layout currentPage={'AttendanceDaily'}>
+      <div className="min-h-screen bg-white w-full px-6 py-6">
+        <h1 className="text-2xl font-bold text-black mb-6">Attendance</h1>
+
+        {/* Create Button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={openCreateModal}
+            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 flex items-center gap-2"
+          >
+            <Plus size={20} />
+            Create New Attendance List
+          </button>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="flex gap-4 mb-6 items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" size={20} />
+            <input
+              type="text"
+              placeholder="Search students by name or ID..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-10 pl-10 pr-4 py-2 bg-gray-50 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Course Filter */}
+          <div className='flex gap-2 items-center '>
+            <label htmlFor="courseFilter" className="font-medium text-gray-700">Course:</label>
+            <select
+              id="courseFilter"
+              value={selectedCourse}
+              onChange={(e) => {
+                setSelectedCourse(e.target.value);
+                setSelectedClass("All"); // Reset class when course changes
+              }}
+              className="h-10 min-w-36 border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {availableCourses.map((course) => (
+                <option key={course} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Class Filter */}
+          <div className='flex gap-2 items-center '>
+            <label htmlFor="classFilter" className="font-medium text-gray-700">Class:</label>
+            <select
+              id="classFilter"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="h-10 border min-w-36 border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {availableClasses.map((className) => (
+                <option key={className} value={className}>
+                  {className}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Date Navigation */}
+        <div className="flex items-center justify-center mb-6">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={goToPreviousDay}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+            >
+              &#8592; Previous Day
+            </button>
+            <span className="text-lg font-semibold text-black min-w-[150px] text-center">
+              {formatDate(currentDate)}
+            </span>
+            <button
+              onClick={goToNextDay}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+            >
+              Next Day &#8594;
+            </button>
+          </div>
+        </div>
+
+        {/* Attendance Content - Conditional Rendering */}
+        {isWeekend ? (
+          <div className="text-center text-xl font-semibold text-gray-600 py-10">
+            It's a weekend. No attendance data available.
+          </div>
+        ) : (
+          // Attendance Table (only shown on weekdays)
+          <div className="border rounded-lg overflow-hidden p-6">
+            <AttendanceTable
+              selectedDate={formattedCurrentDate}
+              searchTerm={searchTerm}
+              selectedCourse={selectedCourse}
+              selectedClass={selectedClass}
+              onClose={() => {}} // onClose is not strictly needed here but keeping it as it's a prop
+            />
+          </div>
+        )}
+
+        {/* Create Attendance Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-xl max-w-3xl w-full mx-4">
+              <h2 className="text-xl font-semibold text-center mb-4">Take Attendance for {formatDate(currentDate)}</h2>
+              <AttendanceTable
+                selectedDate={formattedCurrentDate}
+                searchTerm="" // No search term for creation
+                selectedCourse={selectedCourse} // Use selected course for filtering students to display
+                selectedClass={selectedClass}   // Use selected class for filtering students to display
+                isCreating={true} // Indicate creation mode
+                onClose={closeCreateModal}
+              />
+            </div>
+          </div>
+        )}
+
+      </div>
+    </Layout>
+  )
+}
+
+export default AttendanceDaily
