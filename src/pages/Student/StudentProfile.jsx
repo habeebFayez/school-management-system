@@ -125,7 +125,7 @@ import { Monitor, ChartNoAxesCombined,MessageCircleMore, LibraryBig, Award, Eye 
     'Assignments': grade.assignment ? <AverageDisplay value={grade.assignment} size="md" /> : <AverageDisplay value={null} size="md" />,
     Final: grade.final ? <AverageDisplay value={grade.final} size="md" /> : <AverageDisplay value={null} size="md" />,
     Average: grade.average ? <AverageDisplay value={grade.average} size="md" /> : <AverageDisplay value={null} size="md" />,
-    Status: grade.status
+    Status: grade.status,
   }));
   const actionComponent = (
     <button className="p-2 hover:bg-gray-100 -ml-4 rounded-full transition-colors">

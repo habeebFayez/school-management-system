@@ -13,21 +13,23 @@ export const TeachersList   = () => {
   const transformedData = courses
   .filter(course => course.students.some(student => student.id === user.id))
   .map(course => ({
-    Name: {
+    info: {
       name: course.teacher.name,
       avatar: course.teacher.avatar,
+      fullTeacherData:course.teacher,
     },
     Course: course.code,
     Status: course.teacher.status,
     Office_Hours: 'Mon-Wed, 2–4 PM',
     Contact: course.teacher.email,
+   
   }));
 
   return (
     <Layout currentPage={'TeachersList'}>
         <Table
               data={transformedData}
-              title="Courses"
+              title="All Teachers"
               columns={columns}
               user={{ role: 'student' }}
             />

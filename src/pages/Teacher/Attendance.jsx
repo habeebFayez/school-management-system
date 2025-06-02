@@ -6,7 +6,7 @@ import AttendanceDaily from './AttendanceDaily'; // Import the existing Attendan
 import WeeklyAttendanceTable from '../../components/shared/WeeklyAttendanceTable'; // Import the new weekly table component
 
 // Assuming AttendanceDaily.jsx had these imports and state
-import { format } from 'date-fns';
+import { format, startOfWeek, endOfWeek } from 'date-fns';
 import { useModal } from '../../contexts/ModalProvider';
 import CreateNewAttendanceList from '../../components/teacher/CreateNewAttendanceList';
 
@@ -22,15 +22,18 @@ const Attendance = () => {
   // const [currentPage, setCurrentPage] = useState(1) // Not used with the new table approach
 
   // State for view selection (Day/Week)
-  const [viewType, setViewType] = useState('day'); // 'day' or 'week'
+  const [viewType, setViewType] = useState('week'); // 'day' or 'week'
 
   // State for Daily View (from previous AttendanceDaily.jsx logic)
   const [currentDate, setCurrentDate] = useState(new Date());
   const formattedCurrentDate = format(currentDate, 'yyyy-MM-dd'); // Format for input and filtering
 
   // State for Weekly View (new)
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const initialStartDate = format(startOfWeek(new Date()), 'yyyy-MM-dd');
+  const initialEndDate = format(endOfWeek(new Date()), 'yyyy-MM-dd');
+
+  const [startDate, setStartDate] = useState(initialStartDate);
+  const [endDate, setEndDate] = useState(initialEndDate);
 
   // State for Filters and Search (from previous AttendanceDaily.jsx logic)
   const [selectedCourse, setSelectedCourse] = useState('All');
@@ -113,41 +116,52 @@ const Attendance = () => {
        const start = new Date(startDate);
        const end = new Date(endDate);
 
-       // Filter records by date range
-       const filteredByDateRange = attendanceRecords.filter(record => {
-           const recordDate = new Date(record.date);
-           return recordDate >= start && recordDate <= end;
-       });
+       const weeklyData = {}; // Use an object to group by studentId
 
-       const filteredByCourse = selectedCourse === 'All'
-           ? filteredByDateRange
-           : filteredByDateRange.filter(record => record.courseName === selectedCourse);
+       // Iterate through the nested attendanceRecords structure
+       attendanceRecords.forEach(dateRecord => {
+           // Check if the record date is within the selected range
+           const recordDate = new Date(dateRecord.date);
+           if (recordDate >= start && recordDate <= end) {
 
-       const filteredByClass = selectedClass === 'All'
-           ? filteredByCourse
-           : filteredByCourse.filter(record => record.className === selectedClass);
+               // Filter by selected course if not "All"
+               const filteredByCourse = selectedCourse === 'All'
+                   ? [dateRecord] // If All, include the current dateRecord for further class filtering
+                   : (dateRecord.courseName === selectedCourse ? [dateRecord] : []);
 
-       const filteredBySearch = searchTerm
-           ? filteredByClass.filter(record =>
-               record.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               String(record.studentId).includes(searchTerm)
-             )
-           : filteredByClass;
+               filteredByCourse.forEach(courseRecord => {
+                   courseRecord.classes.forEach(classRecord => {
+                       // Filter by selected class if not "All"
+                       if (selectedClass === 'All' || classRecord.className === selectedClass) {
+                           classRecord.students.forEach(studentAttendance => {
+                               // Apply search term filter
+                               const lowerCaseSearchTerm = searchTerm.toLowerCase();
+                               const matchesSearch = searchTerm
+                                   ? studentAttendance.studentName.toLowerCase().includes(lowerCaseSearchTerm) ||
+                                     String(studentAttendance.studentId).includes(searchTerm) // Assuming studentId is a number or string
+                                   : true; // If no search term, include all
 
-       // Group attendance records by student and date for weekly view
-       const weeklyData = {};
-       filteredBySearch.forEach(record => {
-           if (!weeklyData[record.studentId]) {
-               weeklyData[record.studentId] = {
-                   studentId: record.studentId,
-                   studentName: record.studentName,
-                   avatar: record.avatar,
-                   courseName: record.courseName, // Keep course/class for display/filtering
-                   className: record.className,
-                   attendanceByDate: {}
-               };
+                               if (matchesSearch) {
+                                   // If student not yet in weeklyData, add their basic info
+                                   if (!weeklyData[studentAttendance.studentId]) {
+                                       weeklyData[studentAttendance.studentId] = {
+                                           studentId: studentAttendance.studentId,
+                                           studentName: studentAttendance.studentName,
+                                           avatar: studentAttendance.avatar,
+                                           // Store course and class name for display/context
+                                           courseName: courseRecord.courseName,
+                                           className: classRecord.className,
+                                           attendanceByDate: {}
+                                       };
+                                   }
+                                   // Add the attendance record for this date
+                                   weeklyData[studentAttendance.studentId].attendanceByDate[dateRecord.date] = studentAttendance;
+                               }
+                           });
+                       }
+                   });
+               });
            }
-           weeklyData[record.studentId].attendanceByDate[record.date] = record;
        });
 
        const studentsForWeeklyView = Object.values(weeklyData);
@@ -172,7 +186,7 @@ const Attendance = () => {
 
   return (
     <Layout currentPage={'Attendance'}>
-      <div className="min-h-screen bg-white w-full px-6 py-2">
+      <div className="max-h-screen bg-white max-w-6xl  overflow-x-auto px-6 py-2">
       {/* Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Attendance</h1> {/* Changed title slightly */}
@@ -213,8 +227,8 @@ const Attendance = () => {
             <>
             
              {/* Filters and Date Selection */}
-        <div className="bg-white rounded-lg p-2 mb-6">
-            <div className="flex flex-wrap items-center gap-4 mb-6">
+        <div className="bg-white rounded-lg p-2 ">
+            <div className="flex flex-wrap items-center gap-4 ">
                  {/* Search Input */}
                 <div className="flex-grow max-w-xs">
                     <label htmlFor="search" className="sr-only">Search Students</label>
@@ -303,13 +317,14 @@ const Attendance = () => {
 
             </div>
         </div>
-        </>
+               <WeeklyAttendanceTable attendanceData={loadWeeklyStudents()} startDate={startDate} endDate={endDate} />
+            </>
            )}
         </div>
 
       </div>
 
-
+     
 
     </Layout>
   )
@@ -317,7 +332,7 @@ const Attendance = () => {
 
 export default Attendance;
 
-// Keeping ClassTab component for now, but review its usage later
+// Keeping ClassTab component that was made by waleed here for now, but review its usage later
 const ClassTab = ({ label, active = false, onClick }) => (
   <button
     onClick={onClick}

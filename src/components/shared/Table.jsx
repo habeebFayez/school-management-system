@@ -18,6 +18,8 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
       } } });
     }else  if (title === "All Students") {
       navigate(`/student/student-profile/${index}`, { state: { student: row.info.fullStudentData } });
+    }else  if (title === "All Teachers") {
+      navigate(`/teacher/teacher-profile/${index}`, { state: { teacher: row.info.fullTeacherData } });
     }
   };
 
@@ -77,7 +79,7 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
         {user?.role === 'teacher' && !isActions &&
           <div className='bg-gradient-to-br from-[#10062B] to-[#4F0129] flex justify-center items-center h-9 w-9 rounded-full hover:opacity-90 cursor-pointer'>
             <Pencil size={19} color='white' />
-          </div>
+          </div>  
         }
       </div>
 
