@@ -440,8 +440,11 @@ const generateMockGrades = (exam, allCourses) => {
 
   const enrolledStudents = associatedCourse.students;
   // Select a random subset of enrolled students (50% to 100% of enrolled, max 15)
-  const numberOfStudentsToGrade = getRandomInt(Math.ceil(enrolledStudents.length * 0.5), Math.min(enrolledStudents.length, 15));
-  const studentsForExam = enrolledStudents.sort(() => 0.5 - Math.random()).slice(0, numberOfStudentsToGrade); // Shuffle and take a subset
+  // const numberOfStudentsToGrade = getRandomInt(Math.ceil(enrolledStudents.length * 0.5), Math.min(enrolledStudents.length, 15));
+  // const studentsForExam = enrolledStudents.sort(() => 0.5 - Math.random()).slice(0, numberOfStudentsToGrade); // Shuffle and take a subset
+
+  // Generate grades for all enrolled students
+  const studentsForExam = enrolledStudents; // Include all students
 
   studentsForExam.forEach(student => {
     const attended = getRandomBoolean();
@@ -452,12 +455,12 @@ const generateMockGrades = (exam, allCourses) => {
 
     if (attended) {
       // Generate a score between 0 and Total_Points
-      score = getRandomInt(0, exam.Total_Points);
+      score = getRandomInt(1, exam.Total_Points);
       // Calculate percentage based on the actual score and Total_Points
       percentage = Math.round((score / exam.Total_Points) * 100);
       // Check if passed based on the exam's PassingGrade
       passed = percentage >= exam.PassingGrade;
-      
+
       // Generate appropriate feedback based on performance
       if (percentage >= exam.PassingGrade) {
         if (percentage >= 90) {
@@ -477,6 +480,10 @@ const generateMockGrades = (exam, allCourses) => {
         }
       }
     } else {
+      // If not attended, set score to 0 and percentage to 0
+      score = 0;
+      percentage = 0;
+      passed = false; // Did not attend, so did not pass
       feedback = "Student did not attend the exam.";
     }
 
@@ -497,43 +504,43 @@ export const exams = [
   {
     id: 1,
     course: courses[0],
-    title: "Mathematics Midterm Exam",
+    title: "Midterm Exam",
     date: "2025-05-10",
     time: "09:00",
     duration: 90,
     topics: "Chapters 1-5",
     location: "Online",
     isOnline: true,
-    Total_Points: 10,
+    Total_Points: 20,
     isRandomQuestions: true,
     number_of_questions: 10,
-    PassingGrade: 60,
+    PassingGrade: 50,
     description: "This midterm exam covers fundamental algebra and calculus concepts from chapters 1-5. Students should bring their calculators and formula sheets. The exam will include both multiple-choice and problem-solving questions.",
     questions: generateMockQuestions(1, 10),
-    grades: generateMockGrades({ id: 1, course: courses[0], Total_Points: 10, PassingGrade: 60 }, courses)
+    grades: generateMockGrades({ id: 1, course: courses[0], Total_Points: 20, PassingGrade: 50 }, courses)
   },
   {
     id: 2,
     course: courses[1],
-    title: "Physics Final Exam",
+    title: "Final Exam",
     date: "2025-07-01",
     time: "13:00",
     duration: 120,
     topics: "Comprehensive",
     location: "Main Hall",
     isOnline: false,
-    Total_Points: 150,
+    Total_Points: 50,
     isRandomQuestions: false,
     number_of_questions: 15,
-    PassingGrade: 70,
+    PassingGrade: 50,
     description: "Comprehensive final exam covering all physics principles and mechanics taught throughout the semester. Students must bring their own calculators and formula sheets. The exam includes theoretical questions and practical problem-solving scenarios.",
     questions: generateMockQuestions(2, 15),
-    grades: generateMockGrades({ id: 2, course: courses[1], Total_Points: 150, PassingGrade: 70 }, courses)
+    grades: generateMockGrades({ id: 2, course: courses[1], Total_Points: 50, PassingGrade: 50 }, courses)
   },
   {
     id: 3,
     course: courses[2],
-    title: "Chemistry Lab Practical",
+    title: "Lab Practical",
     date: "2025-04-15",
     time: "11:00",
     duration: 60,
@@ -551,7 +558,7 @@ export const exams = [
   {
     id: 4,
     course: courses[3],
-    title: "Turkish Literature Essay Exam",
+    title: "Quiz",
     date: "2025-03-20",
     time: "10:30",
     duration: 90,
@@ -561,15 +568,15 @@ export const exams = [
     Total_Points: 10,
     isRandomQuestions: true,
     number_of_questions: 8,
-    PassingGrade: 65,
+    PassingGrade: 50,
     description: "Essay-based exam focusing on modern Turkish literature. Students will analyze selected works and demonstrate their understanding of literary techniques and themes. Bring your course materials and notes for reference.",
     questions: generateMockQuestions(4, 8),
-    grades: generateMockGrades({ id: 4, course: courses[3], Total_Points: 10, PassingGrade: 65 }, courses)
+    grades: generateMockGrades({ id: 4, course: courses[3], Total_Points: 10, PassingGrade: 50 }, courses)
   },
   {
     id: 5,
     course: courses[4],
-    title: "History Quiz",
+    title: "Quiz",
     date: "2025-06-05",
     time: "08:30",
     duration: 45,
@@ -587,25 +594,25 @@ export const exams = [
   {
     id: 6,
     course: courses[5],
-    title: "Biology Final Exam",
+    title: "Final Exam",
     date: "2025-05-25",
     time: "14:00",
     duration: 120,
     topics: "Genetics and Evolution",
     location: "Biology Lab",
     isOnline: false,
-    Total_Points: 10,
+    Total_Points: 50,
     isRandomQuestions: false,
     number_of_questions: 12,
-    PassingGrade: 70,
+    PassingGrade: 50,
     description: "Comprehensive final exam on genetics and evolution. The exam includes theoretical questions, practical applications, and case studies. Students should bring their lab notebooks and any relevant study materials.",
     questions: generateMockQuestions(6, 12),
-    grades: generateMockGrades({ id: 6, course: courses[5], Total_Points: 10, PassingGrade: 70 }, courses)
+    grades: generateMockGrades({ id: 6, course: courses[5], Total_Points: 50, PassingGrade: 50 }, courses)
   },
   {
     id: 7,
     course: courses[6],
-    title: "Computer Science Programming Project Exam",
+    title: "Project",
     date: "2025-04-01",
     time: "16:00",
     duration: 90,
@@ -615,15 +622,15 @@ export const exams = [
     Total_Points: 10,
     isRandomQuestions: false,
     number_of_questions: 10,
-    PassingGrade: 75,
+    PassingGrade: 50,
     description: "Practical programming exam focusing on algorithms and data structures. Students will implement solutions to given problems using their preferred programming language. The exam tests both theoretical knowledge and practical coding skills.",
     questions: generateMockQuestions(7, 10),
-    grades: generateMockGrades({ id: 7, course: courses[6], Total_Points: 10, PassingGrade: 75 }, courses)
+    grades: generateMockGrades({ id: 7, course: courses[6], Total_Points: 10, PassingGrade: 50 }, courses)
   },
   {
     id: 8,
     course: courses[7],
-    title: "Art Portfolio Review",
+    title: "Quiz",
     date: "2025-03-10",
     time: "12:00",
     duration: 60,
@@ -633,15 +640,15 @@ export const exams = [
     Total_Points: 5,
     isRandomQuestions: false,
     number_of_questions: 5,
-    PassingGrade: 60,
+    PassingGrade: 50,
     description: "Portfolio review and practical assessment of visual arts techniques. Students will present their work and demonstrate their understanding of various artistic methods. Bring your portfolio and necessary art supplies.",
     questions: generateMockQuestions(8, 5),
-    grades: generateMockGrades({ id: 8, course: courses[7], Total_Points: 5, PassingGrade: 60 }, courses)
+    grades: generateMockGrades({ id: 8, course: courses[7], Total_Points: 5, PassingGrade: 50 }, courses)
   },
   {
     id: 9,
     course: courses[8],
-    title: "Physical Education Fitness Test",
+    title: "Quiz",
     date: "2025-06-20",
     time: "10:00",
     duration: 30,
@@ -659,116 +666,116 @@ export const exams = [
   {
     id: 10,
     course: courses[9],
-    title: "Philosophy Oral Exam",
+    title: "Final Exam",
     date: "2025-05-15",
     time: "15:00",
     duration: 60,
     topics: "Major Philosophers",
     location: "Online",
     isOnline: true,
-    Total_Points: 10,
+    Total_Points: 50,
     isRandomQuestions: false,
     number_of_questions: 8,
-    PassingGrade: 65,
+    PassingGrade: 50,
     description: "Oral examination covering major philosophers and their contributions. Students will discuss philosophical concepts and demonstrate their understanding through dialogue. The exam tests both knowledge and critical thinking skills.",
     questions: generateMockQuestions(10, 8),
-    grades: generateMockGrades({ id: 10, course: courses[9], Total_Points: 10, PassingGrade: 65 }, courses)
+    grades: generateMockGrades({ id: 10, course: courses[9], Total_Points: 50, PassingGrade: 50 }, courses)
   },
   // Exams in 2025
   {
     id: 11,
     course: courses[0],
-    title: "Mathematics Spring Midterm",
+    title: "Midterm Exam",
     date: "2025-03-12",
     time: "10:00",
     duration: 90,
     topics: "Algebra and Calculus",
     location: "Online",
     isOnline: true,
-    Total_Points: 10,
+    Total_Points: 20,
     isRandomQuestions: true,
     number_of_questions: 10,
-    PassingGrade: 60,
+    PassingGrade: 50,
     description: "Spring midterm exam covering advanced algebra and calculus topics. Students should bring their calculators and formula sheets. The exam includes both theoretical questions and practical problem-solving exercises.",
     questions: generateMockQuestions(11, 10),
-    grades: generateMockGrades({ id: 11, course: courses[0], Total_Points: 10, PassingGrade: 60 }, courses)
+    grades: generateMockGrades({ id: 11, course: courses[0], Total_Points: 20, PassingGrade: 50 }, courses)
   },
   {
     id: 12,
     course: courses[1],
-    title: "Physics Lab Final",
+    title: "Final Exam",
     date: "2025-05-18",
     time: "13:30",
     duration: 120,
     topics: "Electricity and Magnetism",
     location: "Physics Lab",
     isOnline: false,
-    Total_Points: 5,
+    Total_Points: 50,
     isRandomQuestions: false,
     number_of_questions: 5,
     PassingGrade: 50,
     description: "Laboratory-based final exam focusing on electricity and magnetism experiments. Students must demonstrate proper lab techniques and safety procedures. Bring your lab notebook and necessary safety equipment.",
     questions: generateMockQuestions(12, 5),
-    grades: generateMockGrades({ id: 12, course: courses[1], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 12, course: courses[1],Total_Points: 50, PassingGrade: 50 }, courses)
   },
   {
     id: 13,
     course: courses[2],
-    title: "Chemistry Final",
+    title: "Final Exam",
     date: "2025-06-22",
     time: "09:30",
     duration: 120,
     topics: "Organic Chemistry",
     location: "Chemistry Lab",
     isOnline: false,
-    Total_Points: 10,
+    Total_Points: 50,
     isRandomQuestions: true,
     number_of_questions: 10,
-    PassingGrade: 70,
+    PassingGrade: 50,
     description: "Comprehensive final exam on organic chemistry principles and reactions. The exam includes theoretical questions and practical applications. Students should bring their molecular model kits and periodic tables.",
     questions: generateMockQuestions(13, 10),
-    grades: generateMockGrades({ id: 13, course: courses[2], Total_Points: 10, PassingGrade: 70 }, courses)
+    grades: generateMockGrades({ id: 13, course: courses[2], Total_Points: 50, PassingGrade: 50 }, courses)
   },
   {
     id: 14,
     course: courses[3],
-    title: "Turkish Literature Final Essay",
+    title: "Final Exam",
     date: "2025-04-10",
     time: "11:00",
     duration: 90,
     topics: "Modern and Classical Literature",
     location: "Online",
     isOnline: true,
-    Total_Points: 10,
+    Total_Points: 50,
     isRandomQuestions: false,
     number_of_questions: 8,
-    PassingGrade: 65,
+    PassingGrade: 50,
     description: "Final essay exam comparing modern and classical Turkish literature. Students will analyze selected works and discuss their historical and cultural significance. Bring your course materials and notes for reference.",
     questions: generateMockQuestions(14, 8),
-    grades: generateMockGrades({ id: 14, course: courses[3], Total_Points: 10, PassingGrade: 65 }, courses)
+    grades: generateMockGrades({ id: 14, course: courses[3], Total_Points: 50, PassingGrade: 50 }, courses)
   },
   {
     id: 15,
     course: courses[0],
-    title: "History Final Exam",
+    title: "Final Exam",
     date: "2025-07-01",
     time: "08:00",
     duration: 120,
     topics: "20th Century History",
     location: "Online",
     isOnline: true,
-    Total_Points: 150,
+    Total_Points: 50,
     isRandomQuestions: true,
     number_of_questions: 15,
-    PassingGrade: 70,
+    PassingGrade: 50,
     description: "Comprehensive final exam covering major events and developments of the 20th century. The exam includes essay questions, short answers, and source analysis. Students should focus on political, social, and economic changes.",
     questions: generateMockQuestions(15, 15),
-    grades: generateMockGrades({ id: 15, course: courses[4], Total_Points: 150, PassingGrade: 70 }, courses)
+    grades: generateMockGrades({ id: 15, course: courses[4], Total_Points: 50, PassingGrade: 50 }, courses)
   },
   {
     id: 16,
     course: courses[5],
-    title: "Biology Spring Quiz",
+    title: "Quiz",
     date: "2025-03-28",
     time: "14:30",
     duration: 45,
@@ -786,75 +793,140 @@ export const exams = [
   {
     id: 17,
     course: courses[0],
-    title: "Computer Science Algorithms Exam",
+    title: "Midterm Exam",
     date: "2025-05-05",
     time: "16:30",
     duration: 90,
     topics: "Sorting and Searching Algorithms",
     location: "Online",
     isOnline: true,
-    Total_Points: 10,
+    Total_Points: 20,
     isRandomQuestions: false,
     number_of_questions: 10,
-    PassingGrade: 75,
+    PassingGrade: 50,
     description: "Practical exam on sorting and searching algorithms. Students will implement and analyze various algorithms, comparing their efficiency and applications. The exam tests both coding skills and algorithmic thinking.",
     questions: generateMockQuestions(17, 10),
-    grades: generateMockGrades({ id: 17, course: courses[6], Total_Points: 10, PassingGrade: 75 }, courses)
+    grades: generateMockGrades({ id: 17, course: courses[6], Total_Points: 20, PassingGrade: 50 }, courses)
   },
   {
     id: 18,
     course: courses[7],
-    title: "Art History Exam",
+    title: "Midterm Exam",
     date: "2025-04-15",
     time: "12:30",
     duration: 60,
     topics: "Renaissance to Modern Art",
     location: "Art Studio",
     isOnline: false,
-    Total_Points: 5,
+    Total_Points: 20,
     isRandomQuestions: true,
     number_of_questions: 5,
-    PassingGrade: 60,
+    PassingGrade: 50,
     description: "Exam covering art history from the Renaissance to modern times. Students will analyze artworks and discuss their historical context and significance. Bring your course materials and any relevant visual aids.",
     questions: generateMockQuestions(18, 5),
-    grades: generateMockGrades({ id: 18, course: courses[7], Total_Points: 5, PassingGrade: 60 }, courses)
+    grades: generateMockGrades({ id: 18, course: courses[7], Total_Points: 20, PassingGrade: 50 }, courses)
   },
   {
     id: 19,
     course: courses[8],
-    title: "Physical Education Endurance Test",
+    title: "Midterm Exam",
     date: "2025-06-10",
     time: "10:30",
     duration: 30,
     topics: "Endurance and Strength",
     location: "Gymnasium",
     isOnline: false,
-    Total_Points: 5,
+    Total_Points: 20,
     isRandomQuestions: false,
     number_of_questions: 5,
     PassingGrade: 50,
     description: "Practical test evaluating students' endurance and strength capabilities. The test includes various physical activities and measurements. Wear appropriate athletic attire and bring water.",
     questions: generateMockQuestions(19, 5),
-    grades: generateMockGrades({ id: 19, course: courses[8], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 19, course: courses[8], Total_Points: 20, PassingGrade: 50 }, courses)
   },
   {
     id: 20,
     course: courses[9],
-    title: "Philosophy Ethics Exam",
+    title: "Midterm Exam",
     date: "2025-05-20",
     time: "15:30",
     duration: 60,
     topics: "Ethics and Moral Philosophy",
     location: "Online",
     isOnline: true,
-    Total_Points: 10,
+    Total_Points: 20,
     isRandomQuestions: true,
     number_of_questions: 8,
-    PassingGrade: 65,
+    PassingGrade: 50,
     description: "Exam focusing on ethical theories and moral philosophy. Students will analyze case studies and discuss various ethical frameworks. The exam tests both knowledge and critical thinking skills.",
     questions: generateMockQuestions(20, 8),
-    grades: generateMockGrades({ id: 20, course: courses[9], Total_Points: 10, PassingGrade: 65 }, courses)
-  }
+    grades: generateMockGrades({ id: 20, course: courses[9], Total_Points: 20, PassingGrade: 50 }, courses)
+  },
+  // Add First Exam for each course
+  ...courses.map((course, index) => {
+    const examId = 21 + index * 2; // Start ID from 21 and increment by 2 for each course's exams
+    return {
+      id: examId,
+      course: course,
+      title: "First Exam",
+      date: "2025-05-11", // Example date
+      time: "09:00",
+      duration: 60,
+      topics: `Introduction to ${course.name}`,
+      location: "Online",
+      isOnline: true,
+      Total_Points: 15,
+      isRandomQuestions: true,
+      number_of_questions: 25,
+      PassingGrade: 50,
+      description: `First exam for ${course.name}, covering introductory topics.`,
+      questions: generateMockQuestions(examId, 25),
+      grades: generateMockGrades({ id: examId, course: course, Total_Points: 15, PassingGrade: 50 }, courses)
+    };
+  }),
+   // Add Second Exam for each course
+   ...courses.map((course, index) => {
+    const examId = 21 + index * 2 + 1; // Assign next ID
+    return {
+      id: examId,
+      course: course,
+      title: "Second Exam",
+      date: "2025-05-15", // Example date
+      time: "14:00",
+      duration: 75,
+      topics: `Intermediate ${course.name}`,
+      location: "Building B, Room 101",
+      isOnline: false,
+      Total_Points: 15,
+      isRandomQuestions: false,
+      number_of_questions: 30,
+      PassingGrade: 50,
+      description: `Second exam for ${course.name}, covering intermediate topics.`,
+      questions: generateMockQuestions(examId, 30),
+      grades: generateMockGrades({ id: examId, course: course, Total_Points: 15, PassingGrade: 50 }, courses)
+    };  }),
+    // AddAssignments for each course
+   ...courses.map((course, index) => {
+    const examId = 21 + index * 2 + 2; // Assign next ID
+    return {
+      id: examId,
+      course: course,
+      title: "Assignment",
+      date: "2025-05-19", // Example date
+      time: "14:00",
+      duration: 75,
+      topics: `Intermediate ${course.name}`,
+      location: "Building B, Room 101",
+      isOnline: false,
+      Total_Points: 5,
+      isRandomQuestions: false,
+      number_of_questions: 30,
+      PassingGrade: 50,
+      description: `Second exam for ${course.name}, covering intermediate topics.`,
+      questions: generateMockQuestions(examId, 30),
+      grades: generateMockGrades({ id: examId, course: course, Total_Points: 5, PassingGrade: 50 }, courses)
+    };  })
+
 ];
 
 export const attendance = [

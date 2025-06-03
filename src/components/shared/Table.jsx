@@ -89,7 +89,7 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
             <tr className="border-b border-gray-200">
               {columns.map((column, index) => (
                 <th key={index} className="text-left py-3 px-4 font-medium text-gray-700">
-                  {column}
+                  {column.Header}
                 </th>
               ))}
               {isActions && <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th>}
@@ -102,11 +102,19 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
                 key={index} 
                 className={`border-b border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
               >
-                {Object.values(row).map((cell, cellIndex) => (
-                  <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700">
-                    {renderCell(cell)}
-                  </td>
-                ))}
+                {Object.values(row).map((cell, cellIndex) => {
+                   const column = columns[cellIndex];
+                   
+                   return (
+                       <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700">
+                           {/* Check if a custom Cell renderer is provided in the column definition */}
+                           {column && column.Cell && typeof column.Cell === 'function'
+                               ? column.Cell({ row }) // Use the custom Cell renderer if available
+                               : renderCell(cell) // Otherwise, use the default renderCell logic
+                           }
+                       </td>
+                   );
+                })}
                 {isActions && !actionChil && 
                   <td className="py-2 px-8">
                     <button className="p-1 hover:bg-gray-100 rounded">
