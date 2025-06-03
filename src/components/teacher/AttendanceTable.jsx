@@ -113,10 +113,10 @@ export const AttendanceTable = ({ onClose, selectedDate, searchTerm,isCreating, 
     }
     return null; // Should not happen if studentId is valid within filteredStudents
   };
-
+      
   return (
     <>
-     {/* Header */}
+        {/* Header */}
      <div className="flex   justify-between   items-center  sticky top-0 bg-white z-10">
          {/* Filters */}
          <div className="w-2/3 flex items-center gap-4">
@@ -192,15 +192,15 @@ export const AttendanceTable = ({ onClose, selectedDate, searchTerm,isCreating, 
                     <tr
                       key={student.studentId}
                       // Apply row background color based on the *current* displayed status
-                      className={
+                    className={
                         displayStatus === 'absent'
                           ? "bg-red-50 hover:bg-blue-100 border"
                           : "bg-white hover:bg-blue-100"
                           // Removed: index based alternating row color, as filtering can change indices
-                      }
-                    >
-                      <td className="px-4 py-4">
-                        <div className="flex items-center gap-3">
+                    }
+                  >
+                    <td className="px-4 py-4">
+                      <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center text-white font-medium">
                           {student.avatar ? (
                           <img
@@ -217,7 +217,7 @@ export const AttendanceTable = ({ onClose, selectedDate, searchTerm,isCreating, 
                           </div>
                         )}
                           </div>
-                          <div>
+                        <div>
                             <div className="font-medium text-gray-900">{student.studentName}</div>
                             <div className="text-xs text-gray-500">ID: {student.studentId}</div>
                           </div>
@@ -230,24 +230,24 @@ export const AttendanceTable = ({ onClose, selectedDate, searchTerm,isCreating, 
                       {/* Class Data */}
                       <td className="px-6 py-4 text-gray-900 font-medium">
                         {student.className}
-                      </td>
+                    </td>
                       {/* Status Checkbox/Display */}
-                      <td className="px-6 py-4">
+                    <td className="px-6 py-4">
                         {editMode ? (
-                          <input
-                            type="checkbox"
+                        <input
+                          type="checkbox"
                             checked={displayStatus === 'attended'}
                             onChange={(e) => handleStatusChange(student.studentId, e.target.checked)}
                             className="form-checkbox h-5 w-5 text-blue-600"
-                          />
-                        ) : (
+                        />
+                      ) : (
                           <span className={displayStatus === 'attended' ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
                             {displayStatus === 'attended' ? "Present" : "Absent"}
-                          </span>
-                        )}
-                      </td>
+                        </span>
+                      )}
+                    </td>
                       {/* Justification Input/Display */}
-                      <td className="px-6 py-4">
+                    <td className="px-6 py-4">
                         {editMode && displayStatus === 'absent' ? (
                           <input
                             type="file"
@@ -267,9 +267,9 @@ export const AttendanceTable = ({ onClose, selectedDate, searchTerm,isCreating, 
                            <span className="text-gray-500">No justification provided</span>
                         ) : (
                           <span className="text-gray-500">----</span>
-                        )}
-                      </td>
-                    </tr>
+  )}
+</td>         
+         </tr>
                   );
                 })
               ) : (

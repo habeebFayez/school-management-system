@@ -34,15 +34,19 @@ const Exams = () => {
   // Filter exams based on search, course, class, and tab (previous/upcoming)
   const filteredExams = exams.filter(exam => {
     const matchesSearch =
-      exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (exam.course?.name || '').toLowerCase().includes(searchTerm.toLowerCase());
+    (exam.title!=='Assignment') &&
+      (exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (exam.course?.name || '').toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCourse = selectedCourse === 'All' || exam.course?.name === selectedCourse;
     const matchesClass = selectedClass === 'All' || (exam.course?.classes || []).includes(selectedClass);
 
     const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Midnight of today
+
     const examDate = new Date(exam.date);
-    const isPrevious = examDate < now;
-    const isUpcoming = examDate >= now;
+
+    const isPrevious = examDate < todayStart;
+    const isUpcoming = examDate >= todayStart;
 
     return matchesSearch && matchesCourse && matchesClass &&
       (activeTab === 'previous' ? isPrevious : isUpcoming);

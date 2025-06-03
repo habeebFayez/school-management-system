@@ -187,7 +187,7 @@ const Attendance = () => {
   return (
     <Layout currentPage={'Attendance'}>
       <div className="max-h-screen bg-white max-w-6xl  overflow-x-auto px-6 py-2">
-      {/* Header */}
+        {/* Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Attendance</h1> {/* Changed title slightly */}
        
@@ -199,15 +199,15 @@ const Attendance = () => {
                 onClick={() => setViewType('day')}
             >
                 Daily View
-            </button>
+              </button>
             <button
                 className={`px-4 py-1 rounded ${viewType === 'week' ? 'bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white' : 'bg-gray-200 text-gray-800'}`}
                 onClick={() => setViewType('week')}
             >
                 Weekly View
-            </button>
-        </div>
-        </div>
+              </button>
+            </div>
+          </div>
 
         {/* Attendance Table Container */}
         <div className="bg-white rounded-lg">
@@ -257,7 +257,7 @@ const Attendance = () => {
                           <option key={course.id} value={course.name}>{course.name}</option>
                       ))}
                    </select>
-                </div>
+          </div>
 
                 {/* Class Filter */}
                  <div className="flex-grow max-w-xs">
@@ -315,7 +315,7 @@ const Attendance = () => {
                       </div>
                  )}
 
-            </div>
+          </div>
         </div>
                <WeeklyAttendanceTable attendanceData={loadWeeklyStudents()} startDate={startDate} endDate={endDate} />
             </>
@@ -323,7 +323,7 @@ const Attendance = () => {
         </div>
 
       </div>
-
+      
      
 
     </Layout>
