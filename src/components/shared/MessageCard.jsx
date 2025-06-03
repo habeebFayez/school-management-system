@@ -26,9 +26,12 @@ export const MessageCard= ({ message, onReply }) => {
                 </div>
                 {message.courseName && (
                   <div className="text-sm text-gray-500">
-                    {message.courseName}
+                  {message.courseName} 
                   </div>
                 )}
+                  <div className="text-sm text-gray-500">
+                  To: {message.receiverName}
+                  </div>
               </div>
              
             </div>

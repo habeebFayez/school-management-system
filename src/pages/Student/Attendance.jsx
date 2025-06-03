@@ -9,3 +9,4 @@ export const Attendance  = () => {
     </Layout>
   )
 }
+export default Attendance;

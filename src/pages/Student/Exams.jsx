@@ -9,3 +9,4 @@ export const Exams  = () => {
     </Layout>
   )
 }
+export default Exams;

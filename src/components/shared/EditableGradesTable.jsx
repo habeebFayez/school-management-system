@@ -7,12 +7,12 @@ const EditableGradesTable = ({ data, columns, handleGradeChange }) => {
     // and the necessary columns/headers, and the change handler.
 
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto text-sm border rounded-lg">
             <table className="w-full">
                 <thead>
                     <tr className="border-b border-gray-200">
                         {columns.map((column, index) => (
-                            <th key={index} className="text-left py-3 px-4 font-medium text-gray-700">
+                            <th key={index} className="text-left py-3 px-4  font-medium text-gray-700">
                                 {/* Assuming columns are simple strings for headers here */}
                                 {column}
                             </th>

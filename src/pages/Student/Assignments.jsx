@@ -9,3 +9,4 @@ export const Assignments  = () => {
     </Layout>
   )
 }
+export default Assignments;

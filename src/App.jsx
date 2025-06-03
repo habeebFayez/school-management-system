@@ -20,7 +20,12 @@ import GradesStudent from './pages/Student/Grades';
 import SubjectsList from './pages/Student/SubjectsList ';
 import TeachersList from './pages/Student/TeachersList ';
 import SubjectFullData from './pages/Student/SubjectFullData';
-
+import ScheduleStudent from './pages/Student/Schedule ';
+import ExamsStudent from './pages/Student/Exams';
+import AssignmentsStudent from './pages/Student/Assignments';
+import AttendanceStudent from './pages/Student/Attendance';
+import AnnouncementsStudent from './pages/Student/Announcenents';
+import InboxStudent from './pages/Student/Inbox';
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicRoute } from './components/PublicRoute';
@@ -184,6 +189,59 @@ function App() {
              } 
            />
 
+            <Route 
+              path="/student/schedule" 
+              element={
+                <ProtectedRoute>
+                  <ScheduleStudent />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/student/exams" 
+              element={
+                <ProtectedRoute>
+                  <ExamsStudent />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/student/assignments" 
+              element={
+                <ProtectedRoute>
+                  <AssignmentsStudent />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/student/attendance" 
+              element={
+                <ProtectedRoute>
+                  <AttendanceStudent />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/student/announcements" 
+              element={
+                <ProtectedRoute>
+                  <AnnouncementsStudent />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/student/inbox" 
+              element={
+                <ProtectedRoute>
+                  <InboxStudent />
+                </ProtectedRoute>
+              } 
+            />
 
               {/* Protected 404 route */}
               <Route 
