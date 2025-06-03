@@ -89,7 +89,7 @@ const Table = ({ data, title, columns, isActions = true, user, actionChil=false 
             <tr className="border-b border-gray-200">
               {columns.map((column, index) => (
                 <th key={index} className="text-left py-3 px-4 font-medium text-gray-700">
-                  {column.Header}
+                  {column}
                 </th>
               ))}
               {isActions && <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th>}
