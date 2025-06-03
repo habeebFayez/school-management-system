@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../../components/layouts/Layout';
 import { courses, users } from '../../data/mockData'; // Import courses and users for filters
 import { GradesTableTeacher } from '../../components/teacher/GradesTableTeacher'; // Import the new grades table component
-import { Search } from 'lucide-react';
 
 const Grades = () => {
   // State for Filters and Search (similar to Attendance page)
