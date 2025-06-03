@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { courses, exams, users } from '../../data/mockData'; // Import necessary data
 import Table from '../shared/Table'; // Assuming the shared Table component
 import AverageDisplay from "../shared/AverageDisplay"
+import EditableGradesTable from '../shared/EditableGradesTable'; // Import the new component
 
 // Define standard exam order and types
 const STANDARD_EXAM_ORDER = [
@@ -114,6 +115,7 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
     const [editableGradesData, setEditableGradesData] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const [displayedColumns, setDisplayedColumns] = useState([]);
+    const [editableTableColumns, setEditableTableColumns] = useState([]); // State for columns used by EditableGradesTable
 
     useEffect(() => {
         let studentsToDisplay = users.filter(user => user.role === 'student');
@@ -136,7 +138,6 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
         const gradesDataForEditing = [];
 
         let assessmentTypesForCourse = []; // Initialize here
-        let dynamicAssessmentColumns = []; // Initialize here
 
         if (selectedCourse !== 'All') {
             const course = courses.find(c => c.name === selectedCourse);
@@ -148,12 +149,6 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
                 const courseExams = examsData.filter(exam => exam.course?.id === course.id);
                 // Dynamically get all unique assessment types for this course
                 assessmentTypesForCourse = [...new Set(courseExams.map(exam => exam.title))];
-
-                // Dynamically create assessment columns based on types found for the course
-                dynamicAssessmentColumns = assessmentTypesForCourse.map(type => ({
-                    Header: type,
-                    accessor: type,
-                }));
 
                 studentsToDisplay.forEach(student => {
                     // Use courseExams directly to get student grades for this course
@@ -181,7 +176,7 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
                              assessmentId: exam.id,
                              courseId: course.id,
                              studentId: student.id
-                         }; // Closing brace for editableStudentGrades object
+                          }; // Closing brace for editableStudentGrades object
                      });
 
                      // Calculate average and status based on total raw score for this course
@@ -199,15 +194,12 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
                              name: student.name,
                              description: `ID: ${student.id}, Class: ${student.class}`,
                          },
+                         Course: course.name,
+                         // Add dynamically created assessment columns to rowData in the correct order
+                         ...Object.fromEntries(assessmentTypesForCourse.map(type => [type, studentGrades[type] !== null ? <AverageDisplay value={studentGrades[type]} size="md" /> : '-'])),
+                         Average: studentGrades.average !== null ? <AverageDisplay value={studentGrades.average} size="md" /> : '-',
+                         Status: studentGrades.status !== "N/A" ? studentGrades.status : '-',
                      };
-
-                     // Add dynamically created assessment columns to rowData
-                     assessmentTypesForCourse.forEach(type => {
-                         rowData[type] = studentGrades[type] !== null ? <AverageDisplay value={studentGrades[type]} size="md" /> : '-';
-                     });
-
-                     rowData['Average'] = studentGrades.average !== null ? <AverageDisplay value={studentGrades.average} size="md" /> : '-';
-                     rowData['Status'] = studentGrades.status !== "N/A" ? studentGrades.status : '-';
 
                      transformedDataForDisplay.push(rowData);
                      gradesDataForEditing.push({
@@ -218,8 +210,9 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
                          grades: editableStudentGrades
                      });
                  });
+
              }
-         } else {
+         } else { // selectedCourse === 'All'
              studentsToDisplay.forEach(student => {
                  const studentCourses = courses.filter(course => course.students.some(s => s.id === student.id));
 
@@ -257,15 +250,8 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
          // Define the columns for the Table component inside useEffect
          const staticColumns = [
              { Header: 'Student', accessor: 'Info' },
+             { Header: 'Course', accessor: 'Course' }, // Ensure Course column is always included in column definitions
          ];
-
-         const courseColumn = { Header: 'Course', accessor: 'Course' };
-
-         // Use standard exam order for columns for 'All' courses view
-         const assessmentColumns = STANDARD_EXAM_ORDER.map(type => ({
-             Header: type,
-             accessor: type,
-         }));
 
          const finalStaticColumns = [
              { Header: 'Average', accessor: 'Average' },
@@ -273,48 +259,16 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
          ];
 
          // Determine which columns to show based on selectedCourse
-         const tableColumns = selectedCourse !== 'All'
-             ? [...staticColumns, ...dynamicAssessmentColumns, ...finalStaticColumns] // Specific course view using dynamically created columns
-             : [...staticColumns, courseColumn, ...assessmentColumns, ...finalStaticColumns]; // All courses view with Course column
+         const currentTableColumns = selectedCourse !== 'All'
+             ? [...staticColumns, ...assessmentTypesForCourse.map(type => ({ Header: type, accessor: type })), ...finalStaticColumns] // Specific course view - use objects for headers
+             : [...staticColumns, ...STANDARD_EXAM_ORDER.map(type => ({ Header: type, accessor: type })), ...finalStaticColumns]; // All courses view - use objects for headers
 
-         // Modify columns for edit mode to include input fields (only in specific course view)
-         const editableTableColumns = tableColumns.map(column => {
-             // Check if the column accessor is one of the dynamically determined assessment types
-             if (editMode && selectedCourse !== 'All' && assessmentTypesForCourse.includes(column.accessor)) {
-                 return {
-                     ...column,
-                     Cell: ({ row }) => {
-                         //console.log('Cell renderer row data:', row);
-                         // Find the original student object from the filteredStudents array based on the row's Info
-                         // Note: row.original provides the data object for the current row
-                         const studentId = parseInt(row.Info.description.split('ID: ')[1].split(', Class:')[0]);
+         // Columns for the EditableGradesTable (simple strings)
+         const editableCols = ['Student', 'Course', ...assessmentTypesForCourse, 'Average', 'Status'];
+         setEditableTableColumns(editableCols);
 
-                         const studentEditableData = editableGradesData.find(s => s.studentId === studentId);
-                         const assessmentType = column.accessor;
-                         const gradeEntry = studentEditableData?.grades[assessmentType];
-
-                         //console.log(`Rendering Cell for ${assessmentType}. Student ID: ${studentId}. Grade Entry:`, gradeEntry);
-
-                         return (
-                             <input
-                                 type="number"
-                                 value={gradeEntry?.percentage ?? ''}
-                                 onChange={(e) => handleGradeChange(studentId, assessmentType, e.target.value)}
-                                 className="w-20 p-1 border rounded text-sm"
-                                 step="1"
-                                 min="0"
-                                 max="100"
-                                 placeholder="-"
-                             />
-                         );
-                     }
-                 };
-             }
-             return column;
-         });
-
-         // Set the columns to be displayed in the table
-         setDisplayedColumns(editMode && selectedCourse !== 'All' ? editableTableColumns : tableColumns);
+         // Set the columns to be displayed in the main Table component (non-editable views)
+         setDisplayedColumns(currentTableColumns);
 
     }, [selectedCourse, selectedClass, searchTerm, examsData, courses, editMode]); // Reverted dependencies to a cleaner set
 
@@ -412,13 +366,75 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
              </div>
 
              {/* Always render the table, it will show no students if filters result in empty data */}
-             
-                <Table
-                    data={filteredStudents}
-                    columns={displayedColumns} // Use the state variable for columns
-                    title={selectedCourse !== 'All' ? `Grades for ${selectedCourse}` : "Grades by Course"} // Changed title for All Courses view
-                />
-             
+             {selectedCourse !== 'All' && editMode ? (
+                 <EditableGradesTable
+                     data={editableGradesData}
+                     columns={editableTableColumns}
+                     handleGradeChange={handleGradeChange}
+                 />
+             ) : (
+                 <div className="overflow-x-auto">
+                     <table className="w-full">
+                         <thead>
+                             <tr className="border-b border-gray-200">
+                                 {displayedColumns.map((column, index) => (
+                                     <th key={index} className="text-left py-3 px-4 font-medium text-gray-700">
+                                         {/* Render header using column.Header */}
+                                         {column.Header}
+                                     </th>
+                                 ))}
+                                 {/* Add Actions column header if needed in non-editable view */}
+                                 {/* <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th> */}
+                             </tr>
+                         </thead>
+                         <tbody>
+                             {filteredStudents.map((row, index) => (
+                                 <tr
+                                     key={index}
+                                     className={`border-b border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
+                                 >
+                                     {displayedColumns.map((column, cellIndex) => (
+                                         <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700">
+                                             {/* Render cell using column.accessor or custom logic */}
+                                             {column.accessor === 'Info' && row.Info ? (
+                                                 <div className="flex items-center space-x-3">
+                                                     {row.Info.avatar && (
+                                                         <div className="flex-shrink-0">
+                                                             <img
+                                                                 className="h-8 w-8 rounded-full object-cover ring-2 ring-gray-200"
+                                                                 src={row.Info.avatar}
+                                                                 alt={row.Info.name}
+                                                                 onError={(e) => {
+                                                                     const target = e.target;
+                                                                     target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(row.Info.name)}&background=6366f1&color=fff&size=32`;
+                                                                 }}
+                                                             />
+                                                         </div>
+                                                     )}
+                                                     <div className="min-w-0 flex-1">
+                                                         <p className="text-sm font-medium text-gray-900 truncate">{row.Info.name}</p>
+                                                         <p className="text-xs text-gray-500 truncate">{row.Info.description}</p>
+                                                     </div>
+                                                 </div>
+                                             ) : column.accessor === 'Course' && row.Course ? (
+                                                 row.Course
+                                             ) : column.accessor === 'Average' && row.Average ? (
+                                                 row.Average
+                                             ) : column.accessor === 'Status' && row.Status ? (
+                                                 row.Status
+                                             ) : ( /* Handle assessment columns and any other accessors */
+                                                 row[column.accessor] !== undefined && row[column.accessor] !== null ? row[column.accessor] : '-'
+                                             )}
+                                         </td>
+                                     ))}
+                                     {/* Add Actions column cell if needed */}
+                                     {/* <td className="py-2 px-8">...</td> */}
+                                 </tr>
+                             ))}
+                         </tbody>
+                     </table>
+                 </div>
+             )}
         </div>
     );
 };
