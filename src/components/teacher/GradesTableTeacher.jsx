@@ -329,7 +329,7 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
     };
 
     return (
-        <div className="mt-2 space-y-2 w-full overflow-x-auto"> {/* Added w-full overflow-x-auto */}
+        <div className="mt-2 space-y-2 w-full  text-sm p-2 rounded-lg overflow-x-auto"> {/* Added w-full overflow-x-auto */}
              {/* Add Edit/Save/Cancel buttons */}
              <div className="flex justify-end gap-4 mb-4">
                 {selectedCourse !== 'All' && ( // Only allow editing when a specific course is selected
@@ -373,25 +373,24 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
                      handleGradeChange={handleGradeChange}
                  />
              ) : (
-                 <div className="overflow-x-auto">
-                     <table className="w-full">
+                 <div className="overflow-x-auto border text-sm rounded-lg">
+                     <table className="w-full  ">
                          <thead>
-                             <tr className="border-b border-gray-200">
+                             <tr className="border-b  text-sm  border-gray-200">
                                  {displayedColumns.map((column, index) => (
-                                     <th key={index} className="text-left py-3 px-4 font-medium text-gray-700">
+                                     <th key={index} className="text-left py-3 px-4 font-semibold   text-gray-700">
                                          {/* Render header using column.Header */}
                                          {column.Header}
                                      </th>
                                  ))}
-                                 {/* Add Actions column header if needed in non-editable view */}
-                                 {/* <th className="text-left py-3 px-4 font-medium text-gray-700">Actions</th> */}
+                                
                              </tr>
                          </thead>
                          <tbody>
                              {filteredStudents.map((row, index) => (
                                  <tr
                                      key={index}
-                                     className={`border-b border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
+                                     className={`border-b  border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
                                  >
                                      {displayedColumns.map((column, cellIndex) => (
                                          <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700">

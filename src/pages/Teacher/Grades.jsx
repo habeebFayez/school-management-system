@@ -34,20 +34,20 @@ const Grades = () => {
 
   return (
     <Layout currentPage={'Grades'}>
-      <div className='px-12 w-full' >
+      <div className='px-12 w-full bg-white' >
         <h1 className="text-2xl font-bold text-black mb-6">Student Grades</h1>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg p-6 mb-6">
+        <div className="bg-white  rounded-lg p-6 mb-6">
             <div className="flex flex-wrap items-center gap-4">
                  {/* Search Input */}
-                <div className="flex-grow max-w-xs">
+                <div className="flex-grow  max-w-xs">
                     <label htmlFor="search" className="sr-only">Search Students</label>
                     <input
                         type="text"
                         name="search"
                         id="search"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
+                        className="block w-full border rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
                         placeholder="Search by Name or ID"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -61,7 +61,7 @@ const Grades = () => {
                       id="courseFilter"
                       value={selectedCourse}
                       onChange={(e) => setSelectedCourse(e.target.value)}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
+                      className="block w-full border rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
                    >
                       <option value="All">All Courses</option>
                       {courses.map(course => (
@@ -77,7 +77,7 @@ const Grades = () => {
                       id="classFilter"
                       value={selectedClass}
                       onChange={(e) => setSelectedClass(e.target.value)}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
+                      className="block w-full border rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2"
                     >
                        <option value="All">All Classes</option>
                        {availableClasses.map((className) => (
