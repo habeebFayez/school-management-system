@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ExamCard = ({ exam, isPrevious,onCheckDetails, onEdit }) => {
+export const ExamCard = ({ exam, isPrevious,onCheckDetails, onEdit,user }) => {
   return (
     <div className="card w-full rounded-lg min-h-64 bg-white shadow-md hover:shadow-lg transition-shadow">
       <div className="card-content p-4">
@@ -57,8 +57,15 @@ export const ExamCard = ({ exam, isPrevious,onCheckDetails, onEdit }) => {
                   onClick={() => onCheckDetails(exam)}
                   className="w-full text-sm h-10 rounded-lg bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 text-white"
                 >
-               Check Grades 
-
+              Check Grades 
+                </button>
+              )}
+              {onCheckDetails && !isPrevious && user.role==='student' &&(
+                <button
+                  onClick={() => onCheckDetails(exam)}
+                  className="w-full text-sm h-10 rounded-lg bg-blue-500 hover:opacity-90 text-white"
+                >
+                View Exam Details 
                 </button>
               )}
             </div>

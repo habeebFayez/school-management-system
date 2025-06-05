@@ -7,11 +7,14 @@ import PerformanceCard from '../../components/teacher/PerformanceCard';
 import StudentAttendanceChart from '../../components/teacher/StudentAttendanceChart';
 import StudentsInteractionChart from '../../components/teacher/StudentsInteractionChart';
 import SchoolCalendar from '../../components/teacher/SchoolCalendar';
+import { useAuth } from '../../contexts/AuthContext';
 
 import AnnouncementsSideList from '../../components/teacher/AnnouncementsSideList';
 import Table from '../../components/shared/Table';
 
 export default function DashboardTeacher() {
+  const { user } = useAuth();
+
   const examData = [
     { course: 'Calculus', id: '123456789', performance: '90%', exam: 'Final' },
     { course: 'Calculus', id: ' 123456789', performance: '90%', exam: 'Final' },
@@ -81,7 +84,7 @@ export default function DashboardTeacher() {
         </div>
          {/* Right Sidebar */}
   <div className="col-span-2 space-y-2 w-2/5 ">
-          <FastActions colorButton={'bg-gradient-to-br from-[#10062B] to-[#4F0129]'} />
+          <FastActions user={user} colorButton={'bg-gradient-to-br from-[#10062B] to-[#4F0129]'} />
           <PerformanceCard />
           <AnnouncementsSideList />
         </div>

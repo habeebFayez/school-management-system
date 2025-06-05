@@ -12,14 +12,6 @@ import CreateNewAttendanceList from '../../components/teacher/CreateNewAttendanc
 
 
 const Attendance = () => {
-  // Existing state from provided Attendance.jsx
-  // const [activeTab, setActiveTab] = useState("3A") // Keep for now, but might need adjustment
-  // const [attendanceStatus, setAttendanceStatus] = useState( // This state structure is not used with mockData
-  //   Array(6).fill().map(() => Array(10).fill(0))
-  // )
-  // const [selectedWeek, setSelectedWeek] = useState("Week 1,2") // Not directly used with the new structure
-  // const [currentDate, setCurrentDate] = useState(new Date(2024, 4)) // Used for month navigation, maybe keep for context?
-  // const [currentPage, setCurrentPage] = useState(1) // Not used with the new table approach
 
   // State for view selection (Day/Week)
   const [viewType, setViewType] = useState('week'); // 'day' or 'week'

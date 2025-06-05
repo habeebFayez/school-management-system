@@ -1,7 +1,8 @@
 import React from 'react';
 
-const FastActions = ({colorButton}) => {
-  const actions = [
+const FastActions = ({colorButton,user}) => {
+  const actions = 
+    user.role==='teacher'?[
     { label: 'Add new student', color: colorButton },
     { label: 'New Subject', color: colorButton },
     { label: 'New Announcement', color: colorButton },
@@ -9,6 +10,11 @@ const FastActions = ({colorButton}) => {
     { label: 'New Assignment', color: colorButton },
     { label: 'Upload Grades', color: colorButton },
     { label: 'New Class', color: colorButton },
+    ] 
+    :
+    [{ label: 'Absence Justification', color: colorButton },
+    { label: 'Send Petition', color: colorButton },
+    { label: 'Send Message', color: colorButton },
   ];
 
   return (
@@ -24,9 +30,10 @@ const FastActions = ({colorButton}) => {
           </button>
         ))}
       </div>
+     { user.role==='teacher'&&
       <button className={`w-full ${colorButton} text-white text-xs px-3 py-2 rounded-lg mt-3 hover:opacity-90 transition-opacity`}>
         {actions[6].label}
-      </button>
+      </button>}
     </div>
   );
 };
