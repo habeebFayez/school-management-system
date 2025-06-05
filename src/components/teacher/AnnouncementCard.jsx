@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Pencil } from 'lucide-react';
 
@@ -11,7 +10,8 @@ const AnnouncementCard = ({
   dateAdded,
   lastUpdate,
   isUpdated,
-  user
+  userAuth,
+  course
 }) => {
   return (
     <div className=" bg-white border rounded-xl shadow-lg p-4 border-l-4 border-red-900">
@@ -28,13 +28,23 @@ const AnnouncementCard = ({
         )}
         </div>
         
-         {user?.role==='teacher'&&
+         {userAuth?.role==='teacher'&&
     <div className=' flex  justify-end items-end mb-2'>
        <div className='bg-gradient-to-br from-[#10062B] to-[#4F0129] flex justify-center items-center h-9 w-9 rounded-full hover:opacity-90 cursor-pointer' >
       <Pencil size={19} color='white' />
       </div>
       </div>}
       </div>
+      
+      {/* Show course info if available */}
+      {course && (
+        <div className="mb-2 ml-8">
+          <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+            {course.code}
+          </span>
+          <span className="text-xs text-gray-700 font-medium">{course.name}</span>
+        </div>
+      )}
       
       <p className="text-gray-600 mb-4 text-sm leading-relaxed">{content}</p>
       

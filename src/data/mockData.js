@@ -989,24 +989,93 @@ export const notifications = [
 export const announcements = [
   {
     id: 1,
-    title: "School Holiday",
-    content: "School will be closed on November 29th for Republic Day",
-    date: "2023-11-01",
-    author: "Administration"
+    title: "CO301 | Exam Hall List",
+    content: "Dear Students, The attached list contains information about the exam hall where you will take the exam. Each student must take the exam in the hall specified in the list. Do not forget to bring your pencils (not pen) and erasers along with your student ID cards when you come to the exam.",
+    dateAdded: "2025-04-10",
+    lastUpdate: "2025-04-10",
+    isUpdated: false,
+    user: users[0],
+    course: courses[2], // Chemistry
   },
   {
     id: 2,
     title: "Parent-Teacher Meeting",
-    content: "Parent-teacher meetings will be held on December 5th from 3 PM to 6 PM",
-    date: "2023-11-10",
-    author: "Administration"
+    content: "Parent-teacher meetings will be held on December 5th from 3 PM to 6 PM.",
+    dateAdded: "2025-04-12",
+    lastUpdate: "2025-04-12",
+    isUpdated: false,
+    user: users[4],
+    course: courses[0], // Mathematics
   },
   {
     id: 3,
     title: "Science Fair",
     content: "Annual science fair will be held on December 15th. Prepare your projects!",
-    date: "2023-11-12",
-    author: "Science Department"
+    dateAdded: "2025-04-15",
+    lastUpdate: "2025-04-15",
+    isUpdated: false,
+    user: users[6],
+    course: courses[1], // Physics
+  },
+  {
+    id: 4,
+    title: "Library Book Return Reminder",
+    content: "Please return all borrowed library books by April 20th to avoid late fees.",
+    dateAdded: "2025-04-16",
+    lastUpdate: "2025-04-16",
+    isUpdated: true,
+    user: users[1],
+    course: courses[3], // Turkish Literature
+  },
+  {
+    id: 5,
+    title: "New Cafeteria Menu",
+    content: "The cafeteria will offer a new menu starting next week. Check the notice board for details.",
+    dateAdded: "2025-04-17",
+    lastUpdate: "2025-04-17",
+    isUpdated: true,
+    user: users[5],
+    course: courses[4], // History
+  },
+  {
+    id: 6,
+    title: "Sports Day Registration",
+    content: "Registration for Sports Day is now open. Sign up with your PE teacher by April 25th.",
+    dateAdded: "2025-04-18",
+    lastUpdate: "2025-04-18",
+    isUpdated: false,
+    user: users[6],
+    course: courses[5], // Biology
+  },
+  {
+    id: 7,
+    title: "Art Competition Winners",
+    content: "Congratulations to the winners of the annual art competition! See the list on the art room door.",
+    dateAdded: "2025-04-19",
+    lastUpdate: "2025-04-19",
+    isUpdated: false,
+    user: users[10],
+    course: courses[7], // Art
+  },
+  {
+    id: 8,
+    title: "Exam Schedule Update",
+    content: "The final exam schedule has been updated. Please check the school portal for the latest dates.",
+    dateAdded: "2025-04-20",
+    lastUpdate: "2025-04-21",
+    isUpdated: true,
+    user: users[11],
+    course: courses[8], // Physical Education
+  },
+  {
+    id: 9,
+    title: "Field Trip Permission Slips",
+    content: "All students must submit signed permission slips for the upcoming field trip by April 22nd.",
+    dateAdded: "2025-04-20",
+    lastUpdate: "2025-04-20",
+    isUpdated: false,
+    user: users[12],
+    course: courses[9], // Philosophy
   }
 ];
 
