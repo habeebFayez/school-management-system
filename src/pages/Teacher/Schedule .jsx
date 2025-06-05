@@ -65,7 +65,8 @@ const scheduleData = {
 
 const Schedule = () => {
   const [view, setView] = useState('Week');
-  let todayDayIndex =today;
+  const todayDayIndex = new Date().getDay() - 1; // Convert Sunday (0) to -1, Monday (1) to 0, etc.
+  const adjustedDayIndex = todayDayIndex === -1 ? 4 : todayDayIndex; // Handle Sunday case
 
   return (
     <Layout currentPage={'Schedule'}>
@@ -127,13 +128,13 @@ const Schedule = () => {
           <div className="grid grid-cols-[100px_1fr] border rounded overflow-hidden">
             <div className="bg-white"></div>
             <div className="p-2 text-center font-semibold bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white">
-              {todayDayIndex}
+              {today}
             </div>
 
-            {(todayDayIndex.slice(0,3).toLocaleLowerCase()!=='sat' && todayDayIndex.slice(0,3).toLocaleLowerCase()!=='sun') 
+            {(today.slice(0,3).toLocaleLowerCase()!=='sat' && today.slice(0,3).toLocaleLowerCase()!=='sun') 
             ?
             (times.map((time) => {
-              const slot = scheduleData[time]?.find((s) => s.day === todayDayIndex);
+              const slot = scheduleData[time]?.find((s) => s.day === adjustedDayIndex);
               const defaultHeight = 130;
 
               return (

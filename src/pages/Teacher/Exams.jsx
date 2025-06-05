@@ -6,10 +6,12 @@ import { exams as initialExams, courses } from '../../data/mockData';
 import { useModal } from '../../contexts/ModalProvider';
 import { CreateExamModal } from '../../components/teacher/CreateExamModal';
 import { ExamGradesTable } from '../../components/shared/ExamGradesTable';
-
+import { useAuth } from '../../contexts/AuthContext';
+  
 
 const Exams = () => {
   const { showModal, hideModal } = useModal();
+  const { user } = useAuth();
 
   // Exams state
   const [exams, setExams] = useState(initialExams);
@@ -190,6 +192,7 @@ const Exams = () => {
                 isPrevious={activeTab === 'previous'}
                 onCheckDetails={handleCheckDetails}
                 onEdit={() => openEditModal(exam)}
+                user={user}
               />
             ))}
           </div>

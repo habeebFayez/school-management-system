@@ -20,7 +20,7 @@ const StudentAttendanceChart = () => {
   return (
     <div className="bg-white rounded-xl py-6 pl-0 pr-6 ">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold">Student Weekly Attendance</h3>
+        <h3 className="text-lg px-6 font-semibold">Student Weekly Attendance</h3>
         <div className="flex items-center space-x-2">
           <div className="w-2 h-2 bg-[#10062B] rounded-full"></div>
           <span className="text-sm text-gray-600">Highest Week</span>

@@ -12,8 +12,12 @@ import StudentsInteractionChart from '../../components/teacher/StudentsInteracti
 import SchoolCalendar from '../../components/teacher/SchoolCalendar';
 import AnnouncementsSideList from '../../components/student/AnnouncementsSideList';
 import Table from '../../components/shared/Table';
+import { useAuth } from '../../contexts/AuthContext';
+import DeadlinesSideList from '../../components/Student/DeadlinesSideList';
 
 export default function DashboardStudent() {
+  const { user } = useAuth();
+
   // Example data for the recent exams table
   const examData = [
     { course: 'Calculus', id: '123456789', performance: '90%', exam: 'Final' },
@@ -79,8 +83,10 @@ export default function DashboardStudent() {
 
         {/* Right Sidebar: Fast actions and announcements */}
         <div className="col-span-2 space-y-2 w-2/5">
-          <FastActions colorButton={'bg-gradient-to-br from-[#10062B] to-[#4F0129]'} />
+          <FastActions user={user} colorButton={'bg-gradient-to-br from-[#10062B] to-[#4F0129]'} />
+          <DeadlinesSideList />s
           <AnnouncementsSideList />
+
         </div>
       </div>
     </Layout>
