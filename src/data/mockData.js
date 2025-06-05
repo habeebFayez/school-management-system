@@ -1223,10 +1223,13 @@ export const dashboardStats = {
   }
 };
 
-// Helper function to generate random attendance status
-const getRandomAttendanceStatus = () => {
-  const statuses = ['attended', 'absent'];
-  return statuses[Math.floor(Math.random() * statuses.length)];
+// Helper function to generate more realistic attendance status
+const getRealisticAttendanceStatus = () => {
+  // 85% attended, 10% absent, 5% late
+  const rand = Math.random();
+  if (rand < 0.85) return 'attended';
+  if (rand < 0.95) return 'absent';
+  return 'late';
 };
 
 // Helper function to generate random justification file name
@@ -1251,7 +1254,7 @@ const generateAttendanceForDate = (date) => {
     // Create attendance records for each class
     const classAttendance = Object.entries(studentsByClass).map(([className, students]) => {
       const studentAttendance = students.map(student => {
-        const status = getRandomAttendanceStatus();
+        const status = getRealisticAttendanceStatus();
         return {
           studentId: student.id,
           studentName: student.name,
@@ -1278,38 +1281,45 @@ const generateAttendanceForDate = (date) => {
   });
 };
 
-// Generate attendance records for a range of dates
-export const attendanceRecords = [
-  // Last week's records
-  ...generateAttendanceForDate('2025-05-11'),
-  ...generateAttendanceForDate('2025-05-12'),
-  ...generateAttendanceForDate('2025-05-13'),
-  ...generateAttendanceForDate('2025-05-14'),
-  ...generateAttendanceForDate('2025-05-15'),
-  ...generateAttendanceForDate('2025-05-16'),
-  ...generateAttendanceForDate('2025-05-17'),
-  // Current week's records
-  ...generateAttendanceForDate('2025-05-18'),
-  ...generateAttendanceForDate('2025-05-19'),
-  ...generateAttendanceForDate('2025-05-20'),
-  ...generateAttendanceForDate('2025-05-21'),
-  ...generateAttendanceForDate('2025-05-22'),
-  ...generateAttendanceForDate('2025-05-23'),
-  ...generateAttendanceForDate('2025-05-24'),
-  // Next week's records
-  ...generateAttendanceForDate('2025-05-25'),
-  ...generateAttendanceForDate('2025-05-26'),
-  ...generateAttendanceForDate('2025-05-27'),
-  ...generateAttendanceForDate('2025-05-28'),
-  ...generateAttendanceForDate('2025-05-29'),
-  ...generateAttendanceForDate('2025-05-30'),
-  ...generateAttendanceForDate('2025-05-31'),
+import { addDays, format, isWeekend } from 'date-fns';
 
-  ...generateAttendanceForDate('2025-06-01'),
-  ...generateAttendanceForDate('2025-06-02'),
-  ...generateAttendanceForDate('2025-06-03'),
-  ...generateAttendanceForDate('2025-06-04'),
-  ...generateAttendanceForDate('2025-06-05'),
-  ...generateAttendanceForDate('2025-06-06'),
-  ...generateAttendanceForDate('2025-06-07'),
+// Helper: generate all weekdays in a date range
+const getWeekdaysInRange = (start, end) => {
+  const days = [];
+  let current = new Date(start);
+  while (current <= end) {
+    if (!isWeekend(current)) {
+      days.push(format(current, 'yyyy-MM-dd'));
+    }
+    current = addDays(current, 1);
+  }
+  return days;
+};
+
+// Helper: assign a random meeting pattern to each course
+const meetingPatterns = [
+  [1, 3, 5], // MWF
+  [2, 4],    // TTh
+  [1, 4],    // Mon/Thu
+  [3, 5],    // Wed/Fri
 ];
+const courseMeetingDays = {};
+courses.forEach(course => {
+  const pattern = meetingPatterns[Math.floor(Math.random() * meetingPatterns.length)];
+  courseMeetingDays[course.id] = pattern;
+});
+
+// Generate realistic attendance records for a semester (e.g., May 2025)
+const semesterStart = new Date('2025-05-01');
+const semesterEnd = new Date('2025-06-07');
+const allWeekdays = getWeekdaysInRange(semesterStart, semesterEnd);
+
+export const attendanceRecords = [];
+allWeekdays.forEach(dateStr => {
+  const dayOfWeek = new Date(dateStr).getDay();
+  courses.forEach(course => {
+    if (courseMeetingDays[course.id].includes(dayOfWeek)) {
+      attendanceRecords.push(...generateAttendanceForDate(dateStr).filter(r => r.courseId === course.id));
+    }
+  });
+});
