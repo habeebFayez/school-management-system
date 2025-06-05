@@ -439,10 +439,7 @@ const generateMockGrades = (exam, allCourses) => {
   }
 
   const enrolledStudents = associatedCourse.students;
-  // Select a random subset of enrolled students (50% to 100% of enrolled, max 15)
-  // const numberOfStudentsToGrade = getRandomInt(Math.ceil(enrolledStudents.length * 0.5), Math.min(enrolledStudents.length, 15));
-  // const studentsForExam = enrolledStudents.sort(() => 0.5 - Math.random()).slice(0, numberOfStudentsToGrade); // Shuffle and take a subset
-
+ 
   // Generate grades for all enrolled students
   const studentsForExam = enrolledStudents; // Include all students
 
@@ -541,7 +538,7 @@ export const exams = [
     id: 3,
     course: courses[2],
     title: "Lab Practical",
-    date: "2025-04-15",
+    date: "2025-07-01",
     time: "11:00",
     duration: 60,
     topics: "Lab techniques and safety",
@@ -559,7 +556,7 @@ export const exams = [
     id: 4,
     course: courses[3],
     title: "Quiz",
-    date: "2025-03-20",
+    date: "2025-06-20",
     time: "10:30",
     duration: 90,
     topics: "Modern Turkish Literature",
@@ -577,7 +574,7 @@ export const exams = [
     id: 5,
     course: courses[4],
     title: "Quiz",
-    date: "2025-06-05",
+    date: "2025-06-15",
     time: "08:30",
     duration: 45,
     topics: "World War II",
@@ -595,7 +592,7 @@ export const exams = [
     id: 6,
     course: courses[5],
     title: "Final Exam",
-    date: "2025-05-25",
+    date: "2025-06-08",
     time: "14:00",
     duration: 120,
     topics: "Genetics and Evolution",
@@ -722,9 +719,9 @@ export const exams = [
     id: 13,
     course: courses[2],
     title: "Final Exam",
-    date: "2025-06-22",
+    date: "2025-06-05",
     time: "09:30",
-    duration: 120,
+    duration: 45,
     topics: "Organic Chemistry",
     location: "Chemistry Lab",
     isOnline: false,

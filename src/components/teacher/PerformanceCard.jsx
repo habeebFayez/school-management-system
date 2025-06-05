@@ -7,7 +7,7 @@ const PerformanceCard = () => {
   const strokeDashoffset = circumference - (progress / 100) * circumference
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg max-w-sm mx-auto">
+    <div className="bg-white border rounded-xl p-6 shadow-lg max-w-sm mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-gray-900">Performance</h3>
         <button className="text-gray-400 hover:text-gray-600">

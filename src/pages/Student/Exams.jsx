@@ -48,12 +48,27 @@ export const Exams  = () => {
 
     return matchesSearch && matchesCourse && matchesClass &&
       (activeTab === 'previous' ? isPrevious : isUpcoming);
+  }).sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    // For upcoming exams, sort in ascending order (earliest first)
+    // For previous exams, sort in descending order (most recent first)
+    return activeTab === 'upcoming' 
+      ? dateA - dateB 
+      : dateB - dateA;
   });
 
   // Handler for details (optional, can be expanded)
   const handleCheckDetails = (exam) => {
+    console.log(exam);
+    
+    activeTab === 'previous'?
     showModal(
-      <ExamResultsModalContent exam={exam} onClose={hideModal} />
+      <ExamResultsModalContent user={user} exam={exam} onClose={hideModal}   />
+    )
+    :
+    showModal(
+      <ExamResultsModalContent user={user} exam={exam} isblue={true} onClose={hideModal}   />
     )
   };
 

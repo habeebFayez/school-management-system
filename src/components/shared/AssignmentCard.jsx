@@ -13,7 +13,7 @@ export const AssignmentCard = ({
   const { showModal ,hideModal} = useModal();
 
   return (
-    <div className="card w-full rounded-lg min-h-64 bg-white shadow-md hover:shadow-lg transition-shadow">
+    <div className="card w-full border rounded-lg min-h-64 bg-white shadow-md hover:shadow-lg transition-shadow">
       <div className="card-content p-4">
         <div className="space-y-4">
           <div className="text-md font-medium text-gray-800">
