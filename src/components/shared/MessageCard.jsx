@@ -9,7 +9,7 @@ export const MessageCard= ({ message, onReply }) => {
   };
 
   return (
-    <div className={`w-full bg-gray-200 rounded-md shadow-md hover:shadow-lg hover:bg-gray-100 transition-shadow
+    <div className={`w-full  bg-gray-200 border rounded-md shadow-md hover:shadow-lg hover:bg-gray-100 transition-shadow
      ${!message.isRead ? 'border-l-4 border-l-blue-500' : ''}`}>
       <div className="p-4">
         <div className="space-y-3">

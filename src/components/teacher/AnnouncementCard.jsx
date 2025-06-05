@@ -14,7 +14,7 @@ const AnnouncementCard = ({
   user
 }) => {
   return (
-    <div className=" bg-white rounded-xl shadow-lg p-4 border-l-4 border-red-900">
+    <div className=" bg-white border rounded-xl shadow-lg p-4 border-l-4 border-red-900">
    
       <div className="flex items-start justify-between ">
     

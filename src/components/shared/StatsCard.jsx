@@ -3,7 +3,7 @@ import React from 'react';
 
 const StatsCard = ({ title, value, icon, color }) => {
   return (
-    <div className={`${color}  rounded-xl p-6 text-white   relative overflow-hidden`}>
+    <div className={`${color} border rounded-xl p-6 text-white   relative overflow-hidden`}>
       <div className="flex justify-between items-start">
         <div>
           <p className="text-white/80 text-sm mb-1">{title}</p>
