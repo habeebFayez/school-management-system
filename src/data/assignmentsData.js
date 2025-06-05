@@ -1,4 +1,4 @@
-
+import { courses, users } from './mockData';
 
 export const assignments= [
   {
@@ -6,6 +6,7 @@ export const assignments= [
     assignmentId: 'PH101',
     classId: 'Physics (PH101)',
     courseName: 'Physics',
+    course: courses.find(course => course.name === 'Physics'),
     title: 'Quantum Mechanics Basics',
     deadline: '2025.05.15',
     time: '11:59',
@@ -21,6 +22,7 @@ export const assignments= [
     assignmentId: 'DS458',
     classId: 'DS458',
     courseName: 'Data Science',
+    course: courses.find(course => course.name === 'Data Science'),
     title: 'Machine Learning Project',
     grade: 10,
     deadline: '2025.06.20',
@@ -34,6 +36,7 @@ export const assignments= [
     assignmentId: 'CS201',
     classId: 'CS201',
     courseName: 'Computer Science',
+    course: courses.find(course => course.name === 'Computer Science'),
     title: 'Algorithm Analysis',
     deadline: '2025.05.10',
     time: '17:00',
@@ -48,6 +51,7 @@ export const assignments= [
     assignmentId: 'MATH301',
     classId: 'MATH301',
     courseName: 'Mathematics',
+    course: courses.find(course => course.name === 'Mathematics'),
     title: 'Calculus Integration',
     grade: 10,
     deadline: '2025.06.15',
@@ -60,6 +64,7 @@ export const assignments= [
     assignmentId: 'ENG102',
     classId: 'ENG102',
     courseName: 'English',
+    course: courses.find(course => course.name === 'Turkish Literature'),
     title: 'Literary Analysis Essay',
     grade: 10,
     deadline: '2025.05.20',
@@ -74,6 +79,7 @@ export const assignments= [
     assignmentId: 'CHEM201',
     classId: 'CHEM201',
     courseName: 'Chemistry',
+    course: courses.find(course => course.name === 'Chemistry'),
     title: 'Organic Synthesis Lab',
     grade: 10,
     deadline: '2025.06.25',
@@ -86,6 +92,7 @@ export const assignments= [
     assignmentId: 'BIO150',
     classId: 'BIO150',
     courseName: 'Biology',
+    course: courses.find(course => course.name === 'Biology'),
     title: 'Cell Structure Study',
     grade: 10,
     deadline: '2025.05.08',
@@ -100,6 +107,7 @@ export const assignments= [
     assignmentId: 'HIST205',
     classId: 'HIST205',
     courseName: 'History',
+    course: courses.find(course => course.name === 'History'),
     title: 'World War II Analysis',
     grade: 10,
     deadline: '2025.06.30',
@@ -112,6 +120,7 @@ export const assignments= [
     assignmentId: 'PSYC101',
     classId: 'PSYC101',
     courseName: 'Psychology',
+    course: courses.find(course => course.name === 'Psychology'),
     title: 'Behavioral Patterns Research',
     grade: 10,
     deadline: '2025.05.25',
@@ -126,6 +135,7 @@ export const assignments= [
     assignmentId: 'ECON301',
     classId: 'ECON301',
     courseName: 'Economics',
+    course: courses.find(course => course.name === 'Economics'),
     title: 'Market Analysis Report',
     grade: 10,
     deadline: '2025.07.05',
@@ -138,6 +148,7 @@ export const assignments= [
     assignmentId: 'ART150',
     classId: 'ART150',
     courseName: 'Art',
+    course: courses.find(course => course.name === 'Art'),
     title: 'Digital Portfolio Creation',
     grade: 10,
     deadline: '2025.05.18',
@@ -152,6 +163,7 @@ export const assignments= [
     assignmentId: 'MUS200',
     classId: 'MUS200',
     courseName: 'Music',
+    course: courses.find(course => course.name === 'Music'),
     title: 'Composition Project',
     grade: 10,
     deadline: '2025.07.10',
@@ -164,6 +176,7 @@ export const assignments= [
     assignmentId: 'PE101',
     classId: 'PE101',
     courseName: 'Physical Education',
+    course: courses.find(course => course.name === 'Physical Education'),
     title: 'Fitness Assessment',
     grade: 10,
     deadline: '2025.05.12',
@@ -178,6 +191,7 @@ export const assignments= [
     assignmentId: 'SOC250',
     classId: 'SOC250',
     courseName: 'Sociology',
+    course: courses.find(course => course.name === 'Sociology'),
     title: 'Social Media Impact Study',
     grade: 10,
     deadline: '2025.07.15',
@@ -190,6 +204,7 @@ export const assignments= [
     assignmentId: 'PHIL180',
     classId: 'PHIL180',
     courseName: 'Philosophy',
+    course: courses.find(course => course.name === 'Philosophy'),
     title: 'Ethics in Technology',
     grade: 10,
     deadline: '2025.05.30',
@@ -204,6 +219,7 @@ export const assignments= [
     assignmentId: 'STAT200',
     classId: 'STAT200',
     courseName: 'Statistics',
+    course: courses.find(course => course.name === 'Statistics'),
     title: 'Probability Distributions',
     grade: 10,
     deadline: '2025.07.20',
@@ -216,9 +232,9 @@ export const assignments= [
 export const submissions = [
   {
     id: '1',
-    studentId: 'S123456',
-    studentName: 'John Smith',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[2].id,
+    studentName: users[2].name,
+    avatar: users[2].avatar,
     fileName: 'quantum_solution.pdf',
     status: 'submitted',
     grade: '85',
@@ -226,9 +242,9 @@ export const submissions = [
   },
   {
     id: '2',
-    studentId: 'S123457',
-    studentName: 'Emma Johnson',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[14].id,
+    studentName: users[14].name,
+    avatar: users[14].avatar,
     fileName: 'quantum_analysis.pdf',
     status: 'submitted',
     grade: '92',
@@ -236,16 +252,16 @@ export const submissions = [
   },
   {
     id: '3',
-    studentId: 'S123458',
-    studentName: 'Michael Brown',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[15].id,
+    studentName: users[15].name,
+    avatar: users[15].avatar,
     status: 'not-submitted'
   },
   {
     id: '4',
-    studentId: 'S123459',
-    studentName: 'Sarah Davis',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[16].id,
+    studentName: users[16].name,
+    avatar: users[16].avatar,
     fileName: 'assignment_1.pdf',
     status: 'submitted',
     grade: '78',
@@ -253,9 +269,9 @@ export const submissions = [
   },
   {
     id: '5',
-    studentId: 'S123460',
-    studentName: 'James Wilson',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[17].id,
+    studentName: users[17].name,
+    avatar: users[17].avatar,
     fileName: 'physics_hw.pdf',
     status: 'submitted',
     grade: '88',
@@ -263,9 +279,9 @@ export const submissions = [
   },
   {
     id: '6',
-    studentId: 'S123461',
-    studentName: 'Lisa Anderson',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[18].id,
+    studentName: users[18].name,
+    avatar: users[18].avatar,
     fileName: 'quantum_report.pdf',
     status: 'submitted',
     grade: '95',
@@ -273,9 +289,9 @@ export const submissions = [
   },
   {
     id: '7',
-    studentId: 'S123462',
-    studentName: 'David Martinez',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[19].id,
+    studentName: users[19].name,
+    avatar: users[19].avatar,
     fileName: 'assignment_submission.pdf',
     status: 'submitted',
     grade: '82',
@@ -283,9 +299,9 @@ export const submissions = [
   },
   {
     id: '8',
-    studentId: 'S123463',
-    studentName: 'Jessica Garcia',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[20].id,
+    studentName: users[20].name,
+    avatar: users[20].avatar,
     fileName: 'physics_project.pdf',
     status: 'submitted',
     grade: '90',
@@ -293,9 +309,33 @@ export const submissions = [
   },
   {
     id: '9',
-    studentId: 'S123483',
-    studentName: 'Someone Brown',
-    avatar: '/api/placeholder/40/40',
+    studentId: users[21].id,
+    studentName: users[21].name,
+    avatar: users[21].avatar,
     status: 'not-submitted'
-  }
+  },
+  
 ];
+export const submissionsFull = assignments.map((assignment, idx) => {
+  const isPrevious = new Date(assignment.deadline) < new Date();
+  // Make the first two previous assignments and the first upcoming assignment 'not-submitted'
+  if (
+    (isPrevious && (idx === 0 || idx === 1 ||idx === 2)) ||
+    (!isPrevious && idx === assignments.findIndex(a => new Date(a.deadline) >= new Date()))
+  ) {
+    return {
+      id: (idx + 1).toString(),
+      assignmentId: assignment.id,
+      status: 'not-submitted'
+    };
+  }
+  // The rest are submitted
+  return {
+    id: (idx + 1).toString(),
+    assignmentId: assignment.id,
+    fileName: `assignment_${assignment.id}.pdf`,
+    status: 'submitted',
+    grade: (80 + (idx * 3)) % 100 + '',
+    submissionDate: `2025.05.${10 + (idx % 20)}`
+  };
+});

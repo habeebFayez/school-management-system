@@ -96,7 +96,7 @@ const user = location.state?.teacher || authUser;
             dateAdded="2025-04-10"
             lastUpdate="2025-04-10 19:38:52"
             isUpdated={true}
-            user={authUser}
+            userAuth={authUser}
 
           />
           
@@ -106,7 +106,7 @@ const user = location.state?.teacher || authUser;
             dateAdded="2025-04-10"
             lastUpdate="2025-04-10"
             isUpdated={false}
-            user={authUser}
+            userAuth={authUser}
           />
            {authUser?.role === 'teacher'&& 
           <div className="mt-2 flex justify-center">
