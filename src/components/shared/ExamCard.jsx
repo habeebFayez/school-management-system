@@ -70,9 +70,11 @@ export const ExamCard = ({ exam, isPrevious,onCheckDetails, onEdit,user }) => {
               {onCheckDetails && !isPrevious && user.role==='student' &&(
                 <button
                   onClick={() => onCheckDetails(exam)}
-                  className="w-full text-sm h-10 rounded-lg bg-blue-500 hover:opacity-90 text-white"
+                  className={`w-full text-sm h-10 rounded-lg text-white ${
+                    isExamToday() ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:opacity-90'
+                  }`}
                 >
-                View Exam Details 
+                {isExamToday() ? "Start Exam":'View Exam Details'} 
                 </button>
               )}
             </div>

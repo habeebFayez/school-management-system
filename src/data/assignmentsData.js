@@ -8,8 +8,8 @@ export const assignments= [
     courseName: 'Physics',
     course: courses.find(course => course.name === 'Physics'),
     title: 'Quantum Mechanics Basics',
-    deadline: '2025.05.15',
-    time: '11:59',
+    deadline: '2025.06.06',
+    time: '22:59',
     status: 'previous',
     grade: 10,
     description: 'Introduction to quantum mechanics principles and wave functions.',
@@ -30,6 +30,8 @@ export const assignments= [
     status: 'upcoming',
     description: 'Build a classification model using supervised learning.',
     message: 'Submit both code and report.',
+    fileName: 'machine_learning_project.pdf',
+    fileSize: '3.5 MB'
   },
   {
     id: '3',
@@ -58,6 +60,8 @@ export const assignments= [
     time: '14:30',
     status: 'upcoming',
     description: 'Solve complex integration problems using various techniques.',
+    fileName: 'calculus_integration.pdf',
+    fileSize: '2.1 MB'
   },
   {
     id: '5',
@@ -86,6 +90,8 @@ export const assignments= [
     time: '18:00',
     status: 'upcoming',
     description: 'Complete synthesis of organic compounds in laboratory.',
+    fileName: 'organic_synthesis_lab.pdf',
+    fileSize: '4.0 MB'
   },
   {
     id: '7',
@@ -114,6 +120,8 @@ export const assignments= [
     time: '20:00',
     status: 'upcoming',
     description: 'Research and analyze key events of World War II.',
+    fileName: 'wwii_analysis_guidelines.pdf',
+    fileSize: '1.8 MB'
   },
   {
     id: '9',
@@ -142,6 +150,8 @@ export const assignments= [
     time: '19:00',
     status: 'upcoming',
     description: 'Analyze current market trends and economic indicators.',
+    fileName: 'market_analysis_report.pdf',
+    fileSize: '2.5 MB'
   },
   {
     id: '11',
@@ -170,6 +180,8 @@ export const assignments= [
     time: '16:30',
     status: 'upcoming',
     description: 'Compose an original piece using learned techniques.',
+    fileName: 'composition_project_brief.pdf',
+    fileSize: '1.1 MB'
   },
   {
     id: '13',
@@ -198,6 +210,8 @@ export const assignments= [
     time: '21:00',
     status: 'upcoming',
     description: 'Research the impact of social media on society.',
+    fileName: 'social_media_study_guide.pdf',
+    fileSize: '2.2 MB'
   },
   {
     id: '15',
@@ -226,6 +240,8 @@ export const assignments= [
     time: '17:30',
     status: 'upcoming',
     description: 'Calculate and analyze various probability distributions.',
+    fileName: 'probability_distributions.pdf',
+    fileSize: '1.9 MB'
   }
 ];
 

@@ -1,49 +1,59 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Bell } from 'lucide-react';
+import { assignments } from '../../data/assignmentsData';
+
+import {  exams, courses } from '../../data/mockData';
+import { format, isToday, startOfToday } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const DeadlinesSideList = () => {
-  const deadlines = [
-    {
-      id: 1,
-      title: 'Research Paper Submission',
-      subject: 'History',
-      deadline: '23:59 of 20/05/2025',
-      details: 'Submit via online portal',
-      mode: 'Online',
-    },
-    {
-      id: 2,
-      title: 'Problem Set 3 Due',
-      subject: 'Physics',
-      deadline: '10:00 of 21/05/2025',
-      details: 'In-class submission',
-      mode: 'in Class',
-    },
-    {
-      id: 3,
-      title: 'Chapter 5 Quiz',
-      subject: 'Chemistry',
-      deadline: '14:00 of 22/05/2025',
-      details: 'Quiz covers reactions and stoichiometry',
-      mode: 'Online',
-    },
-    {
-      id: 4,
-      title: 'Presentation Slides Finalized',
-      subject: 'Computer Science',
-      deadline: '18:00 of 23/05/2025',
-      details: 'Upload to shared drive',
-      mode: 'Online',
-    },
-     {
-      id: 5,
-      title: 'Lab Report 2',
-      subject: 'Biology',
-      deadline: '17:00 of 24/05/2025',
-      details: 'Submit hard copy to TA',
-      mode: 'in Class',
-    }
-  ];
+  const navigate = useNavigate();
+
+  const deadlines = useMemo(() => {
+    // Combine assignments and exams into a single array
+    const allDeadlines = [
+      // Format assignments
+      ...assignments.map(assignment => {
+        const course = courses.find(c => c.name === assignment.courseName);
+        return {
+          id: `assignment-${assignment.id}`,
+          title: assignment.title,
+          subject: course?.name || 'Unknown Course',
+          deadline: `${format(new Date(assignment.deadline), 'HH:mm')} of ${format(new Date(assignment.deadline), 'dd/MM/yyyy')}`,
+          details: assignment.description,
+          mode: 'Assignment',
+          date: new Date(assignment.deadline),
+          type: 'assignment'
+        };
+      }),
+      // Format exams
+      ...exams.map(exam => ({
+        id: `exam-${exam.id}`,
+        title: exam.title,
+        subject: exam.course?.name || 'Unknown Course',
+        deadline: `${exam.time} of ${format(new Date(exam.date), 'dd/MM/yyyy')}`,
+        details: exam.description,
+        mode: exam.isOnline ? 'Online' : 'In Class',
+        date: new Date(`${exam.date}T${exam.time}`),
+        type: 'exam'
+      }))
+    ];
+
+    // Filter out past deadlines and sort by date
+    const now = new Date();
+    const todayStart = startOfToday();
+    return allDeadlines
+      .filter(deadline => deadline.date >= todayStart)
+      .sort((a, b) => a.date - b.date)
+      .slice(0, 5); // Show only the 5 closest deadlines
+  }, []);
+
+  const handleViewClick = (deadline) => {
+    // Navigate to the appropriate page based on the type
+    const path = deadline.type === 'assignment' ? '/student/assignments' : '/student/exams';
+    // Add the title as a search parameter
+    navigate(`${path}?search=${encodeURIComponent(deadline.title)}`);
+  };
 
   return (
     <div className="bg-white rounded-xl p-4">
@@ -55,17 +65,20 @@ const DeadlinesSideList = () => {
         {deadlines.map((deadline) => (
           <div
             key={deadline.id}
-            className="p-2 rounded-lg border-l-4 border-red-500 bg-pink-100"
+            className={`p-2 rounded-lg border-l-4 ${isToday(deadline.date) ? 'border-red-500 bg-pink-100' : 'border-red-500 bg-gray-100'} hover:bg-gray-50`}
           >
             <div className="flex flex-col">
-              <h4 className="font-medium text-red-600 text-sm">{deadline.title}</h4>
-              <p className="text-xs text-gray-700 ">{deadline.deadline}</p>
+              <h4 className={`font-medium ${isToday(deadline.date) ? 'text-red-600' : 'text-gray-800'} text-sm`}>{deadline.title}</h4>
+              <p className="text-xs text-gray-700">{deadline.deadline}</p>
               <p className="text-sm font-semibold text-gray-900 my-1">{deadline.subject}</p>
-              <p className="text-xs text-gray-600 ">{deadline.details}</p>
-              <p className="text-xs text-green-600 ">{deadline.mode}</p>
+              <p className="text-xs text-gray-600">{deadline.details}</p>
+              <p className="text-xs text-green-600">{deadline.mode}</p>
             </div>
-            <div className="flex justify-end ">
-              <button className="px-4 py-2 bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white text-xs rounded-md hover:opacity-90">
+            <div className="flex justify-end">
+              <button 
+                onClick={() => handleViewClick(deadline)}
+                className="px-4 py-2 bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white text-xs rounded-md hover:opacity-90"
+              >
                 View
               </button>
             </div>

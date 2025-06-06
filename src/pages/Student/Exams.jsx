@@ -1,29 +1,45 @@
 import Layout from '../../components/layouts/Layout';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Plus } from 'lucide-react';
 import ExamCard from '../../components/shared/ExamCard';
-import { exams , courses } from '../../data/mockData';
+import { exams, courses } from '../../data/mockData';
 import { useModal } from '../../contexts/ModalProvider';
 import { ExamGradesTable } from '../../components/shared/ExamGradesTable';
 import { useAuth } from '../../contexts/AuthContext';
 import ExamResultsModalContent from '../../components/student/ExamResultsModalContent';
+import { useSearchParams } from 'react-router-dom';
 
-export const Exams  = () => {
+export const Exams = () => {
   const { showModal, hideModal } = useModal();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
 
   // Exams state
+  const studentCourses = courses.filter(course => course.students.some(st => st.id === user.id));
+  const StudentExams = exams.filter(exam => exam.course.students.some(st => st.id === user.id));
 
-  const studentCourses = courses.filter(course=>course.students.some(st=>st.id===user.id))
-  const StudentExams =exams.filter(exam => exam.course.students.some(st=>st.id===user.id));
-
-
-  
   // State for search/filter controls
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('All');
   const [selectedClass, setSelectedClass] = useState('All');
   const [activeTab, setActiveTab] = useState('previous');
+
+  // Handle search parameter from URL
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search');
+    if (searchFromUrl) {
+      setSearchTerm(searchFromUrl);
+      // Set tab to upcoming if the exam is in the future
+      const exam = StudentExams.find(e => 
+        e.title.toLowerCase() === searchFromUrl.toLowerCase()
+      );
+      if (exam) {
+        const examDate = new Date(exam.date);
+        const todayStart = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        setActiveTab(examDate >= todayStart ? 'upcoming' : 'previous');
+      }
+    }
+  }, [searchParams, StudentExams]);
 
   // Get unique courses and classes for filter dropdowns
   const coursesList = [ ...Array.from(new Set(exams.map(e => e.course?.name).filter(Boolean)))];
