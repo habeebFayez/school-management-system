@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 
-const StudentExamTaker = ({ exam, onClose, onSubmit }) => {
+const StudentExamTaker = ({ exam, onClose, onSubmit, remainingTime }) => {
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [answers, setAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(exam.duration * 60); // Convert minutes to seconds
+  const [timeLeft, setTimeLeft] = useState((remainingTime > 0 ? remainingTime : exam.duration) * 60); // Use remainingTime if provided, else use total duration
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Timer effect

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StudentExamTaker from './StudentExamTaker';
 import ExamAnswersReview from './ExamAnswersReview';
 import { ArrowLeft } from 'lucide-react';
+import { format } from 'date-fns';
 // Assuming a CircularProgress component exists or needs to be created
 // import CircularProgress from './CircularProgress'; 
 
@@ -11,18 +12,40 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
   const [policiesAccepted, setPoliciesAccepted] = useState(false);
   const [studentAnswers, setStudentAnswers] = useState({});
 
-  // Calculate percentage score (assuming exam object has score and totalPoints)
-  const scorePercentage = (exam.grades.filter(grade=>grade.studentId===user.id)[0].percentage);
-  const studentScore =exam.grades.filter(grade=>grade.studentId===user.id)[0];
-  const correctPercentage = scorePercentage; // Assuming score is based on correct answers
+  // Find student's grade or use default values
+  const studentGrade = exam.grades?.find(grade => grade.studentId === user.id) || {
+    percentage: 0,
+    score: 0,
+    attended: false,
+    passed: false
+  };
+
+  const scorePercentage = studentGrade.percentage;
+  const studentScore = studentGrade;
+  const correctPercentage = scorePercentage;
   const incorrectPercentage = 100 - scorePercentage;
 
-  // Check if exam date is today
-  const isExamToday = () => {
-    const today = new Date();
-    const examDate = new Date(exam.date);
-    return today.toDateString() === examDate.toDateString();
+  // Combine date and time for comparison
+  const examStartTime = exam?.date && exam?.time ? new Date(`${exam.date}T${exam.time}:00`) : null;
+  const examEndTime = examStartTime ? new Date(examStartTime.getTime() + (exam?.duration || 0) * 60000) : null; // add duration in minutes
+  const currentTime = new Date();
+
+  const isExamUpcoming = examStartTime && currentTime < examStartTime;
+  const isExamActive = examStartTime && examEndTime && currentTime >= examStartTime && currentTime <= examEndTime;
+  const isExamEnded = examEndTime && currentTime > examEndTime;
+
+  const getExamStatusMessage = () => {
+    if (isExamUpcoming) {
+      return `Exam starts on ${format(examStartTime, 'PP HH:mm')}`;
+    }
+    if (isExamEnded) {
+      return `Exam ended on ${format(examEndTime, 'PP HH:mm')}`;
+    }
+    return ''; // Should not display a message if active
   };
+
+  // Calculate remaining time if exam is active
+  const remainingTime = isExamActive && examEndTime ? Math.max(0, Math.floor((examEndTime.getTime() - currentTime.getTime()) / 60000)) : exam?.duration;
 
   const handleSubmitExam = (answers) => {
     setStudentAnswers(answers);
@@ -31,7 +54,7 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
   };
 
   if (showExam) {
-    return <StudentExamTaker exam={exam} onClose={() => setShowExam(false)} onSubmit={handleSubmitExam} />;
+    return <StudentExamTaker exam={exam} onClose={() => setShowExam(false)} onSubmit={handleSubmitExam} remainingTime={remainingTime} />;
   }
 
   if (showReview) {
@@ -47,7 +70,7 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
         {/* Circular Progress Bar Placeholder */}
         <div className={`${hight} ${width}  mr-6 flex items-center justify-center`}>
           {/* Replace with actual CircularProgress component */}
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full" >
             <svg className="w-full h-full" viewBox="0 0 100 100">
               {/* Background circle */}
               <circle
@@ -62,15 +85,23 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
                 strokeDasharray={2 * Math.PI * 45}
                 strokeDashoffset={2 * Math.PI * 45 * (1 - 100 / 100)}
                 strokeLinecap="round"
-                className={`stroke-blue-600 transform -rotate-90 origin-center`}
+                className={`${
+                  policiesAccepted && isExamActive
+                    ? (remainingTime < (exam?.duration || 0) / 2 ? 'stroke-red-600' : 'stroke-green-600')
+                    : 'stroke-blue-600'
+                } transform -rotate-90 origin-center`}
               />
             </svg>
            
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className={`text-blue-600  ${textSize} font-bold `}>
-              {exam.duration}min</span>
+              <span className={`${
+                policiesAccepted && isExamActive
+                  ? (remainingTime < (exam?.duration || 0) / 2 ? 'text-red-600' : 'text-green-600')
+                  : 'text-blue-600'
+              } ${textSize} font-bold `}>
+              {isExamActive ? `${remainingTime}min` : `${exam?.duration || 'N/A'}min`}</span>
               <span className={`text-gray-600  text-xs font-bold `}>
-              Duration
+              {isExamActive ? 'Remaining' : 'Duration'}
              </span>
             </div>
             
@@ -80,11 +111,11 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
 
         {/* Exam Details */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">{exam?.course?.code || 'N/A'}</h3>
+          <h3 className="text-xl font-semibold text-gray-900">{exam?.title || 'N/A'}</h3>
           <p className="text-lg text-gray-700">{exam?.course?.name || 'N/A'}</p>
           <p className="text-gray-600 mt-2"><span className="font-bold">Exam Points:</span> {exam?.Total_Points}</p>
           <p className="text-gray-600"><span className="font-bold">Duration:</span> {exam?.duration || 'N/A'} min</p>
-          <p className="text-gray-600"><span className="font-bold">Number of Questions:</span> {exam?.questions.length || 'N/A'}</p>
+          <p className="text-gray-600"><span className="font-bold">Number of Questions:</span> {exam?.questions?.length || 'N/A'}</p>
           <p className="text-gray-600"><span className="font-bold">Topics:</span> {exam?.topics || 'N/A'}</p>
           <p className="text-green-700"><span className="font-bold ">Location:</span> {exam?.location || 'N/A'}</p>
           <p className="text-gray-600 "><span className="font-bold">Date: </span> {exam?.date || 'N/A'}</p>
@@ -101,7 +132,7 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
 
       </div>
       
-      {isExamToday() && (
+      {!isExamEnded && (
         <div className="mt-10">
           <div className="flex items-center mb-4">
             <input
@@ -115,12 +146,15 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
               I have read and agree to the exam policies
             </label>
           </div>
+          {!isExamActive && (
+             <p className="text-red-600 text-center mb-4">{getExamStatusMessage()}</p>
+          )}
           <button
             onClick={() => setShowExam(true)}
-            disabled={!policiesAccepted}
+            disabled={!policiesAccepted || !isExamActive}
             className={`p-2 rounded-lg font-medium w-full ${
-              policiesAccepted 
-                ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+              policiesAccepted && isExamActive
+                ? 'bg-green-600 hover:bg-green-700 text-white'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
@@ -128,6 +162,11 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
           </button>
         </div>
       )}
+       {isExamEnded && (
+           <div className="mt-10 text-center text-red-600 font-semibold">
+               {getExamStatusMessage()}
+           </div>
+       )}
     </div>
     :
     <div className="bg-white rounded-lg p-6 relative max-w-2xl mx-auto">
@@ -178,7 +217,7 @@ const ExamResultsModalContent = ({ exam,user, onClose,hight='h-40' , width='w-40
           <p className="text-gray-600 mt-2"><span className="font-bold">Exam Points:</span> {exam?.Total_Points}</p>
           <p className="text-gray-600"><span className="font-bold">Duration:</span> {exam?.duration || 'N/A'} min</p>
           <p className="text-gray-600"><span className="font-bold">Topics:</span> {exam?.topics || 'N/A'}</p>
-          <p className="text-gray-600"><span className="font-bold">Number of Questions:</span> {exam?.questions.length || 'N/A'}</p>
+          <p className="text-gray-600"><span className="font-bold">Number of Questions:</span> {exam?.questions?.length || 'N/A'}</p>
 
           
         </div>

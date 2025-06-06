@@ -219,7 +219,7 @@ export const courses = [
     credits: 4,
     assignments: [1, 2],
     students: [ users[13], users[14], users[15], users[16], users[17], users[18], users[19]],
-    classes: ["3A", "3B", "3C", "4A", "4B", "4C", "5A", "5B", "6A", "6B"]
+    classes: ["3A", "3B", "3C", "4A", "4B", "5A", "5B", "6A", "6B"]
   },
   {
     id: 2,
@@ -346,7 +346,7 @@ export const assignments = [
     courseId: 1,
     title: "Algebra Basics",
     description: "Complete exercises 1-10 in Chapter 3",
-    deadline: "2023-11-20",
+    deadline: "2025-05-20",
     status: "submitted",
     grade: "95/100"
   },
@@ -355,7 +355,7 @@ export const assignments = [
     courseId: 1,
     title: "Calculus Introduction",
     description: "Solve the derivative problems on page 45",
-    deadline: "2023-12-05",
+    deadline: "2025-06-05",
     status: "pending",
     grade: null
   },
@@ -364,7 +364,7 @@ export const assignments = [
     courseId: 2,
     title: "Newton's Laws Lab Report",
     description: "Write a report on the experiment conducted in class",
-    deadline: "2023-11-25",
+    deadline: "2025-05-25",
     status: "graded",
     grade: "88/100"
   },
@@ -373,7 +373,7 @@ export const assignments = [
     courseId: 3,
     title: "Periodic Table Quiz",
     description: "Prepare for the quiz on the first 20 elements",
-    deadline: "2023-11-15",
+    deadline: "2025-05-15",
     status: "graded",
     grade: "92/100"
   },
@@ -382,7 +382,7 @@ export const assignments = [
     courseId: 4,
     title: "Poetry Analysis",
     description: "Analyze the poem discussed in class and write a 500-word essay",
-    deadline: "2023-12-10",
+    deadline: "2025-06-10",
     status: "pending",
     grade: null
   },
@@ -391,7 +391,7 @@ export const assignments = [
     courseId: 5,
     title: "Historical Timeline",
     description: "Create a timeline of major events from 1900-1950",
-    deadline: "2023-12-01",
+    deadline: "2025-06-01",
     status: "pending",
     grade: null
   }
@@ -504,7 +504,7 @@ export const exams = [
     title: "Midterm Exam",
     date: "2025-05-10",
     time: "09:00",
-    duration: 90,
+    duration: getRandomInt(45, 55),
     topics: "Chapters 1-5",
     location: "Online",
     isOnline: true,
@@ -514,7 +514,7 @@ export const exams = [
     PassingGrade: 50,
     description: "This midterm exam covers fundamental algebra and calculus concepts from chapters 1-5. Students should bring their calculators and formula sheets. The exam will include both multiple-choice and problem-solving questions.",
     questions: generateMockQuestions(1, 10),
-    grades: generateMockGrades({ id: 1, course: courses[0], Total_Points: 20, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 1, course: courses[0], Total_Points: 20, PassingGrade: 50 }, courses),
   },
   {
     id: 2,
@@ -522,7 +522,7 @@ export const exams = [
     title: "Final Exam",
     date: "2025-07-01",
     time: "13:00",
-    duration: 120,
+    duration: getRandomInt(45, 55),
     topics: "Comprehensive",
     location: "Main Hall",
     isOnline: false,
@@ -532,7 +532,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Comprehensive final exam covering all physics principles and mechanics taught throughout the semester. Students must bring their own calculators and formula sheets. The exam includes theoretical questions and practical problem-solving scenarios.",
     questions: generateMockQuestions(2, 15),
-    grades: generateMockGrades({ id: 2, course: courses[1], Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 2, course: courses[1], Total_Points: 50, PassingGrade: 50 }, courses),
   },
   {
     id: 3,
@@ -540,7 +540,7 @@ export const exams = [
     title: "Lab Practical",
     date: "2025-07-01",
     time: "11:00",
-    duration: 60,
+    duration: getRandomInt(45, 55),
     topics: "Lab techniques and safety",
     location: "Chemistry Lab",
     isOnline: false,
@@ -550,7 +550,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Practical exam focusing on laboratory techniques and safety procedures. Students must wear appropriate lab attire and bring their lab notebooks. The exam will test your ability to perform basic chemical experiments safely and accurately.",
     questions: generateMockQuestions(3, 5),
-    grades: generateMockGrades({ id: 3, course: courses[2], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 3, course: courses[2], Total_Points: 5, PassingGrade: 50 }, courses),
   },
   {
     id: 4,
@@ -558,7 +558,7 @@ export const exams = [
     title: "Quiz",
     date: "2025-06-20",
     time: "10:30",
-    duration: 90,
+    duration: getRandomInt(45, 55),
     topics: "Modern Turkish Literature",
     location: "Online",
     isOnline: true,
@@ -568,7 +568,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Essay-based exam focusing on modern Turkish literature. Students will analyze selected works and demonstrate their understanding of literary techniques and themes. Bring your course materials and notes for reference.",
     questions: generateMockQuestions(4, 8),
-    grades: generateMockGrades({ id: 4, course: courses[3], Total_Points: 10, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 4, course: courses[3], Total_Points: 10, PassingGrade: 50 }, courses),
   },
   {
     id: 5,
@@ -576,7 +576,7 @@ export const exams = [
     title: "Quiz",
     date: "2025-06-15",
     time: "08:30",
-    duration: 45,
+    duration: getRandomInt(45, 55),
     topics: "World War II",
     location: "Online",
     isOnline: true,
@@ -586,15 +586,15 @@ export const exams = [
     PassingGrade: 50,
     description: "Short quiz covering key events and figures of World War II. The quiz includes multiple-choice questions and short answer responses. Students should focus on major battles, political developments, and their global impact.",
     questions: generateMockQuestions(5, 10),
-    grades: generateMockGrades({ id: 5, course: courses[4], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 5, course: courses[4], Total_Points: 5, PassingGrade: 50 }, courses),
   },
   {
     id: 6,
     course: courses[5],
     title: "Final Exam",
-    date: "2025-06-08",
+    date: "2025-06-06",
     time: "14:00",
-    duration: 120,
+    duration: 45,
     topics: "Genetics and Evolution",
     location: "Biology Lab",
     isOnline: false,
@@ -604,15 +604,15 @@ export const exams = [
     PassingGrade: 50,
     description: "Comprehensive final exam on genetics and evolution. The exam includes theoretical questions, practical applications, and case studies. Students should bring their lab notebooks and any relevant study materials.",
     questions: generateMockQuestions(6, 12),
-    grades: generateMockGrades({ id: 6, course: courses[5], Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 6, course: courses[5], Total_Points: 50, PassingGrade: 50 }, courses),
   },
   {
     id: 7,
     course: courses[6],
     title: "Project",
-    date: "2025-04-01",
-    time: "16:00",
-    duration: 90,
+    date: "2025-06-05",
+    time: "10:00",
+    duration: getRandomInt(45, 55),
     topics: "Algorithms and Data Structures",
     location: "Online",
     isOnline: true,
@@ -622,7 +622,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Practical programming exam focusing on algorithms and data structures. Students will implement solutions to given problems using their preferred programming language. The exam tests both theoretical knowledge and practical coding skills.",
     questions: generateMockQuestions(7, 10),
-    grades: generateMockGrades({ id: 7, course: courses[6], Total_Points: 10, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 7, course: courses[6], Total_Points: 10, PassingGrade: 50 }, courses),
   },
   {
     id: 8,
@@ -630,7 +630,7 @@ export const exams = [
     title: "Quiz",
     date: "2025-03-10",
     time: "12:00",
-    duration: 60,
+    duration: getRandomInt(45, 55),
     topics: "Visual Arts Techniques",
     location: "Art Studio",
     isOnline: false,
@@ -640,7 +640,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Portfolio review and practical assessment of visual arts techniques. Students will present their work and demonstrate their understanding of various artistic methods. Bring your portfolio and necessary art supplies.",
     questions: generateMockQuestions(8, 5),
-    grades: generateMockGrades({ id: 8, course: courses[7], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 8, course: courses[7], Total_Points: 5, PassingGrade: 50 }, courses),
   },
   {
     id: 9,
@@ -648,7 +648,7 @@ export const exams = [
     title: "Quiz",
     date: "2025-06-20",
     time: "10:00",
-    duration: 30,
+    duration: getRandomInt(45, 55),
     topics: "Physical Fitness Assessment",
     location: "Gymnasium",
     isOnline: false,
@@ -658,7 +658,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Practical fitness assessment including various physical activities and measurements. Students should wear appropriate athletic attire and bring water. The test evaluates overall physical fitness and specific athletic abilities.",
     questions: generateMockQuestions(9, 10),
-    grades: generateMockGrades({ id: 9, course: courses[8], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 9, course: courses[8], Total_Points: 5, PassingGrade: 50 }, courses),
   },
   {
     id: 10,
@@ -666,7 +666,7 @@ export const exams = [
     title: "Final Exam",
     date: "2025-05-15",
     time: "15:00",
-    duration: 60,
+    duration: getRandomInt(45, 55),
     topics: "Major Philosophers",
     location: "Online",
     isOnline: true,
@@ -676,7 +676,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Oral examination covering major philosophers and their contributions. Students will discuss philosophical concepts and demonstrate their understanding through dialogue. The exam tests both knowledge and critical thinking skills.",
     questions: generateMockQuestions(10, 8),
-    grades: generateMockGrades({ id: 10, course: courses[9], Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 10, course: courses[9], Total_Points: 50, PassingGrade: 50 }, courses),
   },
   // Exams in 2025
   {
@@ -685,7 +685,7 @@ export const exams = [
     title: "Midterm Exam",
     date: "2025-03-12",
     time: "10:00",
-    duration: 90,
+    duration: getRandomInt(45, 55),
     topics: "Algebra and Calculus",
     location: "Online",
     isOnline: true,
@@ -695,7 +695,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Spring midterm exam covering advanced algebra and calculus topics. Students should bring their calculators and formula sheets. The exam includes both theoretical questions and practical problem-solving exercises.",
     questions: generateMockQuestions(11, 10),
-    grades: generateMockGrades({ id: 11, course: courses[0], Total_Points: 20, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 11, course: courses[0], Total_Points: 20, PassingGrade: 50 }, courses),
   },
   {
     id: 12,
@@ -703,7 +703,7 @@ export const exams = [
     title: "Final Exam",
     date: "2025-05-18",
     time: "13:30",
-    duration: 120,
+    duration: getRandomInt(45, 55),
     topics: "Electricity and Magnetism",
     location: "Physics Lab",
     isOnline: false,
@@ -713,7 +713,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Laboratory-based final exam focusing on electricity and magnetism experiments. Students must demonstrate proper lab techniques and safety procedures. Bring your lab notebook and necessary safety equipment.",
     questions: generateMockQuestions(12, 5),
-    grades: generateMockGrades({ id: 12, course: courses[1],Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 12, course: courses[1],Total_Points: 50, PassingGrade: 50 }, courses),
   },
   {
     id: 13,
@@ -721,7 +721,7 @@ export const exams = [
     title: "Final Exam",
     date: "2025-06-05",
     time: "09:30",
-    duration: 45,
+    duration: getRandomInt(45, 55),
     topics: "Organic Chemistry",
     location: "Chemistry Lab",
     isOnline: false,
@@ -731,7 +731,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Comprehensive final exam on organic chemistry principles and reactions. The exam includes theoretical questions and practical applications. Students should bring their molecular model kits and periodic tables.",
     questions: generateMockQuestions(13, 10),
-    grades: generateMockGrades({ id: 13, course: courses[2], Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 13, course: courses[2], Total_Points: 50, PassingGrade: 50 }, courses),
   },
   {
     id: 14,
@@ -739,7 +739,7 @@ export const exams = [
     title: "Final Exam",
     date: "2025-04-10",
     time: "11:00",
-    duration: 90,
+    duration: getRandomInt(45, 55),
     topics: "Modern and Classical Literature",
     location: "Online",
     isOnline: true,
@@ -749,7 +749,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Final essay exam comparing modern and classical Turkish literature. Students will analyze selected works and discuss their historical and cultural significance. Bring your course materials and notes for reference.",
     questions: generateMockQuestions(14, 8),
-    grades: generateMockGrades({ id: 14, course: courses[3], Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 14, course: courses[3], Total_Points: 50, PassingGrade: 50 }, courses),
   },
   {
     id: 15,
@@ -757,7 +757,7 @@ export const exams = [
     title: "Final Exam",
     date: "2025-07-01",
     time: "08:00",
-    duration: 120,
+    duration: getRandomInt(45, 55),
     topics: "20th Century History",
     location: "Online",
     isOnline: true,
@@ -767,7 +767,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Comprehensive final exam covering major events and developments of the 20th century. The exam includes essay questions, short answers, and source analysis. Students should focus on political, social, and economic changes.",
     questions: generateMockQuestions(15, 15),
-    grades: generateMockGrades({ id: 15, course: courses[4], Total_Points: 50, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 15, course: courses[4], Total_Points: 50, PassingGrade: 50 }, courses),
   },
   {
     id: 16,
@@ -775,7 +775,7 @@ export const exams = [
     title: "Quiz",
     date: "2025-03-28",
     time: "14:30",
-    duration: 45,
+    duration: getRandomInt(45, 55),
     topics: "Cell Biology",
     location: "Biology Lab",
     isOnline: false,
@@ -785,7 +785,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Short quiz on cell biology concepts and laboratory observations. Students will answer questions based on their practical work and theoretical knowledge. Bring your lab notebook and microscope slides.",
     questions: generateMockQuestions(16, 5),
-    grades: generateMockGrades({ id: 16, course: courses[5], Total_Points: 5, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 16, course: courses[5], Total_Points: 5, PassingGrade: 50 }, courses),
   },
   {
     id: 17,
@@ -793,7 +793,7 @@ export const exams = [
     title: "Midterm Exam",
     date: "2025-05-05",
     time: "16:30",
-    duration: 90,
+    duration: getRandomInt(45, 55),
     topics: "Sorting and Searching Algorithms",
     location: "Online",
     isOnline: true,
@@ -803,7 +803,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Practical exam on sorting and searching algorithms. Students will implement and analyze various algorithms, comparing their efficiency and applications. The exam tests both coding skills and algorithmic thinking.",
     questions: generateMockQuestions(17, 10),
-    grades: generateMockGrades({ id: 17, course: courses[6], Total_Points: 20, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 17, course: courses[6], Total_Points: 20, PassingGrade: 50 }, courses),
   },
   {
     id: 18,
@@ -811,7 +811,7 @@ export const exams = [
     title: "Midterm Exam",
     date: "2025-04-15",
     time: "12:30",
-    duration: 60,
+    duration: getRandomInt(45, 55),
     topics: "Renaissance to Modern Art",
     location: "Art Studio",
     isOnline: false,
@@ -821,7 +821,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Exam covering art history from the Renaissance to modern times. Students will analyze artworks and discuss their historical context and significance. Bring your course materials and any relevant visual aids.",
     questions: generateMockQuestions(18, 5),
-    grades: generateMockGrades({ id: 18, course: courses[7], Total_Points: 20, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 18, course: courses[7], Total_Points: 20, PassingGrade: 50 }, courses),
   },
   {
     id: 19,
@@ -829,7 +829,7 @@ export const exams = [
     title: "Midterm Exam",
     date: "2025-06-10",
     time: "10:30",
-    duration: 30,
+    duration: getRandomInt(45, 55),
     topics: "Endurance and Strength",
     location: "Gymnasium",
     isOnline: false,
@@ -839,7 +839,7 @@ export const exams = [
     PassingGrade: 50,
     description: "Practical test evaluating students' endurance and strength capabilities. The test includes various physical activities and measurements. Wear appropriate athletic attire and bring water.",
     questions: generateMockQuestions(19, 5),
-    grades: generateMockGrades({ id: 19, course: courses[8], Total_Points: 20, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 19, course: courses[8], Total_Points: 20, PassingGrade: 50 }, courses),
   },
   {
     id: 20,
@@ -847,7 +847,7 @@ export const exams = [
     title: "Midterm Exam",
     date: "2025-05-20",
     time: "15:30",
-    duration: 60,
+    duration: getRandomInt(45, 55),
     topics: "Ethics and Moral Philosophy",
     location: "Online",
     isOnline: true,
@@ -857,18 +857,18 @@ export const exams = [
     PassingGrade: 50,
     description: "Exam focusing on ethical theories and moral philosophy. Students will analyze case studies and discuss various ethical frameworks. The exam tests both knowledge and critical thinking skills.",
     questions: generateMockQuestions(20, 8),
-    grades: generateMockGrades({ id: 20, course: courses[9], Total_Points: 20, PassingGrade: 50 }, courses)
+    grades: generateMockGrades({ id: 20, course: courses[9], Total_Points: 20, PassingGrade: 50 }, courses),
   },
   // Add First Exam for each course
   ...courses.map((course, index) => {
-    const examId = 21 + index * 2; // Start ID from 21 and increment by 2 for each course's exams
+    const examId = 21 + index * 3; // Start ID from 21 and increment by 3 for each course's exams
     return {
       id: examId,
       course: course,
       title: "First Exam",
       date: "2025-05-11", // Example date
       time: "09:00",
-      duration: 60,
+      duration: getRandomInt(45, 55),
       topics: `Introduction to ${course.name}`,
       location: "Online",
       isOnline: true,
@@ -878,19 +878,19 @@ export const exams = [
       PassingGrade: 50,
       description: `First exam for ${course.name}, covering introductory topics.`,
       questions: generateMockQuestions(examId, 25),
-      grades: generateMockGrades({ id: examId, course: course, Total_Points: 15, PassingGrade: 50 }, courses)
+      grades: generateMockGrades({ id: examId, course: course, Total_Points: 15, PassingGrade: 50 }, courses),
     };
   }),
    // Add Second Exam for each course
    ...courses.map((course, index) => {
-    const examId = 21 + index * 2 + 1; // Assign next ID
+    const examId = 21 + index * 3 + 1; // Assign next ID
     return {
       id: examId,
       course: course,
       title: "Second Exam",
       date: "2025-05-15", // Example date
       time: "14:00",
-      duration: 75,
+      duration: getRandomInt(45, 55),
       topics: `Intermediate ${course.name}`,
       location: "Building B, Room 101",
       isOnline: false,
@@ -900,18 +900,19 @@ export const exams = [
       PassingGrade: 50,
       description: `Second exam for ${course.name}, covering intermediate topics.`,
       questions: generateMockQuestions(examId, 30),
-      grades: generateMockGrades({ id: examId, course: course, Total_Points: 15, PassingGrade: 50 }, courses)
-    };  }),
+      grades: generateMockGrades({ id: examId, course: course, Total_Points: 15, PassingGrade: 50 }, courses),
+    };
+  }),
     // AddAssignments for each course
    ...courses.map((course, index) => {
-    const examId = 21 + index * 2 + 2; // Assign next ID
+    const examId = 21 + index * 3 + 2; // Assign next ID
     return {
       id: examId,
       course: course,
       title: "Assignment",
       date: "2025-05-19", // Example date
       time: "14:00",
-      duration: 75,
+      duration: getRandomInt(45, 55),
       topics: `Intermediate ${course.name}`,
       location: "Building B, Room 101",
       isOnline: false,
@@ -921,8 +922,9 @@ export const exams = [
       PassingGrade: 50,
       description: `Second exam for ${course.name}, covering intermediate topics.`,
       questions: generateMockQuestions(examId, 30),
-      grades: generateMockGrades({ id: examId, course: course, Total_Points: 5, PassingGrade: 50 }, courses)
-    };  })
+      grades: generateMockGrades({ id: examId, course: course, Total_Points: 5, PassingGrade: 50 }, courses),
+    };
+  })
 
 ];
 
@@ -1223,7 +1225,7 @@ export const dashboardStats = {
   }
 };
 
-// Helper function to generate more realistic attendance status
+// Helper function to generate realistic attendance status
 const getRealisticAttendanceStatus = () => {
   // 85% attended, 10% absent, 5% late
   const rand = Math.random();
@@ -1323,3 +1325,246 @@ allWeekdays.forEach(dateStr => {
     }
   });
 });
+
+// Helper function to get the date for a specific day of the week in the week of a reference date
+// dayOfWeek: 1 for Monday, 2 for Tuesday, ..., 5 for Friday
+const getDateForDayOfWeek = (referenceDate, dayOfWeek) => {
+  const date = new Date(referenceDate);
+  const currentDay = date.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+  // Calculate the difference in days. Adjust for Sunday (0) to be treated as end of week
+  // getDay() returns 0 for Sunday, while dayOfWeek is 1-5. Adjust currentDay to match 1-7 scale or adjust dayOfWeek
+  // Let's adjust currentDay: Monday is 1, Sunday is 0. We want Monday=1, ..., Friday=5.
+  const adjustedCurrentDay = currentDay === 0 ? 7 : currentDay;
+  const diff = dayOfWeek - adjustedCurrentDay;
+  date.setDate(date.getDate() + diff);
+  return format(date, 'yyyy-MM-dd');
+};
+
+// Reference date for the week (e.g., Monday, May 5th, 2025)
+// We'll use Monday as the start of the week for easier calculation with dayOfWeek (1-5)
+const referenceDate = new Date('2025-06-05');
+
+// Lectures array for use in Schedule
+export const lectures = [
+  {
+    id: 1,
+    courseId: 1, // Mathematics
+    subject: 'Mathematics',
+    teacher: courses[0].teacher,
+    dayOfWeek: 1, // Monday
+    date: getDateForDayOfWeek(referenceDate, 1),
+    time: '08:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 2,
+    courseId: 2, // Physics
+    subject: 'Physics',
+    teacher: courses[1].teacher,
+    dayOfWeek: 2, // Tuesday
+    date: getDateForDayOfWeek(referenceDate, 2),
+    time: '09:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 3,
+    courseId: 3, // Chemistry
+    subject: 'Chemistry',
+    teacher: courses[2].teacher,
+    dayOfWeek: 3, // Wednesday
+    date: getDateForDayOfWeek(referenceDate, 3),
+    time: '10:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 4,
+    courseId: 4, // Turkish Literature
+    subject: 'Turkish Literature',
+    teacher: courses[3].teacher,
+    dayOfWeek: 4, // Thursday
+    date: getDateForDayOfWeek(referenceDate, 4),
+    time: '11:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 5,
+    courseId: 5, // History
+    subject: 'History',
+    teacher: courses[4].teacher,
+    dayOfWeek: 5, // Friday
+    date: getDateForDayOfWeek(referenceDate, 5),
+    time: '13:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 6,
+    courseId: 6, // Biology
+    subject: 'Biology',
+    teacher: courses[5].teacher,
+    dayOfWeek: 1, // Monday
+    date: getDateForDayOfWeek(referenceDate, 1),
+    time: '09:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 7,
+    courseId: 7, // Computer Science
+    subject: 'Computer Science',
+    teacher: courses[6].teacher,
+    dayOfWeek: 3, // Wednesday
+    date: getDateForDayOfWeek(referenceDate, 3),
+    time: '11:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 8,
+    courseId: 8, // Art
+    subject: 'Art',
+    teacher: courses[7].teacher,
+    dayOfWeek: 2, // Tuesday
+    date: getDateForDayOfWeek(referenceDate, 2),
+    time: '10:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 9,
+    courseId: 9, // Physical Education
+    subject: 'Physical Education',
+    teacher: courses[8].teacher,
+    dayOfWeek: 4, // Thursday
+    date: getDateForDayOfWeek(referenceDate, 4),
+    time: '14:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 10,
+    courseId: 10, // Philosophy
+    subject: 'Philosophy',
+    teacher: courses[9].teacher,
+    dayOfWeek: 5, // Friday
+    date: getDateForDayOfWeek(referenceDate, 5),
+    time: '08:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  // Additional lectures for more variety
+  {
+    id: 11,
+    courseId: 1,
+    subject: 'Mathematics',
+    teacher: courses[0].teacher,
+    dayOfWeek: 3, // Wednesday
+    date: getDateForDayOfWeek(referenceDate, 3),
+    time: '09:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 12,
+    courseId: 2,
+    subject: 'Physics',
+    teacher: courses[1].teacher,
+    dayOfWeek: 4, // Thursday
+    date: getDateForDayOfWeek(referenceDate, 4),
+    time: '10:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 13,
+    courseId: 3,
+    subject: 'Chemistry',
+    teacher: courses[2].teacher,
+    dayOfWeek: 2, // Tuesday
+    date: getDateForDayOfWeek(referenceDate, 2),
+    time: '13:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 14,
+    courseId: 4,
+    subject: 'Turkish Literature',
+    teacher: courses[3].teacher,
+    dayOfWeek: 1, // Monday
+    date: getDateForDayOfWeek(referenceDate, 1),
+    time: '10:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 15,
+    courseId: 5,
+    subject: 'History',
+    teacher: courses[4].teacher,
+    dayOfWeek: 2, // Tuesday
+    date: getDateForDayOfWeek(referenceDate, 2),
+    time: '11:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 16,
+    courseId: 6,
+    subject: 'Biology',
+    teacher: courses[5].teacher,
+    dayOfWeek: 4, // Thursday
+    date: getDateForDayOfWeek(referenceDate, 4),
+    time: '08:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 17,
+    courseId: 7,
+    subject: 'Computer Science',
+    teacher: courses[6].teacher,
+    dayOfWeek: 5, // Friday
+    date: getDateForDayOfWeek(referenceDate, 5),
+    time: '09:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 18,
+    courseId: 8,
+    subject: 'Art',
+    teacher: courses[7].teacher,
+    dayOfWeek: 1, // Monday
+    date: getDateForDayOfWeek(referenceDate, 1),
+    time: '11:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  },
+  {
+    id: 19,
+    courseId: 9,
+    subject: 'Physical Education',
+    teacher: courses[8].teacher,
+    dayOfWeek: 2, // Tuesday
+    date: getDateForDayOfWeek(referenceDate, 2),
+    time: '14:00',
+    mode: 'Online',
+    type: 'Lecture',
+  },
+  {
+    id: 20,
+    courseId: 10,
+    subject: 'Philosophy',
+    teacher: courses[9].teacher,
+    dayOfWeek: 3, // Wednesday
+    date: getDateForDayOfWeek(referenceDate, 3),
+    time: '08:00',
+    mode: 'in Class',
+    type: 'Lecture',
+  }
+];

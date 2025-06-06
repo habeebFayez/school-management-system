@@ -16,9 +16,19 @@ const AssignmentDetailsStudentModal = ({ assignment, submission, onClose, onOpen
         <div><span className="font-semibold">Description:</span> {assignment.description}</div>
         <div><span className="font-semibold">Deadline:</span> {assignment.deadline} <span className="ml-2 font-semibold">Time:</span> {assignment.time}</div>
         {assignment.fileName && (
-          <div><span className="font-semibold">Assignment File:</span> {assignment.fileName} {assignment.fileSize && <span>({assignment.fileSize})</span>}</div>
+          <div className="flex items-center justify-between bg-gray-200 p-2 rounded-md">
+            <div>
+              <span className="font-semibold">Assignment File:</span> {(assignment.fileName).slice(0,15)+'...'} {assignment.fileSize && <span>({assignment.fileSize})</span>}
+            </div>
+            <button
+              type="button"
+              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition"
+            >
+              Download
+            </button>
+          </div>
         )}
-        <div><span className="font-semibold">Message:</span> {assignment.message || '-'}</div>
+        <div><span className="font-semibold">Message:</span> {assignment.message || 'You can uploud one file only'}</div>
         <hr className="my-2" />
         <div className="font-semibold text-base mb-1">Your Submission</div>
         {submission ? (
@@ -197,7 +207,7 @@ export const StudentAssignmentCard = ({
         <div className="text-sm text-gray-600 mb-1">{assignment.title}</div>
         <div className="text-sm text-gray-700 mb-2">
           Deadline: <span className="font-bold">{assignment.deadline}</span>  Time: <span className="font-bold">{assignment.time}</span>
-        </div>
+          </div>
 
         {/* Status for previous assignments */}
         {statusSection}
@@ -205,23 +215,23 @@ export const StudentAssignmentCard = ({
         {upcomingStatusSection}
 
         {/* Always show details button */}
-        <button
+            <button 
           onClick={() => setDetailsOpen(true)}
           className="w-full text-sm h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white mb-2"
-        >
-          Check details
-        </button>
-
+            >
+             Check details
+            </button>
+            
         {/* Only show submit button for upcoming assignments that are not submitted */}
         {isUpcoming && isUnsubmitted && (
-          <button
+              <button 
             onClick={() =>  setSubmitOpen(true)}
-            className={`w-full h-10 text-sm rounded-lg text-white ${submitButtonClass}`}
-          >
-            {submitButtonText}
-          </button>
-        )}
-      </div>
+                className={`w-full h-10 text-sm rounded-lg text-white ${submitButtonClass}`}
+              >
+                {submitButtonText}
+              </button>
+            )}
+          </div>
       {detailsOpen && (
         <AssignmentDetailsStudentModal
           assignment={assignment}

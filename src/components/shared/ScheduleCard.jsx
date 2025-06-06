@@ -1,7 +1,6 @@
-
 import React from 'react';
 
-const ScheduleCard = ({ slot, time }) => {
+const ScheduleCard = ({ slot, time, onExamDetailsClick }) => {
     const addHour = (time) => {
         const [h, m] = time.split(' ')[0].split(':').map(Number);
         let isPM = time.includes('PM');
@@ -19,10 +18,12 @@ const ScheduleCard = ({ slot, time }) => {
         </div>
         <div className="flex justify-between text-xs">
           <span className="text-green-400">{slot.mode}</span>
-          {slot.details && <button className="bg-white text-black font-semibold py-1 w-2/6 hover:bg-gray-200 rounded">Details</button>}
+          {slot.type === 'Exam' && slot.exam && (
+            <button className="bg-white text-black font-semibold py-1 w-2/6 hover:bg-gray-200 rounded" onClick={() => onExamDetailsClick && onExamDetailsClick(slot.exam)}>Details</button>
+          )}
           {slot.join && <button className="bg-white text-black font-semibold py-1 w-2/6 hover:bg-gray-200 rounded">Join</button>}
         </div>
       </div>
     );
   };
-  export default ScheduleCard;
+export default ScheduleCard;

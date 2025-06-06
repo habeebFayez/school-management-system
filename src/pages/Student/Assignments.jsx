@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/layouts/Layout';
 import { Search } from 'lucide-react';
 import { assignments } from '../../data/assignmentsData';
@@ -6,10 +6,12 @@ import { useModal } from '../../contexts/ModalProvider';
 import { AssignmentDetailsModal } from '../../components/shared/AssignmentDetailsModal';
 import { StudentAssignmentCard } from '../../components/Student/StudentAssignmentCard';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSearchParams } from 'react-router-dom';
 
 const Assignments = () => {
   const { user } = useAuth();
   const { showModal, hideModal } = useModal();
+  const [searchParams] = useSearchParams();
 
   // State for search/filter controls
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,6 +19,23 @@ const Assignments = () => {
   const [selectedClass, setSelectedClass] = useState('All');
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedAssignment, setSelectedAssignment] = useState(null);
+
+  // Handle search parameter from URL
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search');
+    if (searchFromUrl) {
+      setSearchTerm(searchFromUrl);
+      // Set tab to upcoming if the assignment is in the future
+      const assignment = assignments.find(a => 
+        a.title.toLowerCase() === searchFromUrl.toLowerCase()
+      );
+      if (assignment) {
+        const deadline = new Date(assignment.deadline);
+        const now = new Date();
+        setActiveTab(deadline >= now ? 'upcoming' : 'previous');
+      }
+    }
+  }, [searchParams]);
 
   // Get unique courses and class for filter dropdowns
   const courses = assignments

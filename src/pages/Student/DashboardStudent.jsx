@@ -84,7 +84,7 @@ export default function DashboardStudent() {
         {/* Right Sidebar: Fast actions and announcements */}
         <div className="col-span-2 space-y-2 w-2/5">
           <FastActions user={user} colorButton={'bg-gradient-to-br from-[#10062B] to-[#4F0129]'} />
-          <DeadlinesSideList />s
+          <DeadlinesSideList />
           <AnnouncementsSideList />
 
         </div>
