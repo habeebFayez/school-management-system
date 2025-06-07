@@ -8,7 +8,6 @@ import WeeklyAttendanceTable from '../../components/shared/WeeklyAttendanceTable
 // Assuming AttendanceDaily.jsx had these imports and state
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 import { useModal } from '../../contexts/ModalProvider';
-import CreateNewAttendanceList from '../../components/teacher/CreateNewAttendanceList';
 
 
 const Attendance = () => {

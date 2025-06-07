@@ -1,15 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { courses } from '../../data/mockData';
 import OnlineExamBuilder from './OnlineExamBuilder';
+import { useSaveNotification } from '../../contexts/SaveNotificationContext';
 
 export const CreateExamModal = ({
   isOpen,
   onClose,
   initialExam = null 
 }) => {
+  const { showSaveNotification, hideSaveNotification } = useSaveNotification();
   // Add state for step management
   const [step, setStep] = useState('overview');
   const [examPayload, setExamPayload] = useState(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Gather all unique classes from courses
   const allClasses = Array.from(new Set(courses.flatMap(c => c.classes)));
@@ -38,7 +41,32 @@ export const CreateExamModal = ({
 
   const [showClassDropdown, setShowClassDropdown] = useState(false);
   const classDropdownRef = useRef(null);
+  
+  useEffect(() => {
+    let timeoutId;
+    let intervalId;
 
+
+    if (isOpen && hasUnsavedChanges) {
+      // Initial delay of 10 seconds before the first notification
+      timeoutId = setTimeout(() => {
+        showSaveNotification();
+        // Then show every 10 seconds
+        intervalId = setInterval(() => {
+          showSaveNotification();
+        }, 10000); // 10 seconds
+      }, 10000); // Initial 10 seconds delay
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isOpen,hasUnsavedChanges, showSaveNotification]);
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -50,10 +78,42 @@ export const CreateExamModal = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleFormChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+    setHasUnsavedChanges(true);
+  };
+
+  const handleClassChange = (cls, checked) => {
+    setFormData(prev => {
+      const selected = checked
+        ? [...prev.class, cls]
+        : prev.class.filter(c => c !== cls);
+      return {
+        ...prev,
+        class: selected
+      };
+    });
+    setHasUnsavedChanges(true);
+  };
+
+  const handleAllClassesChange = (checked) => {
+    setFormData(prev => ({
+      ...prev,
+      class: checked ? allClasses : []
+    }));
+    setHasUnsavedChanges(true);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would call your create or update exam logic
     console.log('Exam data:', formData);
+    setHasUnsavedChanges(false);
+    hideSaveNotification();
     onClose();
   };
 
@@ -66,6 +126,13 @@ export const CreateExamModal = ({
     };
     setExamPayload(payload);
     setStep('questions');
+    setHasUnsavedChanges(false);
+  };
+
+  const handleClose = () => {
+    setHasUnsavedChanges(false);
+    hideSaveNotification();
+    onClose();
   };
 
   return (
@@ -81,8 +148,9 @@ export const CreateExamModal = ({
                    <input
                      type='radio'
                      id='isOnline'
+                     name='isOnline'
                      checked={formData.isOnline}
-                     onChange={(e) => setFormData(prev => ({ ...prev, isOnline: e.target.checked }))}
+                     onChange={handleFormChange}
                      className='form-checkbox h-4 w-4 text-blue-600 rounded'
                    />
                    <label htmlFor='isOnline' className="text-sm font-medium text-gray-900">Is Online Exam</label>
@@ -91,8 +159,9 @@ export const CreateExamModal = ({
                    <input
                      type='radio'
                      id='FaceToFace'
+                     name='isOnline'
                      checked={!formData.isOnline}
-                     onChange={(e) => setFormData(prev => ({ ...prev, isOnline: false }))}
+                     onChange={handleFormChange}
                      className='form-checkbox h-4 w-4 text-blue-600 rounded'
                    />
                    <label htmlFor='FaceToFace' className="text-sm font-medium text-gray-900">Face to face Exam</label>
@@ -122,12 +191,7 @@ export const CreateExamModal = ({
                           <input
                             type="checkbox"
                             checked={formData.class.length === allClasses.length}
-                            onChange={e => {
-                              setFormData(prev => ({
-                                ...prev,
-                                class: e.target.checked ? allClasses : []
-                              }));
-                            }}
+                            onChange={e => handleAllClassesChange(e.target.checked)}
                           />
                           <span className="text-sm">All Classes</span>
                         </label>
@@ -139,17 +203,7 @@ export const CreateExamModal = ({
                             <input
                               type="checkbox"
                               checked={formData.class.includes(cls)}
-                              onChange={e => {
-                                setFormData(prev => {
-                                  const selected = prev.class.includes(cls)
-                                    ? prev.class.filter(c => c !== cls)
-                                    : [...prev.class, cls];
-                                  return {
-                                    ...prev,
-                                    class: selected
-                                  };
-                                });
-                              }}
+                              onChange={e => handleClassChange(cls, e.target.checked)}
                             />
                             <span className="text-sm">{cls}</span>
                           </label>
@@ -169,8 +223,9 @@ export const CreateExamModal = ({
               <div className='w-full px-2'>
                 <label className="block text-sm font-medium mb-2">Course</label>
                 <select className='bg-gray-300 w-full h-8 rounded-md cursor-pointer px-2' 
+                  name="course"
                   value={formData.course}
-                  onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}>
+                  onChange={handleFormChange}>
                   <option value="">Select a Course</option>
                   {courseOptions.map(course => (
                     <option key={course.id} value={course.id}>{course.name}</option>
@@ -183,9 +238,10 @@ export const CreateExamModal = ({
                 <div>
                   <label className="block text-sm font-medium mb-2">Exam Title</label>
                   <input
+                    name="title"
                     placeholder="Exam Title"
                     value={formData.title}
-                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                    onChange={handleFormChange}
                     className='bg-gray-300 w-full h-8 rounded-md p-2 '
                   />
                 </div>
@@ -193,9 +249,10 @@ export const CreateExamModal = ({
                   <label className="block text-sm font-medium mb-2">Duration (minutes)</label>
                   <input
                     type='number'
+                    name="duration"
                     placeholder="e.g. 90"
                     value={formData.duration}
-                    onChange={(e) => setFormData(prev => ({ ...prev, duration: Number(e.target.value) }))}
+                    onChange={handleFormChange}
                     className='bg-gray-300 w-full h-8 rounded-md p-2 '
                   />
                 </div>
@@ -207,9 +264,10 @@ export const CreateExamModal = ({
                   <label className="block text-sm font-medium mb-2">Date</label>
                   <input
                     type="date"
+                    name="date"
                     placeholder="Date"
                     value={formData.date}
-                    onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                    onChange={handleFormChange}
                     className='bg-gray-300 w-full h-8 rounded-md'
                   />
                 </div>
@@ -217,130 +275,133 @@ export const CreateExamModal = ({
                   <label className="block text-sm font-medium mb-2">Time</label>
                   <input
                     type="time"
+                    name="time"
                     placeholder="Time"
                     value={formData.time}
-                    onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}
+                    onChange={handleFormChange}
                     className='bg-gray-300 w-full h-8 rounded-md'
                   />
                 </div>
               </div>
 
               {/* Location and Topics */}
-              <div className='w-full px-2'>
-                <label className="block text-sm font-medium mb-2">Location</label>
-                <input
-                  placeholder="Location"
-                  value={formData.location}
-                  onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                  className='bg-gray-300 w-full h-8 rounded-md p-2'
-                />
-              </div>
-              <div className='w-full px-2'>
-                <label className="block text-sm font-medium mb-2">Topics</label>
-                <input
-                  placeholder="Topics"
-                  value={formData.topics}
-                  onChange={(e) => setFormData(prev => ({ ...prev, topics: e.target.value }))}
-                  className='bg-gray-300 w-full h-8 rounded-md p-2'
-                />
-              </div>
-
-              {/* Online, Total Points, Random Questions, Passing Grade, Number of Questions */}
-             
-              <div className="grid grid-cols-3 gap-4 px-2">
-                 
-                 <div>
-                   <label className="block text-sm font-medium mb-2">Total Points</label>
-                   <input
-                     type='number'
-                     placeholder="e.g. 100"
-                     value={formData.Total_Points}
-                     onWheel={(e) => e.target.blur()} 
-                     onChange={(e) => setFormData(prev => ({ ...prev, Total_Points: Number(e.target.value) }))}
-                     className='bg-gray-300 w-full h-8 rounded-md p-2'
-                   />
-                 </div>
-                 <div>
-                   <label className="block text-sm font-medium mb-2">Number of Questions</label>
-                   <input
-                     type='number'
-                     placeholder="e.g. 20"
-                     onWheel={(e) => e.target.blur()} 
-                     value={formData.number_of_questions}
-                     onChange={(e) => setFormData(prev => ({ ...prev, number_of_questions: Number(e.target.value>100?100:e.target.value) }))}
-                     className='bg-gray-300 w-full h-8 rounded-md p-2'
-                   />
-                 </div>
-                 <div className='w-full px-2'>
-                 <label className="block text-sm font-medium mb-2">Passing Grade (%)</label>
-                 <input
-                   type='number'
-                   placeholder="e.g. 70"
-                     onWheel={(e) => e.target.blur()} 
-                     value={formData.PassingGrade}
-                   onChange={(e) => setFormData(prev => ({ ...prev, PassingGrade: Number(e.target.value) }))}
-                   className='bg-gray-300 w-full h-8 rounded-md p-2'
-                 />
+              <div className="grid grid-cols-2 gap-4 px-2">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Location</label>
+                  <input
+                    name="location"
+                    placeholder="e.g., Room 101 or Online Link"
+                    value={formData.location}
+                    onChange={handleFormChange}
+                    className='bg-gray-300 w-full h-8 rounded-md p-2'
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Topics</label>
+                  <input
+                    name="topics"
+                    placeholder="e.g., Algebra, Geometry"
+                    value={formData.topics}
+                    onChange={handleFormChange}
+                    className='bg-gray-300 w-full h-8 rounded-md p-2'
+                  />
+                </div>
               </div>
 
-              </div>
-              
               {/* Description */}
               <div className='w-full px-2'>
-                 <label className="block text-sm font-medium mb-2">Exam Instructions (optional)</label>
-                 <textarea
-                   placeholder="Exam Instructions"
-                   value={formData.description}
-                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                   className='bg-gray-300 w-full rounded-md min-h-[75px] p-2'
-                 />
-               </div>
-               <div  className="flex items-center gap-2">
-                   <input
-                     type='checkbox'
-                     id='isRandomQuestions'
-                     checked={formData.isRandomQuestions}
-                     onChange={(e) => setFormData(prev => ({ ...prev, isRandomQuestions: e.target.checked }))}
-                     className='form-checkbox h-4 w-4 text-blue-600 rounded'
-                   />
-                   <label htmlFor='isRandomQuestions' className="text-sm font-semibold text-red-500">Randomize Questions Order</label>
-                 </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 px-2">
-            {formData.isOnline ? (
-            <button
-              type="button"
-              onClick={handleContinueToQuestions}
-              className="w-full bg-blue-600 hover:opacity-90 rounded-lg text-white py-2"
-            >
-              Continue to Questions
-            </button>
-            ) : (
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 rounded-lg text-white py-2"
-            >
-              {initialExam ? 'Update Exam' : 'Create Exam'}
-            </button>
-            )}
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-full bg-red-500 hover:opacity-90 rounded-lg text-white py-2"
-            >
-              Close
-            </button>
-        </div>
+                <label className="block text-sm font-medium mb-2">Description</label>
+                <textarea
+                  name="description"
+                  placeholder="Detailed description of the exam"
+                  value={formData.description}
+                  onChange={handleFormChange}
+                  className='bg-gray-300 w-full rounded-md min-h-[75px] p-2'
+                />
+              </div>
 
+              {/* Online Exam Specific Fields */}
+              {formData.isOnline && (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-4 px-2">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Total Points</label>
+                      <input
+                        type="number"
+                        name="Total_Points"
+                        placeholder="e.g. 100"
+                        value={formData.Total_Points}
+                        onChange={handleFormChange}
+                        className='bg-gray-300 w-full h-8 rounded-md p-2'
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Number of Questions</label>
+                      <input
+                        type="number"
+                        name="number_of_questions"
+                        placeholder="e.g. 20"
+                        value={formData.number_of_questions}
+                        onChange={handleFormChange}
+                        className='bg-gray-300 w-full h-8 rounded-md p-2'
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-2">
+                    <label className="block text-sm font-medium mb-2">Passing Grade (%)</label>
+                    <input
+                      type="number"
+                      name="PassingGrade"
+                      placeholder="e.g. 60"
+                      value={formData.PassingGrade}
+                      onChange={handleFormChange}
+                      className='bg-gray-300 w-full h-8 rounded-md p-2'
+                    />
+                  </div>
+                  <div className="w-full px-2 flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="isRandomQuestions"
+                      checked={formData.isRandomQuestions}
+                      onChange={handleFormChange}
+                      className='form-checkbox h-4 w-4 text-blue-600 rounded'
+                    />
+                    <label htmlFor="isRandomQuestions" className="text-sm font-medium text-gray-900">Randomize Questions</label>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-4 px-2">
+              {initialExam ? (
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 rounded-lg text-white py-2"
+                >
+                  Update Exam
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleContinueToQuestions}
+                  className="w-full bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 rounded-lg text-white py-2"
+                >
+                  Continue to Questions
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={handleClose}
+                className="w-full bg-red-700 hover:opacity-90 rounded-lg text-white py-2"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </>
       ) : (
-        <OnlineExamBuilder
-          open={true}
-          onOpenChange={onClose}
-          onBack={() => setStep('overview')}
-          examData={examPayload}
-        />
+        <OnlineExamBuilder examPayload={examPayload} onClose={onClose} />
       )}
     </div>
   );

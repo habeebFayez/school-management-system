@@ -32,6 +32,7 @@ import { PublicRoute } from './components/PublicRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { CourseProvider } from './contexts/CourseContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { SaveNotificationProvider } from './contexts/SaveNotificationContext';
 import NotFound from './pages/NotFound';
 import React from 'react';
 import { ModalProvider } from './contexts/ModalProvider';
@@ -42,222 +43,225 @@ import AttendanceDaily from './pages/Teacher/AttendanceDaily';
 function App() {
   return (
     <AuthProvider>
-          <ModalProvider>
-      <CourseProvider>
-        <NotificationProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <PublicRoute>
-                    <Login />
-                  </PublicRoute>
-                } 
-              />
-              {/* Teacher Routes */}
-              <Route 
-                path="/teacher/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <DashboardTeacher />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/students-list" 
-                element={
-                  <ProtectedRoute>
-                    <StudentListPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/schedule" 
-                element={
-                  <ProtectedRoute>
-                    <Schedule />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/exams" 
-                element={
-                  <ProtectedRoute>
-                    <Exams />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/assignments" 
-                element={
-                  <ProtectedRoute>
-                    <Assignments />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/grades" 
-                element={
-                  <ProtectedRoute>
-                    <GradesTeacher />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/attendance" 
-                element={
-                  <ProtectedRoute>
-                    <Attendance />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/attendance-daily" 
-                element={
-                  <ProtectedRoute>
-                    <AttendanceDaily />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/teacher/inbox" 
-                element={
-                  <ProtectedRoute>
-                    <Inbox />
-                  </ProtectedRoute>
-                } 
-              />
-               <Route 
-                path="/teacher/teacher-profile/*" 
-                element={
-                  <ProtectedRoute>
-                    <TeacherProfile />
-                  </ProtectedRoute>
-                } 
-              />
-               {/* Student Routes */}
-               <Route 
-                path="/student/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <DashboardStudent />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              <Route 
-                path="/student/student-profile/*" 
-                element={
-                  <ProtectedRoute>
-                    <StudentProfile />
-                  </ProtectedRoute>
-                } 
-              />
-               <Route 
-              path="/student/grades" 
-              element={
-                <ProtectedRoute>
-                  <GradesStudent />
-                </ProtectedRoute>
-              } 
-            />
+       <NotificationProvider>
+          <SaveNotificationProvider>
+            <ModalProvider>
+              <CourseProvider>
+                <NotificationProvider>
+                  <BrowserRouter>
+                    <Routes>
+                      <Route 
+                        path="/" 
+                        element={
+                          <PublicRoute>
+                            <Login />
+                          </PublicRoute>
+                        } 
+                      />
+                      {/* Teacher Routes */}
+                      <Route 
+                        path="/teacher/dashboard" 
+                        element={
+                          <ProtectedRoute>
+                            <DashboardTeacher />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/students-list" 
+                        element={
+                          <ProtectedRoute>
+                            <StudentListPage />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/schedule" 
+                        element={
+                          <ProtectedRoute>
+                            <Schedule />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/exams" 
+                        element={
+                          <ProtectedRoute>
+                            <Exams />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/assignments" 
+                        element={
+                          <ProtectedRoute>
+                            <Assignments />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/grades" 
+                        element={
+                          <ProtectedRoute>
+                            <GradesTeacher />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/attendance" 
+                        element={
+                          <ProtectedRoute>
+                            <Attendance />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/attendance-daily" 
+                        element={
+                          <ProtectedRoute>
+                            <AttendanceDaily />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/inbox" 
+                        element={
+                          <ProtectedRoute>
+                            <Inbox />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                        path="/teacher/teacher-profile/*" 
+                        element={
+                          <ProtectedRoute>
+                            <TeacherProfile />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      {/* Student Routes */}
+                      <Route 
+                        path="/student/dashboard" 
+                        element={
+                          <ProtectedRoute>
+                            <DashboardStudent />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      
+                      <Route 
+                        path="/student/student-profile/*" 
+                        element={
+                          <ProtectedRoute>
+                            <StudentProfile />
+                          </ProtectedRoute>
+                        } 
+                      />
+                      <Route 
+                      path="/student/grades" 
+                      element={
+                        <ProtectedRoute>
+                          <GradesStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-             <Route 
-              path="/student/courses-list" 
-              element={
-                <ProtectedRoute>
-                  <SubjectsList />
-                </ProtectedRoute>
-              } 
-            />
-              <Route 
-              path="/student/courses/*" 
-              element={
-                <ProtectedRoute>
-                  <SubjectFullData />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/courses-list" 
+                      element={
+                        <ProtectedRoute>
+                          <SubjectsList />
+                        </ProtectedRoute>
+                      } 
+                    />
+                      <Route 
+                      path="/student/courses/*" 
+                      element={
+                        <ProtectedRoute>
+                          <SubjectFullData />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-            <Route 
-             path="/student/teachers-list" 
-             element={
-               <ProtectedRoute>
-                 <TeachersList />
-               </ProtectedRoute>
-             } 
-           />
+                    <Route 
+                    path="/student/teachers-list" 
+                    element={
+                      <ProtectedRoute>
+                        <TeachersList />
+                      </ProtectedRoute>
+                    } 
+                  />
 
-            <Route 
-              path="/student/schedule" 
-              element={
-                <ProtectedRoute>
-                  <ScheduleStudent />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/schedule" 
+                      element={
+                        <ProtectedRoute>
+                          <ScheduleStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-            <Route 
-              path="/student/exams" 
-              element={
-                <ProtectedRoute>
-                  <ExamsStudent />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/exams" 
+                      element={
+                        <ProtectedRoute>
+                          <ExamsStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-            <Route 
-              path="/student/assignments" 
-              element={
-                <ProtectedRoute>
-                  <AssignmentsStudent />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/assignments" 
+                      element={
+                        <ProtectedRoute>
+                          <AssignmentsStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-            <Route 
-              path="/student/attendance" 
-              element={
-                <ProtectedRoute>
-                  <AttendanceStudent />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/attendance" 
+                      element={
+                        <ProtectedRoute>
+                          <AttendanceStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-            <Route 
-              path="/student/announcements" 
-              element={
-                <ProtectedRoute>
-                  <AnnouncementsStudent />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/announcements" 
+                      element={
+                        <ProtectedRoute>
+                          <AnnouncementsStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-            <Route 
-              path="/student/inbox" 
-              element={
-                <ProtectedRoute>
-                  <InboxStudent />
-                </ProtectedRoute>
-              } 
-            />
+                    <Route 
+                      path="/student/inbox" 
+                      element={
+                        <ProtectedRoute>
+                          <InboxStudent />
+                        </ProtectedRoute>
+                      } 
+                    />
 
-              {/* Protected 404 route */}
-              <Route 
-                path="*" 
-                element={
-                  <ProtectedRoute>
-                    <NotFound />
-                  </ProtectedRoute>
-                } 
-              />
-            </Routes>
-          </BrowserRouter>
+                      {/* Protected 404 route */}
+                      <Route 
+                        path="*" 
+                        element={
+                          <ProtectedRoute>
+                            <NotFound />
+                          </ProtectedRoute>
+                        } 
+                      />
+                    </Routes>
+                  </BrowserRouter>
+                </NotificationProvider>
+              </CourseProvider>
+            </ModalProvider>
+          </SaveNotificationProvider>
         </NotificationProvider>
-      </CourseProvider>
-      </ModalProvider>
-
     </AuthProvider>
   );
 }

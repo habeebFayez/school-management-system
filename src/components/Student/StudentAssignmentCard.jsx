@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, FileText, X, Upload } from 'lucide-react';
 import { submissionsFull } from '../../data/assignmentsData';
+import { useSaveNotification } from '../../contexts/SaveNotificationContext';
+import { useNotification } from '../../contexts/NotificationContext';
 
 const AssignmentDetailsStudentModal = ({ assignment, submission, onClose, onOpenSubmit }) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
@@ -67,12 +69,65 @@ const AssignmentDetailsStudentModal = ({ assignment, submission, onClose, onOpen
 );
 
 const AssignmentSubmitModal = ({ assignment, onClose, onSubmit }) => {
-  const [message, setMessage] = useState('');
-  const [file, setFile] = useState(null);
+  const { showSaveNotification, hideSaveNotification } = useSaveNotification();
+  const { showNotification } = useNotification();
+
+  const [formData, setFormData] = useState({
+    message: '',
+    file: null,
+  });
+
+  useEffect(() => {
+    let timeoutId;
+    let intervalId;
+
+
+    if (formData.message !== '' || formData.file !== null) {
+      // Initial delay of 10 seconds before the first notification
+      timeoutId = setTimeout(() => {
+        showSaveNotification();
+        // Then show every 10 seconds
+        intervalId = setInterval(() => {
+          showSaveNotification();
+        }, 10000); // 10 seconds
+      }, 10000); // Initial 10 seconds delay
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [formData, showSaveNotification]);
+ 
+  const handleMessageChange = (e) => {
+    setFormData(prev => ({ ...prev, message: e.target.value }));
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData(prev => ({ ...prev, file: e.target.files[0] }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.message.trim() && !formData.file) {
+      showNotification('Message or file is required for submission.', 'error');
+      return;
+    }
+    onSubmit(formData);
+    hideSaveNotification(); // Hide notification on successful submission
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
       <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
-        <button onClick={onClose} className="absolute top-3 right-3 text-gray-400 hover:text-gray-700">
+        <button onClick={() => { hideSaveNotification(); onClose(); }} className="absolute top-3 right-3 text-gray-400 hover:text-gray-700">
           <X size={24} />
         </button>
         <h2 className="text-2xl font-bold mb-4 text-center">Submit Assignment</h2>
@@ -82,19 +137,13 @@ const AssignmentSubmitModal = ({ assignment, onClose, onSubmit }) => {
           <div><span className="font-semibold">Title:</span> {assignment.title}</div>
           <div><span className="font-semibold">Deadline:</span> {assignment.deadline} <span className="ml-2 font-semibold">Time:</span> {assignment.time}</div>
         </div>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            onSubmit({ message, file });
-          }}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block font-semibold mb-1">Message</label>
             <textarea
               className="w-full border rounded-md p-2 min-h-[60px]"
-              value={message}
-              onChange={e => setMessage(e.target.value)}
+              value={formData.message}
+              onChange={handleMessageChange}
               placeholder="Write a message (optional)"
             />
           </div>
@@ -103,7 +152,7 @@ const AssignmentSubmitModal = ({ assignment, onClose, onSubmit }) => {
             <input
               type="file"
               className="w-full"
-              onChange={e => setFile(e.target.files[0])}
+              onChange={handleFileChange}
             />
           </div>
           <button
