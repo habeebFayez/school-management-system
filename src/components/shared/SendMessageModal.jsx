@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trash2  } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { courses } from '../../data/mockData';
+import { useNotification } from '../../contexts/NotificationContext';
+import { useSaveNotification } from '../../contexts/SaveNotificationContext';
 
 export const SendMessageModal = ({
   isOpen,
@@ -9,19 +11,21 @@ export const SendMessageModal = ({
   replyTo
 }) => {
   const { user: authUser } = useAuth();
+  const { showNotification } = useNotification();
   const isStudent = authUser.role === 'student';
+  const { showSaveNotification, hideSaveNotification } = useSaveNotification();
 
   const [selectedCourse, setSelectedCourse] = useState(replyTo?.courseId || 'all');
   const [subject, setSubject] = useState(replyTo?.subject ? `Re: ${replyTo?.subject}` : '');
   const [message, setMessage] = useState('');
   const [file, setFile] = useState (null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Convert selectedCourse to number if it's not 'all'
   const courseId = selectedCourse === 'all' ? 'all' : Number(selectedCourse);
   const selectedCourseData = courses.find(course => course.id === courseId);
   
-  console.log('Selected Course ID:', courseId);
-  console.log('Selected Course Data:', selectedCourseData);
+
   
   // Get available recipients based on user role
   const availableRecipients = selectedCourse === 'all' 
@@ -42,11 +46,55 @@ export const SendMessageModal = ({
   const [selectedRecipient, setSelectedRecipient] = useState(replyTo?.senderId || '');
 
   // Reset recipient when course changes
-  React.useEffect(() => {
+  useEffect(() => {
     setSelectedRecipient('');
+    setHasUnsavedChanges(true);
   }, [selectedCourse]);
 
-  const handleSend = () => {
+  
+  useEffect(() => {
+    let timeoutId;
+    let intervalId;
+
+
+    if (isOpen && hasUnsavedChanges) {
+      // Initial delay of 10 seconds before the first notification
+      timeoutId = setTimeout(() => {
+        showSaveNotification();
+        // Then show every 10 seconds
+        intervalId = setInterval(() => {
+          showSaveNotification();
+        }, 10000); // 10 seconds
+      }, 10000); // Initial 10 seconds delay
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isOpen,hasUnsavedChanges, showSaveNotification]);
+
+  const handleSend = (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    // Validation logic
+    if (!selectedRecipient || selectedRecipient === '') {
+      showNotification('Please select a recipient.', 'error');
+      return;
+    }
+    if (!subject.trim()) {
+      showNotification('Subject cannot be empty.', 'error');
+      return;
+    }
+    if (!message.trim()) {
+      showNotification('Message cannot be empty.', 'error');
+      return;
+    }
+
     console.log('Sending message:', {
       course: selectedCourse,
       recipient: selectedRecipient,
@@ -55,7 +103,12 @@ export const SendMessageModal = ({
       file
     });
     
-    // Reset form
+    // Simulate success for now
+    showNotification('Message was sent successfully!', 'success');
+
+    // Reset form and hide notification
+    setHasUnsavedChanges(false);
+    hideSaveNotification();
     setSelectedCourse('all');
     setSelectedRecipient('');
     setSubject('');
@@ -67,6 +120,7 @@ export const SendMessageModal = ({
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+      setHasUnsavedChanges(true);
     }
   };
 
@@ -81,7 +135,10 @@ export const SendMessageModal = ({
               <select 
                 className='bg-gray-300 w-full h-8 rounded-md cursor-pointer px-2' 
                 value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
+                onChange={(e) => {
+                  setSelectedCourse(e.target.value);
+                  setHasUnsavedChanges(true);
+                }}
               >
                 <option value="all">All Courses</option>
                 {courses.map((course) => (
@@ -97,7 +154,10 @@ export const SendMessageModal = ({
               <select 
                 className='bg-gray-300 w-full h-8 rounded-md cursor-pointer px-2' 
                 value={selectedRecipient} 
-                onChange={(e) => setSelectedRecipient(e.target.value)}
+                onChange={(e) => {
+                  setSelectedRecipient(e.target.value);
+                  setHasUnsavedChanges(true);
+                }}
               >
                 <option value="">Select {isStudent ? 'Teacher' : 'Student'}</option>
                 {availableRecipients.map((recipient) => (
@@ -113,7 +173,10 @@ export const SendMessageModal = ({
               <input
                 id="subject"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
+                onChange={(e) => {
+                  setSubject(e.target.value);
+                  setHasUnsavedChanges(true);
+                }}
                 placeholder="Subject"
                 className='bg-gray-300 w-full h-8 rounded-md p-2'    
               />
@@ -124,7 +187,10 @@ export const SendMessageModal = ({
               <textarea
                 id="message"
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                  setHasUnsavedChanges(true);
+                }}
                 placeholder="Message"
                 className='bg-gray-300 w-full text-sm rounded-md min-h-28 p-2' 
               />
@@ -152,7 +218,10 @@ export const SendMessageModal = ({
                     <p className="text-sm text-gray-600">
                       {file.name}
                     </p>
-                    <Trash2 onClick={() => setFile(null)} className='bg-gray-200 w-5 text-sm cursor-pointer text-black rounded-md ml-2'>X</Trash2>
+                    <Trash2 onClick={() => {
+                      setFile(null);
+                      setHasUnsavedChanges(true);
+                    }} className='bg-gray-200 w-5 text-sm cursor-pointer text-black rounded-md ml-2'>X</Trash2>
                   </div>
                 )}
               </div>
@@ -168,7 +237,11 @@ export const SendMessageModal = ({
             </button>
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                setHasUnsavedChanges(false);
+                hideSaveNotification();
+                onClose();
+              }}
               className="w-full bg-red-700 hover:opacity-90 rounded-lg text-white py-2"
             >
               Close

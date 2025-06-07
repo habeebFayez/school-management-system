@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSaveNotification } from '../../contexts/SaveNotificationContext';
+import { useNotification } from '../../contexts/NotificationContext';
 
 export const AssignmentDetailsModal = ({ isOpen, onClose, assignment }) => {
   const [formData, setFormData] = useState({
@@ -15,12 +17,75 @@ export const AssignmentDetailsModal = ({ isOpen, onClose, assignment }) => {
 
   const classes = ['AC125', 'PH101', 'DS458', 'CS201', 'MATH301'];
   const courses = ['Computer', 'Physics', 'Data Science', 'Mathematics', 'Chemistry'];
+  const { showSaveNotification, hideSaveNotification } = useSaveNotification();
+  const { showNotification } = useNotification();
+
+  useEffect(() => {
+    let timeoutId;
+    let intervalId;
+
+    console.log('AssignmentDetailsModal - useEffect triggered. isOpen:', isOpen);
+
+    if (isOpen) {
+      console.log('Modal is open - setting up initial delay and interval.');
+      // Initial delay of 10 seconds before the first notification
+      timeoutId = setTimeout(() => {
+        console.log('Initial 10s timeout complete - showing first save notification.');
+        showSaveNotification();
+        // Then show every 10 seconds
+        intervalId = setInterval(() => {
+          console.log('Interval triggered - showing save notification.');
+          showSaveNotification();
+        }, 10000); // 10 seconds
+      }, 10000); // Initial 10 seconds delay
+    }
+
+    return () => {
+      console.log('Cleanup function called.');
+      if (timeoutId) {
+        console.log('Clearing initial timeout.');
+        clearTimeout(timeoutId);
+      }
+      if (intervalId) {
+        console.log('Clearing interval.');
+        clearInterval(intervalId);
+      }
+    };
+  }, [isOpen, showSaveNotification]);
+
+  const handleCloseModal = useCallback(() => {
+    console.log('handleCloseModal called - hiding notification and closing modal.');
+    hideSaveNotification();
+    onClose();
+  }, [hideSaveNotification, onClose]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validation logic
+    if (!formData.title.trim()) {
+      showNotification('Assignment Title cannot be empty.', 'error');
+      return;
+    }
+    if (!formData.description.trim()) {
+      showNotification('Description cannot be empty.', 'error');
+      return;
+    }
+    if (!formData.date) {
+      showNotification('Assignment Deadline Date cannot be empty.', 'error');
+      return;
+    }
+    if (!formData.time) {
+      showNotification('Assignment Deadline Time cannot be empty.', 'error');
+      return;
+    }
+
     console.log('Creating assignment:', formData);
-    onClose();
-  };
+    showSaveNotification(); // Trigger the save notification one last time on submit
+    hideSaveNotification(); // Hide the notification immediately on submit
+    console.log('Form submitted - hiding notification and closing modal.');
+    handleCloseModal();
+    };
 
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];

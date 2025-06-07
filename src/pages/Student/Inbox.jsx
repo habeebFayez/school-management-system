@@ -6,8 +6,11 @@ import { mockMessages,mockMessagesStudent } from '../../data/MessagesData';
 import { Search } from 'lucide-react';
 import { useModal } from '../../contexts/ModalProvider';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../contexts/NotificationContext';
 
 const Inbox = () => {
+  const { showNotification } = useNotification();
+
   const { showModal, hideModal } = useModal();
   const { user: authUser } = useAuth();
   const [activeTab, setActiveTab] = useState('incoming');
@@ -31,6 +34,7 @@ const Inbox = () => {
   });
 
   const handleReply = (message) => {
+    
     const ReplyTo = message;
     showModal(
       <SendMessageModal

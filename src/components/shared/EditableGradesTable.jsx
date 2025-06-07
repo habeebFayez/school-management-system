@@ -14,7 +14,9 @@ const EditableGradesTable = ({ data, columns, handleGradeChange }) => {
                         {columns.map((column, index) => (
                             <th key={index} className="text-left py-3 px-4  font-medium text-gray-700">
                                 {/* Assuming columns are simple strings for headers here */}
-                                {column}
+                                {/* {column} */}
+                                {typeof column === 'object' ? column.Header : column}
+
                             </th>
                         ))}
                          {/* Assuming no Actions column in edit mode for simplicity, or handle it if needed */}

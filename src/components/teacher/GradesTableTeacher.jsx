@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { courses, exams, users } from '../../data/mockData'; // Import necessary data
 import Table from '../shared/Table'; // Assuming the shared Table component
 import AverageDisplay from "../shared/AverageDisplay"
-import EditableGradesTable from '../shared/EditableGradesTable'; // Import the new component
+import EditableGradesTable from '../shared/EditableGradesTable'; 
+import { useSaveNotification } from '../../contexts/SaveNotificationContext';
 
 // Define standard exam order and types
 const STANDARD_EXAM_ORDER = [
@@ -110,13 +111,41 @@ const getStudentGrades = (studentId, courseId, allExams) => {
 };
 
 export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }) => {
+    const { showSaveNotification, hideSaveNotification } = useSaveNotification();
     const [examsData, setExamsData] = useState(exams);
     const [filteredStudents, setFilteredStudents] = useState([]);
     const [editableGradesData, setEditableGradesData] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const [displayedColumns, setDisplayedColumns] = useState([]);
     const [editableTableColumns, setEditableTableColumns] = useState([]); // State for columns used by EditableGradesTable
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false); // New state for unsaved changes
 
+
+    useEffect(() => {
+        let timeoutId;
+        let intervalId;
+    
+    
+        if (editMode && hasUnsavedChanges) {
+            // Initial delay of 10 seconds before the first notification
+          timeoutId = setTimeout(() => {
+            showSaveNotification();
+            // Then show every 10 seconds
+            intervalId = setInterval(() => {
+              showSaveNotification();
+            }, 10000); // 10 seconds
+          }, 10000); // Initial 10 seconds delay
+        }
+    
+        return () => {
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+          }
+          if (intervalId) {
+            clearInterval(intervalId);
+          }
+        };
+    }, [editMode, hasUnsavedChanges, showSaveNotification]);
     useEffect(() => {
         let studentsToDisplay = users.filter(user => user.role === 'student');
 
@@ -220,220 +249,156 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
                      const studentGrades = getStudentGrades(student.id, course.id, examsData);
                      const hasGradedAssessments = Object.values(studentGrades).some(grade => grade !== null && typeof grade !== 'string');
 
-                     if (hasGradedAssessments) {
-                         const rowData = {
-                             Info: {
-                                 avatar: student.avatar,
-                                 name: student.name,
-                                 description: `ID: ${student.id}, Class: ${student.class}`,
-                             },
-                             Course: course.name,
+                     if (!hasGradedAssessments) return; // Skip if no graded assessments for this course
+
+                     const rowData = {
+                         Info: {
+                             avatar: student.avatar,
+                             name: student.name,
+                             description: `ID: ${student.id}, Class: ${student.class}`,
+                         },
+                         Course: course.name,
+                         // Dynamically add columns for each assessment type present in this student's grades
+                         ...Object.fromEntries(
+                             STANDARD_EXAM_ORDER.map(type => [type, studentGrades[type] !== null ? <AverageDisplay value={studentGrades[type]} size="md" /> : '-'])
+                         ),
+                         Average: studentGrades.average !== null ? <AverageDisplay value={studentGrades.average} size="md" /> : '-',
+                         Status: studentGrades.status !== "N/A" ? studentGrades.status : '-',
+                     };
+                     transformedDataForDisplay.push(rowData);
+
+                     const editableStudentGrades = {};
+                     STANDARD_EXAM_ORDER.forEach(type => {
+                         editableStudentGrades[type] = {
+                             assessmentType: type,
+                             percentage: studentGrades[type],
+                             // For overall grades, score and totalPoints might not be directly applicable for editing
+                             score: null, 
+                             totalPoints: null,
+                             assessmentId: null,
+                             courseId: course.id, // Associate with course even if overall
+                             studentId: student.id
                          };
-
-                         STANDARD_EXAM_ORDER.forEach(type => {
-                             const grade = studentGrades[type];
-                             rowData[type] = grade !== null ? <AverageDisplay value={grade} size="md" /> : '-';
-                         });
-
-                         rowData['Average'] = studentGrades.average !== null ? <AverageDisplay value={studentGrades.average} size="md" /> : '-';
-                         rowData['Status'] = studentGrades.status !== "N/A" ? studentGrades.status : '-';
-
-                         transformedDataForDisplay.push(rowData);
-                     }
+                     });
+                     gradesDataForEditing.push({
+                         studentId: student.id,
+                         studentName: student.name,
+                         avatar: student.avatar,
+                         class: student.class,
+                         grades: editableStudentGrades
+                     });
                  });
              });
+             assessmentTypesForCourse = STANDARD_EXAM_ORDER;
          }
 
-         setFilteredStudents(transformedDataForDisplay);
-         setEditableGradesData(selectedCourse !== 'All' ? gradesDataForEditing : []);
+        setFilteredStudents(transformedDataForDisplay);
+        setEditableGradesData(gradesDataForEditing);
 
-         // Define the columns for the Table component inside useEffect
-         const staticColumns = [
-             { Header: 'Student', accessor: 'Info' },
-             { Header: 'Course', accessor: 'Course' }, // Ensure Course column is always included in column definitions
-         ];
+        // Define columns for the main Table component
+        const mainTableColumns = [
+            'Info',
+            'Course',
+            ...assessmentTypesForCourse,
+            'Average',
+            'Status',
+            'Actions'
+        ];
+        setDisplayedColumns(mainTableColumns);
 
-         const finalStaticColumns = [
-             { Header: 'Average', accessor: 'Average' },
-             { Header: 'Status', accessor: 'Status' },
-         ];
-
-         // Determine which columns to show based on selectedCourse
-         const currentTableColumns = selectedCourse !== 'All'
-             ? [...staticColumns, ...assessmentTypesForCourse.map(type => ({ Header: type, accessor: type })), ...finalStaticColumns] // Specific course view - use objects for headers
-             : [...staticColumns, ...STANDARD_EXAM_ORDER.map(type => ({ Header: type, accessor: type })), ...finalStaticColumns]; // All courses view - use objects for headers
-
-         // Columns for the EditableGradesTable (simple strings)
-         const editableCols = ['Student', 'Course', ...assessmentTypesForCourse, 'Average', 'Status'];
-         setEditableTableColumns(editableCols);
-
-         // Set the columns to be displayed in the main Table component (non-editable views)
-         setDisplayedColumns(currentTableColumns);
-
-    }, [selectedCourse, selectedClass, searchTerm, examsData, courses, editMode]); // Reverted dependencies to a cleaner set
+        // Define columns for the EditableGradesTable component
+        const editableCols = [
+            'Student',
+            'Class',
+            ...assessmentTypesForCourse.map(type => ({ Header: type, accessor: type })),
+        ];
+        setEditableTableColumns(editableCols);
+    }, [selectedCourse, selectedClass, searchTerm, examsData]);
 
     const handleGradeChange = (studentId, assessmentType, newValue) => {
         setEditableGradesData(prevData =>
-            prevData.map(student => {
-                if (student.studentId === studentId) {
-                    const updatedGrades = { ...student.grades };
-                    if (updatedGrades[assessmentType]) {
-                        const parsedValue = parseInt(newValue);
-                        const validValue = !isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100 ? parsedValue : null;
-
-                        updatedGrades[assessmentType] = {
-                            ...updatedGrades[assessmentType],
-                            percentage: validValue,
-                            score: validValue !== null ? Math.round((validValue / 100) * updatedGrades[assessmentType].totalPoints) : null
-                        };
+            prevData.map(student =>
+                student.studentId === studentId
+                    ? {
+                        ...student,
+                        grades: {
+                            ...student.grades,
+                            [assessmentType]: {
+                                ...student.grades[assessmentType],
+                                percentage: newValue,
+                                hasChanged: true, // Mark as changed
+                            },
+                        },
                     }
-                    return { ...student, grades: updatedGrades };
-                }
-                return student;
-            })
+                    : student
+            )
         );
+        setHasUnsavedChanges(true); // Mark that there are unsaved changes
     };
 
     const handleSaveGrades = () => {
-        const updatedExamsData = [...examsData];
-
-        editableGradesData.forEach(studentEditData => {
-            Object.entries(studentEditData.grades).forEach(([assessmentType, gradeEntry]) => {
-                if (gradeEntry && gradeEntry.assessmentId) {
-                    const examIndex = updatedExamsData.findIndex(exam => exam.id === gradeEntry.assessmentId);
-                    if (examIndex !== -1) {
-                        const studentGradeIndex = updatedExamsData[examIndex].grades.findIndex(
-                            g => g.studentId === studentEditData.studentId
-                        );
-
-                        if (studentGradeIndex !== -1) {
-                            updatedExamsData[examIndex].grades[studentGradeIndex] = {
-                                ...updatedExamsData[examIndex].grades[studentGradeIndex],
-                                percentage: gradeEntry.percentage,
-                                score: gradeEntry.score,
-                                attended: gradeEntry.percentage !== null,
-                                passed: gradeEntry.percentage !== null && gradeEntry.percentage >= updatedExamsData[examIndex].PassingGrade
-                            };
-                        }
-                    }
-                }
-            });
-        });
-
-        setExamsData(updatedExamsData);
+        // Logic to save grades (e.g., API call)
+        console.log('Saving grades:', editableGradesData);
         setEditMode(false);
+        setHasUnsavedChanges(false); // Reset unsaved changes flag
+        hideSaveNotification(); // Hide notification on save
+        // Optionally, refetch data or update local state to reflect saved changes
     };
 
     const handleCancelEdit = () => {
         setEditMode(false);
+        setHasUnsavedChanges(false); // Reset unsaved changes flag
+        hideSaveNotification(); // Hide notification on cancel
+        // Optionally, reset editableGradesData to original state if changes were not saved
     };
 
     return (
-        <div className="mt-2 space-y-2 w-full  text-sm p-2 rounded-lg overflow-x-auto"> {/* Added w-full overflow-x-auto */}
-             {/* Add Edit/Save/Cancel buttons */}
-             <div className="flex justify-end gap-4 mb-4">
-                {selectedCourse !== 'All' && ( // Only allow editing when a specific course is selected
-                     editMode ? (
-                         <>
-                             <button
-                                 type="button"
-                                 onClick={handleSaveGrades}
-                                 className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                             >
-                                 Save Changes
-                             </button>
-                             <button
-                                 type="button"
-                                 onClick={handleCancelEdit}
-                                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                             >
-                                 Cancel
-                             </button>
-                         </>
-                     ) : (
-                         <button
-                             type="button"
-                             onClick={() => {
-                                 //console.log('Edit Grades button clicked. Setting editMode to true.');
-                                 setEditMode(true);
-                             }}
-                             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                         >
-                             Edit Grades
-                         </button>
-                     )
-                 )}
-             </div>
+        <div className="max-w-7xl mx-auto p-6">
+            <div className="bg-white rounded-xl shadow p-4 mb-6">
+                <h2 className="text-xl font-bold mb-4">Manage Student Grades</h2>
+                <div className="flex justify-end mb-4">
+                    {!editMode ? (
+                        <button
+                            onClick={() => setEditMode(true)}
+                            className="px-4 py-2 bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white rounded-lg hover:opacity-90"
+                        >
+                            Edit Grades
+                        </button>
+                    ) : (
+                        <div className="flex gap-2">
+                            <button
+                                onClick={handleSaveGrades}
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                            >
+                                Save Changes
+                            </button>
+                            <button
+                                onClick={handleCancelEdit}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                            >
+                                Cancel Edit
+                            </button>
+                        </div>
+                    )}
+                </div>
+                <EditableGradesTable
+                    data={filteredStudents}
+                    columns={displayedColumns}
+                    onGradeChange={handleGradeChange}
+                    editMode={editMode}
+                />
+            </div>
 
-             {/* Always render the table, it will show no students if filters result in empty data */}
-             {selectedCourse !== 'All' && editMode ? (
-                 <EditableGradesTable
-                     data={editableGradesData}
-                     columns={editableTableColumns}
-                     handleGradeChange={handleGradeChange}
-                 />
-             ) : (
-                 <div className="overflow-x-auto border text-sm rounded-lg">
-                     <table className="w-full  ">
-                         <thead>
-                             <tr className="border-b  text-sm  border-gray-200">
-                                 {displayedColumns.map((column, index) => (
-                                     <th key={index} className="text-left py-3 px-4 font-semibold   text-gray-700">
-                                         {/* Render header using column.Header */}
-                                         {column.Header}
-                                     </th>
-                                 ))}
-                                
-                             </tr>
-                         </thead>
-                         <tbody>
-                             {filteredStudents.map((row, index) => (
-                                 <tr
-                                     key={index}
-                                     className={`border-b  border-gray-200 cursor-pointer hover:bg-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
-                                 >
-                                     {displayedColumns.map((column, cellIndex) => (
-                                         <td key={cellIndex} className="py-2 pl-4 pr-2 text-gray-700">
-                                             {/* Render cell using column.accessor or custom logic */}
-                                             {column.accessor === 'Info' && row.Info ? (
-                                                 <div className="flex items-center space-x-3">
-                                                     {row.Info.avatar && (
-                                                         <div className="flex-shrink-0">
-                                                             <img
-                                                                 className="h-8 w-8 rounded-full object-cover ring-2 ring-gray-200"
-                                                                 src={row.Info.avatar}
-                                                                 alt={row.Info.name}
-                                                                 onError={(e) => {
-                                                                     const target = e.target;
-                                                                     target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(row.Info.name)}&background=6366f1&color=fff&size=32`;
-                                                                 }}
-                                                             />
-                                                         </div>
-                                                     )}
-                                                     <div className="min-w-0 flex-1">
-                                                         <p className="text-sm font-medium text-gray-900 truncate">{row.Info.name}</p>
-                                                         <p className="text-xs text-gray-500 truncate">{row.Info.description}</p>
-                                                     </div>
-                                                 </div>
-                                             ) : column.accessor === 'Course' && row.Course ? (
-                                                 row.Course
-                                             ) : column.accessor === 'Average' && row.Average ? (
-                                                 row.Average
-                                             ) : column.accessor === 'Status' && row.Status ? (
-                                                 row.Status
-                                             ) : ( /* Handle assessment columns and any other accessors */
-                                                 row[column.accessor] !== undefined && row[column.accessor] !== null ? row[column.accessor] : '-'
-                                             )}
-                                         </td>
-                                     ))}
-                                     {/* Add Actions column cell if needed */}
-                                     {/* <td className="py-2 px-8">...</td> */}
-                                 </tr>
-                             ))}
-                         </tbody>
-                     </table>
-                 </div>
-             )}
+            <div className="bg-white rounded-xl shadow p-4">
+                <h2 className="text-xl font-bold mb-4">Overall Grades View</h2>
+                <Table
+                    data={filteredStudents}
+                    columns={displayedColumns}
+                    title="All Student Grades"
+                    isActions={false} // No actions in this view
+                    user={{ role: 'teacher' }}
+                />
+            </div>
         </div>
     );
 };

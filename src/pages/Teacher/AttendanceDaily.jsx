@@ -62,7 +62,8 @@ const AttendanceDaily = () => {
 
   const openCreateModal = () => showModal( 
  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
- <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">       {/* Use the new CreateNewAttendanceList component */}
+ <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">    
+     {/* Use the new CreateNewAttendanceList component */}
        <CreateNewAttendanceList
          selectedDate={formattedCurrentDate}
          selectedCourse={selectedCourse}

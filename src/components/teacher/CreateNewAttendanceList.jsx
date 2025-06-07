@@ -1,13 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { courses, users } from '../../data/mockData'; // Assuming users are needed for full student info
+import { useSaveNotification } from '../../contexts/SaveNotificationContext';
 
 export const CreateNewAttendanceList = ({ onSave, onCancel }) => {
+  const { showSaveNotification, hideSaveNotification } = useSaveNotification();
   const [currentStep, setCurrentStep] = useState('selection'); // 'selection' or 'attendance'
   const [selectedModalCourse, setSelectedModalCourse] = useState('');
   const [selectedModalClass, setSelectedModalClass] = useState('');
   const [selectedModalDate, setSelectedModalDate] = useState('');
   const [studentsAttendance, setStudentsAttendance] = useState([]);
+  const [initialStudentsAttendance, setInitialStudentsAttendance] = useState([]); // To track initial state for changes
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [availableModalClasses, setAvailableModalClasses] = useState([]);
+
+  useEffect(() => {
+    // This effect runs whenever studentsAttendance changes.
+    // We need to compare it to the initial state to determine if there are unsaved changes.
+    if (currentStep === 'attendance') {
+      const changesMade = JSON.stringify(studentsAttendance) !== JSON.stringify(initialStudentsAttendance);
+      setHasUnsavedChanges(changesMade);
+    }
+  }, [studentsAttendance, initialStudentsAttendance, currentStep]);
+
+  
+  useEffect(() => {
+    let timeoutId;
+    let intervalId;
+
+
+    if (currentStep === 'attendance' && hasUnsavedChanges) {
+      // Initial delay of 10 seconds before the first notification
+      timeoutId = setTimeout(() => {
+        showSaveNotification();
+        // Then show every 10 seconds
+        intervalId = setInterval(() => {
+          showSaveNotification();
+        }, 10000); // 10 seconds
+      }, 10000); // Initial 10 seconds delay
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [currentStep, hasUnsavedChanges, showSaveNotification, hideSaveNotification]);
 
   // Effect to update available classes when a course is selected in the modal
   useEffect(() => {
@@ -60,6 +100,7 @@ export const CreateNewAttendanceList = ({ onSave, onCancel }) => {
     const sortedStudents = uniqueStudents.sort((a, b) => a.studentName.localeCompare(b.studentName));
 
     setStudentsAttendance(sortedStudents);
+    setInitialStudentsAttendance(sortedStudents); // Set initial state for comparison
     setCurrentStep('attendance'); // Move to attendance taking step
   };
 
@@ -85,11 +126,15 @@ export const CreateNewAttendanceList = ({ onSave, onCancel }) => {
 
   const handleSave = () => {
     console.log("Saving new attendance record:", studentsAttendance);
+    setHasUnsavedChanges(false);
+    hideSaveNotification();
     // Call the onSave prop with the collected attendance data
     onSave(studentsAttendance);
   };
 
   const handleCancel = () => {
+    setHasUnsavedChanges(false);
+    hideSaveNotification();
     // Call the onCancel prop to close the modal without saving
     onCancel();
   };

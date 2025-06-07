@@ -4,6 +4,8 @@ import Table from '../../components/shared/Table';
 import { Eye, Trash2, Plus, List, Grid, Filter } from 'lucide-react';
 import Loading from '../../components/shared/Loading';
 import {courses,users} from '../../data/mockData';
+import { useModal } from '../../contexts/ModalProvider';
+import { CreateStudentModal } from '../../components/teacher/CreateStudentModal';
 
 const mockStudents = users.filter(user=>user.role==='student')
 .sort((a, b) => a.name.localeCompare(b.name))
@@ -24,10 +26,10 @@ const mockStudents = users.filter(user=>user.role==='student')
 const subjects =courses.map(course =>({label: course.name, classes: course.classes}));
 
 const StudentListPage = () => {
+  const { showModal } = useModal();
   const [selectedSubject, setSelectedSubject] = useState(0);
   const [selectedClass, setSelectedClass] = useState(subjects[0].classes[0]);
   const [search, setSearch] = useState('');
-  const [viewModal, setViewModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,12 @@ const StudentListPage = () => {
   );
 
   const paginatedStudents = filteredStudents.slice((page - 1) * 8, page * 8);
+
+  const handleAddStudent = (studentData) => {
+    console.log('New student data:', studentData);
+    // Here you would typically add the student to your data source
+    // For now, we'll just log it.
+  };
 
   return (
     <Layout currentPage={'Students'}>
@@ -95,7 +103,7 @@ const StudentListPage = () => {
           </div>
           <div className="flex gap-2">
            
-            <button onClick={()=>setViewModal(true)}
+            <button onClick={()=>showModal(<CreateStudentModal onSubmit={handleAddStudent} />)}
              className="p-2 flex  rounded-md bg-green-600 text-white hover:bg-green-700">
               <Plus size={20}/> Add New Student 
               </button>
