@@ -7,7 +7,6 @@ import WeeklyAttendanceTable from '../../components/shared/WeeklyAttendanceTable
 
 // Assuming AttendanceDaily.jsx had these imports and state
 import { format, startOfWeek, endOfWeek } from 'date-fns';
-import { useModal } from '../../contexts/ModalProvider';
 
 
 const Attendance = () => {
@@ -33,10 +32,6 @@ const Attendance = () => {
 
   // State for available classes based on selected course (from previous AttendanceDaily.jsx logic)
   const [availableClasses, setAvailableClasses] = useState([]);
-
-  // Modal state for creating new attendance list
-  const {  showModal, hideModal } = useModal();
-
   // Effect to update available classes when a course is selected (from previous AttendanceDaily.jsx logic)
   useEffect(() => {
     if (selectedCourse && selectedCourse !== 'All') {
@@ -165,12 +160,7 @@ const Attendance = () => {
    };
 
 
-  // Handler for saving a new attendance list from the modal
-  const handleSaveNewAttendanceList = (newRecords) => {
-      console.log("Attempting to save new attendance list:", newRecords);
 
-      hideModal(); // Close the modal after saving
-  };
 
 
 

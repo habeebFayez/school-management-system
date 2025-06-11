@@ -34,12 +34,12 @@ const Grades = () => {
 
   return (
     <Layout currentPage={'Grades'}>
-      <div className='px-12 w-full bg-white' >
+      <div className='p-6 w-full bg-white' >
         <h1 className="text-2xl font-bold text-black mb-6">Student Grades</h1>
 
         {/* Filters and Search */}
-        <div className="bg-white  rounded-lg p-6 mb-6">
-            <div className="flex flex-wrap items-center gap-4">
+        <div className="bg-white  rounded-lg py-6">
+            <div className="flex flex-wrap items-center justify-between">
                  {/* Search Input */}
                 <div className="flex-grow  max-w-xs">
                     <label htmlFor="search" className="sr-only">Search Students</label>

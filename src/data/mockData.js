@@ -1313,7 +1313,7 @@ courses.forEach(course => {
 
 // Generate realistic attendance records for a semester (e.g., May 2025)
 const semesterStart = new Date('2025-05-01');
-const semesterEnd = new Date('2025-06-07');
+const semesterEnd = new Date();
 const allWeekdays = getWeekdaysInRange(semesterStart, semesterEnd);
 
 export const attendanceRecords = [];
