@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { courses, exams, users } from '../../data/mockData'; // Import necessary data
-import Table from '../shared/Table'; // Assuming the shared Table component
 import AverageDisplay from "../shared/AverageDisplay"
-import EditableGradesTable from '../shared/EditableGradesTable'; 
 import { useSaveNotification } from '../../contexts/SaveNotificationContext';
 
 // Define standard exam order and types
@@ -112,14 +110,11 @@ const getStudentGrades = (studentId, courseId, allExams) => {
 
 export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }) => {
     const { showSaveNotification, hideSaveNotification } = useSaveNotification();
-    const [examsData, setExamsData] = useState(exams);
-    const [filteredStudents, setFilteredStudents] = useState([]);
-    const [editableGradesData, setEditableGradesData] = useState([]);
-    const [editMode, setEditMode] = useState(false);
-    const [displayedColumns, setDisplayedColumns] = useState([]);
-    const [editableTableColumns, setEditableTableColumns] = useState([]); // State for columns used by EditableGradesTable
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false); // New state for unsaved changes
 
+    const [editMode, setEditMode] = useState(false);
+
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false); // New state for unsaved changes
+    const [gradesData, setGradesData] = useState([]);
 
     useEffect(() => {
         let timeoutId;
@@ -146,259 +141,190 @@ export const GradesTableTeacher = ({ selectedCourse, selectedClass, searchTerm }
           }
         };
     }, [editMode, hasUnsavedChanges, showSaveNotification]);
+
     useEffect(() => {
-        let studentsToDisplay = users.filter(user => user.role === 'student');
-
+        // Filter students
+        let students = users.filter(user => user.role === 'student');
+        
         if (selectedClass !== 'All') {
-            studentsToDisplay = studentsToDisplay.filter(student => student.class === selectedClass);
+            students = students.filter(student => student.class === selectedClass);
         }
-
-        if (searchTerm) {
-            const lowerCaseSearchTerm = searchTerm.toLowerCase();
-            studentsToDisplay = studentsToDisplay.filter(student =>
-                student.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-                String(student.id).includes(lowerCaseSearchTerm)
-            );
-        }
-
-        studentsToDisplay.sort((a, b) => a.name.localeCompare(b.name));
-
-        const transformedDataForDisplay = [];
-        const gradesDataForEditing = [];
-
-        let assessmentTypesForCourse = []; // Initialize here
 
         if (selectedCourse !== 'All') {
             const course = courses.find(c => c.name === selectedCourse);
             if (course) {
-                studentsToDisplay = studentsToDisplay.filter(student =>
-                    course.students.some(courseStudent => courseStudent.id === student.id)
+                students = students.filter(student => 
+                    course.students.some(s => s.id === student.id)
                 );
+            }
+        }
 
-                const courseExams = examsData.filter(exam => exam.course?.id === course.id);
-                // Dynamically get all unique assessment types for this course
-                assessmentTypesForCourse = [...new Set(courseExams.map(exam => exam.title))];
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            students = students.filter(student =>
+                student.name.toLowerCase().includes(term) ||
+                String(student.id).includes(term)
+            );
+        }
 
-                studentsToDisplay.forEach(student => {
-                    // Use courseExams directly to get student grades for this course
-                    const studentGrades = {}; // Initialize an empty object to store grades for display
-                    const editableStudentGrades = {}; // Initialize an empty object to store grades for editing
-                    let totalStudentScore = 0;
+        // Sort by name
+        students.sort((a, b) => a.name.localeCompare(b.name));
 
-                    courseExams.forEach(exam => {
-                        const studentGrade = exam.grades.find(grade => grade.studentId === student.id);
-                        const assessmentType = exam.title; // Use the actual exam title as the type
+        // Get grades for each student
+        const data = students.map(student => {
+            const grades = {};
 
-                        if (studentGrade && studentGrade.score !== null && exam.Total_Points > 0) {
-                            const assessmentPercentage = Math.round((studentGrade.score / exam.Total_Points) * 100);
-                            studentGrades[assessmentType] = assessmentPercentage;
-                            totalStudentScore += studentGrade.score; // Sum raw scores for average calculation
-                        } else {
-                              studentGrades[assessmentType] = null;
-                         }
+            // Get relevant exams once (either all or specific to course)
+            const relevantExams = selectedCourse === 'All' 
+                ? exams 
+                : exams.filter(exam => exam.course?.name === selectedCourse);
 
-                         editableStudentGrades[assessmentType] = {
-                             assessmentType: assessmentType,
-                             percentage: studentGrade ? Math.round(studentGrade.percentage) : null,
-                             score: studentGrade ? studentGrade.score : null,
-                             totalPoints: exam.Total_Points,
-                             assessmentId: exam.id,
-                             courseId: course.id,
-                             studentId: student.id
-                          }; // Closing brace for editableStudentGrades object
-                     });
-
-                     // Calculate average and status based on total raw score for this course
-                     const average = totalStudentScore !== null && courseExams.reduce((sum, exam) => sum + exam.Total_Points, 0) > 0
-                        ? Math.min(Math.round((totalStudentScore / courseExams.reduce((sum, exam) => sum + exam.Total_Points, 0)) * 100), 100)
-                        : null; // Calculate average based on total raw score / total possible points for the course
-                     const status = average !== null ? (average >= 50 ? "Passed" : "Failed") : "N/A"; // Assuming 50% passing for course average
-
-                     studentGrades.average = average;
-                     studentGrades.status = status;
-
-                     const rowData = {
-                         Info: {
-                             avatar: student.avatar,
-                             name: student.name,
-                             description: `ID: ${student.id}, Class: ${student.class}`,
-                         },
-                         Course: course.name,
-                         // Add dynamically created assessment columns to rowData in the correct order
-                         ...Object.fromEntries(assessmentTypesForCourse.map(type => [type, studentGrades[type] !== null ? <AverageDisplay value={studentGrades[type]} size="md" /> : '-'])),
-                         Average: studentGrades.average !== null ? <AverageDisplay value={studentGrades.average} size="md" /> : '-',
-                         Status: studentGrades.status !== "N/A" ? studentGrades.status : '-',
-                     };
-
-                     transformedDataForDisplay.push(rowData);
-                     gradesDataForEditing.push({
-                         studentId: student.id,
-                         studentName: student.name,
-                         avatar: student.avatar,
-                         class: student.class,
-                         grades: editableStudentGrades
-                     });
-                 });
-
-             }
-         } else { // selectedCourse === 'All'
-             studentsToDisplay.forEach(student => {
-                 const studentCourses = courses.filter(course => course.students.some(s => s.id === student.id));
-
-                 studentCourses.forEach(course => {
-                     const studentGrades = getStudentGrades(student.id, course.id, examsData);
-                     const hasGradedAssessments = Object.values(studentGrades).some(grade => grade !== null && typeof grade !== 'string');
-
-                     if (!hasGradedAssessments) return; // Skip if no graded assessments for this course
-
-                     const rowData = {
-                         Info: {
-                             avatar: student.avatar,
-                             name: student.name,
-                             description: `ID: ${student.id}, Class: ${student.class}`,
-                         },
-                         Course: course.name,
-                         // Dynamically add columns for each assessment type present in this student's grades
-                         ...Object.fromEntries(
-                             STANDARD_EXAM_ORDER.map(type => [type, studentGrades[type] !== null ? <AverageDisplay value={studentGrades[type]} size="md" /> : '-'])
-                         ),
-                         Average: studentGrades.average !== null ? <AverageDisplay value={studentGrades.average} size="md" /> : '-',
-                         Status: studentGrades.status !== "N/A" ? studentGrades.status : '-',
-                     };
-                     transformedDataForDisplay.push(rowData);
-
-                     const editableStudentGrades = {};
-                     STANDARD_EXAM_ORDER.forEach(type => {
-                         editableStudentGrades[type] = {
-                             assessmentType: type,
-                             percentage: studentGrades[type],
-                             // For overall grades, score and totalPoints might not be directly applicable for editing
-                             score: null, 
-                             totalPoints: null,
-                             assessmentId: null,
-                             courseId: course.id, // Associate with course even if overall
-                             studentId: student.id
-                         };
-                     });
-                     gradesDataForEditing.push({
-                         studentId: student.id,
-                         studentName: student.name,
-                         avatar: student.avatar,
-                         class: student.class,
-                         grades: editableStudentGrades
-                     });
-                 });
-             });
-             assessmentTypesForCourse = STANDARD_EXAM_ORDER;
-         }
-
-        setFilteredStudents(transformedDataForDisplay);
-        setEditableGradesData(gradesDataForEditing);
-
-        // Define columns for the main Table component
-        const mainTableColumns = [
-            'Info',
-            'Course',
-            ...assessmentTypesForCourse,
-            'Average',
-            'Status',
-            'Actions'
-        ];
-        setDisplayedColumns(mainTableColumns);
-
-        // Define columns for the EditableGradesTable component
-        const editableCols = [
-            'Student',
-            'Class',
-            ...assessmentTypesForCourse.map(type => ({ Header: type, accessor: type })),
-        ];
-        setEditableTableColumns(editableCols);
-    }, [selectedCourse, selectedClass, searchTerm, examsData]);
-
-    const handleGradeChange = (studentId, assessmentType, newValue) => {
-        setEditableGradesData(prevData =>
-            prevData.map(student =>
-                student.studentId === studentId
-                    ? {
-                        ...student,
-                        grades: {
-                            ...student.grades,
-                            [assessmentType]: {
-                                ...student.grades[assessmentType],
-                                percentage: newValue,
-                                hasChanged: true, // Mark as changed
-                            },
-                        },
+            STANDARD_EXAM_ORDER.forEach(standardExamTitle => {
+                const exam = relevantExams.find(e => e.title === standardExamTitle);
+                
+                if (exam) {
+                    const gradeEntry = exam.grades.find(g => g.studentId === student.id);
+                    if (gradeEntry && exam.Total_Points > 0) {
+                        const percentage = Math.round((gradeEntry.score / exam.Total_Points) * 100);
+                        grades[standardExamTitle] = percentage;
+                    } else {
+                        grades[standardExamTitle] = null; // No grade or invalid points
                     }
-                    : student
-            )
+                } else {
+                    grades[standardExamTitle] = null; // Exam for this standard type doesn't exist
+                }
+            });
+
+            // Calculate average from the grades object, which only contains STANDARD_EXAM_ORDER items
+            const validGrades = Object.values(grades).filter(g => g !== null);
+            const average = validGrades.length > 0 
+                ? Math.round(validGrades.reduce((sum, current) => sum + current, 0) / validGrades.length) 
+                : null;
+
+            return {
+                studentId: student.id,
+                studentName: student.name,
+                avatar: student.avatar,
+                courseName: selectedCourse === 'All' ? 
+                courses.find(course => course.students.some(s => s.id === student.id))?.name || 'N/A' : 
+                selectedCourse,
+                class: student.class,
+                grades, // This contains percentages for STANDARD_EXAM_ORDER
+                average,
+                status: average !== null ? (average >= 50 ? "Passed" : "Failed") : "N/A"
+            };
+        });
+
+        setGradesData(data);
+    }, [selectedCourse, selectedClass, searchTerm]);
+
+    const handleGradeChange = (studentId, examTitle, newValue) => {
+        setGradesData(prevData => 
+            prevData.map(student => {
+                if (student.studentId === studentId) {
+                    // Ensure the value is between 0 and 100
+                    const newGrade = Math.min(Math.max(parseInt(newValue) || 0, 0), 100);
+                    const updatedGrades = { ...student.grades, [examTitle]: newGrade };
+                    
+                    // Recalculate average directly from percentages
+                    const validGrades = Object.values(updatedGrades).filter(g => g !== null);
+                    const newAverage = validGrades.length > 0 
+                        ? Math.round(validGrades.reduce((a, b) => a + b, 0) / validGrades.length) 
+                        : null;
+
+                    return {
+                        ...student,
+                        grades: updatedGrades,
+                        average: newAverage,
+                        status: newAverage !== null ? (newAverage >= 50 ? "Passed" : "Failed") : "N/A"
+                    };
+                }
+                return student;
+            })
         );
-        setHasUnsavedChanges(true); // Mark that there are unsaved changes
     };
 
-    const handleSaveGrades = () => {
-        // Logic to save grades (e.g., API call)
-        console.log('Saving grades:', editableGradesData);
-        setEditMode(false);
-        setHasUnsavedChanges(false); // Reset unsaved changes flag
-        hideSaveNotification(); // Hide notification on save
-        // Optionally, refetch data or update local state to reflect saved changes
-    };
-
-    const handleCancelEdit = () => {
-        setEditMode(false);
-        setHasUnsavedChanges(false); // Reset unsaved changes flag
-        hideSaveNotification(); // Hide notification on cancel
-        // Optionally, reset editableGradesData to original state if changes were not saved
-    };
-
+   
     return (
-        <div className="max-w-7xl mx-auto p-6">
-            <div className="bg-white rounded-xl shadow p-4 mb-6">
-                <h2 className="text-xl font-bold mb-4">Manage Student Grades</h2>
-                <div className="flex justify-end mb-4">
-                    {!editMode ? (
-                        <button
-                            onClick={() => setEditMode(true)}
-                            className="px-4 py-2 bg-gradient-to-br from-[#10062B] to-[#4F0129] text-white rounded-lg hover:opacity-90"
-                        >
-                            Edit Grades
-                        </button>
-                    ) : (
-                        <div className="flex gap-2">
-                            <button
-                                onClick={handleSaveGrades}
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                            >
-                                Save Changes
-                            </button>
-                            <button
-                                onClick={handleCancelEdit}
-                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                            >
-                                Cancel Edit
-                            </button>
-                        </div>
-                    )}
-                </div>
-                <EditableGradesTable
-                    data={filteredStudents}
-                    columns={displayedColumns}
-                    onGradeChange={handleGradeChange}
-                    editMode={editMode}
-                />
+        <div className="overflow-x-auto text-sm border rounded-lg">
+            <div className="flex justify-end p-4">
+                
+                <button
+                    onClick={() => setEditMode(!editMode)}
+                    className={!editMode ?"px-4 py-2 bg-gradient-to-br from-[#10062B] to-[#4F0129] hover:opacity-90 text-white rounded-md "
+                                :"px-4 py-2 bg-green-600 hover:opacity-90 text-white rounded-md " }>
+                    {editMode ? 'Save Changes' : 'Edit Grades'}
+                </button>
             </div>
-
-            <div className="bg-white rounded-xl shadow p-4">
-                <h2 className="text-xl font-bold mb-4">Overall Grades View</h2>
-                <Table
-                    data={filteredStudents}
-                    columns={displayedColumns}
-                    title="All Student Grades"
-                    isActions={false} // No actions in this view
-                    user={{ role: 'teacher' }}
-                />
-            </div>
+            <table className="w-full">
+                <thead>
+                    <tr className="border-b border-gray-200">
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">Student</th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">Course</th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">Class</th>
+                        {STANDARD_EXAM_ORDER.map((exam, index) => (
+                            <th key={index} className="text-left py-3 px-4 font-medium text-gray-700">
+                                {exam}
+                            </th>
+                        ))}
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">Average</th>
+                        <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {gradesData.map((student, index) => (
+                        <tr key={student.studentId} className={`border-b border-gray-200 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
+                            <td className="py-2 pl-4 pr-2">
+                                <div className="flex items-center space-x-3">
+                                    <img
+                                        className="h-8 w-8 rounded-full"
+                                        src={student.avatar}
+                                        alt={student.studentName}
+                                        onError={(e) => {
+                                            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.studentName)}&background=6366f1&color=fff&size=32`;
+                                        }}
+                                    />
+                                    <div>
+                                        <p className="font-medium">{student.studentName}</p>
+                                        <p className="text-xs text-gray-500">ID: {student.studentId}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td className="py-2 pl-4 pr-2 text-gray-700">{student.courseName}</td>
+                            <td className="py-2 pl-4 pr-2">{student.class}</td>
+                            {STANDARD_EXAM_ORDER.map((exam, examIndex) => (
+                                <td key={examIndex} className="py-2 pl-4 pr-2">
+                                    {editMode ? (
+                                        <input
+                                            type="number"
+                                            value={student.grades[exam] ?? ''}
+                                            onChange={(e) => handleGradeChange(student.studentId, exam, e.target.value)}
+                                            className="w-20 p-1 border rounded"
+                                            min="0"
+                                            max="100"
+                                            placeholder="-"
+                                            onKeyPress={(e) => {
+                                                // Prevent non-numeric input
+                                                if (!/[0-9]/.test(e.key)) {
+                                                    e.preventDefault();
+                                                }
+                                            }}
+                                        />
+                                    ) : (
+                                        student.grades[exam] !== null ? 
+                                            <AverageDisplay value={student.grades[exam]} size="md" /> : 
+                                            '-'
+                                    )}
+                                </td>
+                            ))}
+                            <td className="py-2 pl-4 pr-2">
+                                {student.average !== null ? <AverageDisplay value={student.average} size="md" /> : '-'}
+                            </td>
+                            <td className="py-2 pl-4 pr-2">{student.status}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
