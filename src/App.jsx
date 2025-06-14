@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import ErrorBoundary from './components/shared/ErrorBoundary';
+import Documentation from './components/shared/Documentation';
+import { useState } from 'react';
 
 // Teacher Pages ************************
 import DashboardTeacher from './pages/Teacher/DashboardTeacher';
@@ -38,12 +41,13 @@ import React from 'react';
 import { ModalProvider } from './contexts/ModalProvider';
 import AttendanceDaily from './pages/Teacher/AttendanceDaily';
 
-
-
 function App() {
+  const [isDocumentationOpen, setIsDocumentationOpen] = useState(false);
+
   return (
-    <AuthProvider>
-       <NotificationProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <NotificationProvider>
           <SaveNotificationProvider>
             <ModalProvider>
               <CourseProvider>
@@ -257,12 +261,17 @@ function App() {
                       />
                     </Routes>
                   </BrowserRouter>
+                  <Documentation 
+                    isOpen={isDocumentationOpen} 
+                    onClose={() => setIsDocumentationOpen(false)} 
+                  />
                 </NotificationProvider>
               </CourseProvider>
             </ModalProvider>
           </SaveNotificationProvider>
         </NotificationProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

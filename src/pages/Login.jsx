@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../assets/image.png';
 import Loading from '../components/shared/Loading';
+import { useNotification } from '../contexts/NotificationContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,12 +14,37 @@ export default function Login() {
   const [errMsg, setErrMsg] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showNotification } = useNotification();
+
+  const validateForm = () => {
+    if (!email) {
+      setErrMsg('Email is required');
+      return false;
+    }
+    if (!email.includes('@')) {
+      setErrMsg('Please enter a valid email address');
+      return false;
+    }
+    if (!password) {
+      setErrMsg('Password is required');
+      return false;
+    }
+    if (password.length < 6) {
+      setErrMsg('Password must be at least 6 characters');
+      return false;
+    }
+    return true;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrMsg('');
     
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
     try {
       console.log('Attempting login with:', { email, password });
       const success = login(email, password);
@@ -26,11 +52,16 @@ export default function Login() {
       
       if (success) {
         const role = ["admin", "teacher", "student"].find(r => email.toLowerCase().includes(r));
+        showNotification('Login successful!', 'success');
         navigate('/teacher/dashboard');
+      } else {
+        setErrMsg('Invalid email or password');
+        showNotification('Invalid email or password', 'error');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setErrMsg('An error occurred during login.');
+      setErrMsg('An error occurred during login. Please try again.');
+      showNotification('An error occurred during login', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -78,8 +109,13 @@ export default function Login() {
                     type="email"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 border-gray-500 rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900 [&:-webkit-autofill]:!bg-transparent [&:-webkit-autofill]:!text-gray-700 [&:-webkit-autofill]:!shadow-none [&:-webkit-autofill]:!border-b-2 [&:-webkit-autofill]:!border-gray-500"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setErrMsg(''); // Clear error when user types
+                    }}
+                    className={`mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 ${
+                      errMsg && !email ? 'border-red-500' : 'border-gray-500'
+                    } rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900 [&:-webkit-autofill]:!bg-transparent [&:-webkit-autofill]:!text-gray-700 [&:-webkit-autofill]:!shadow-none [&:-webkit-autofill]:!border-b-2 [&:-webkit-autofill]:!border-gray-500`}
                     placeholder="Enter your email"
                   />
                 </div>
@@ -95,8 +131,13 @@ export default function Login() {
                       type={showPassword ? "text" : "password"}
                       required
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 border-gray-500 rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900 [&:-webkit-autofill]:!bg-transparent [&:-webkit-autofill]:!text-gray-700 [&:-webkit-autofill]:!shadow-none [&:-webkit-autofill]:!border-b-2 [&:-webkit-autofill]:!border-gray-500"
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setErrMsg(''); // Clear error when user types
+                      }}
+                      className={`mt-1 block w-full px-3 py-2 bg-transparent border-0 border-b-2 ${
+                        errMsg && !password ? 'border-red-500' : 'border-gray-500'
+                      } rounded-none text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-pink-900 [&:-webkit-autofill]:!bg-transparent [&:-webkit-autofill]:!text-gray-700 [&:-webkit-autofill]:!shadow-none [&:-webkit-autofill]:!border-b-2 [&:-webkit-autofill]:!border-gray-500`}
                       placeholder="Enter your password"
                     />
                     <button
